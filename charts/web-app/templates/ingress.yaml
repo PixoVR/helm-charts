@@ -1,0 +1,66 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.deploy_app }}
+
+{{- if and (.Values.ingress.enabled) (not .Values.ingress.mci) }}
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+  annotations:
+    {{- if .Values.acm.enabled }}
+    configsync.gke.io/cluster-name-selector: {{ include "primary_cluster" $ }}
+    {{- end }}
+
+    {{- if or (.Values.ingress.bring_ip) (.Values.google.create_ip) }}
+    kubernetes.io/ingress.global-static-ip-name: {{ include "ip_name" . }}
+    {{- end }}
+
+    {{- if .Values.ingress.https }}
+    networking.gke.io/v1beta1.FrontendConfig: {{ .Release.Name -}}-gke-frontendconfig
+    {{- if .Values.cert_manager.enabled }}
+    cert-manager.io/cluster-issuer: "letsencrypt-nginx"
+    kubernetes.io/tls-acme: "true"
+    {{- else }}
+    networking.gke.io/managed-certificates: {{ .Release.Name -}}-google-cert
+    {{- end }}
+    {{- if .Values.ingress.nginx }}
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    {{- end }}
+    {{- end }}
+
+    {{- if .Values.external_dns.enabled }}
+    external-dns.alpha.kubernetes.io/hostname: {{ include "full_domain" . -}}.
+    {{- end }}
+
+spec:
+  {{- if and (.Values.ingress.https) (.Values.ingress.nginx) (.Values.cert_manager.enabled) }}
+  tls:
+  - hosts:
+    - {{ include "full_domain" $ }}
+    secretName: ingress-certs
+  {{- end }}
+
+  rules:
+  - http:
+      {{- if .Values.ingress.nginx }}
+      host: {{ include "full_domain" $ }}
+      {{- end }}
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "service_name" $ }}
+            port:
+              number: 443
+{{- end }}
+
+{{- end }}
+
+{{- end }}

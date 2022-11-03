@@ -1,0 +1,13 @@
+{{- if .Values.google.create_registry }}
+
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: {{ include "registry_name" . }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project" . }}
+spec:
+  format: DOCKER
+  location: {{ required "REQUIRED: google.region" .Values.google.region }}
+
+{{- end }}

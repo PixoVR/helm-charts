@@ -1,0 +1,25 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.deploy_app }}
+
+{{- if or (.Values.ingress.enabled) (.Values.ingress.cert) }}
+{{- if .Values.ingress.https }}
+
+apiVersion: networking.gke.io/v1 
+kind: ManagedCertificate
+metadata:
+  name: {{ .Release.Name -}}-google-cert
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+  annotations:
+    configsync.gke.io/cluster-name-selector: {{ include "primary_cluster" $ }}
+spec:
+  domains:
+    - {{ include "full_domain" . }}
+
+{{- end }}
+{{- end }}
+
+{{- end }}
+{{- end }}

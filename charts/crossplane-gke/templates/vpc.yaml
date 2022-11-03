@@ -1,0 +1,20 @@
+{{- if .Values.make_network }}
+
+apiVersion: compute.gcp.crossplane.io/v1beta1
+kind: Network
+metadata:
+  name: {{ .Release.Name -}}-vpc
+spec:
+  providerConfigRef:
+    name: default
+
+  forProvider:
+    autoCreateSubnetworks: false
+    routingConfig:
+      routingMode: GLOBAL
+
+  writeConnectionSecretToRef:
+    name: {{ .Release.Name -}}-vpc-ref
+    namespace: {{ .Release.Namespace }}
+
+{{- end }}

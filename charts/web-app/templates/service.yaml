@@ -1,0 +1,29 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service_name" $ }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    tier: backend
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+  {{- if not .Values.local }}
+  annotations:
+    cloud.google.com/backend-config: '{"default": "{{- .Release.Name -}}-backendconfig"}'
+  {{- end }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ include "deployment_name" $ }}
+    
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: {{ .Values.containerPort }}
+
+{{- end }}
+{{- end }}

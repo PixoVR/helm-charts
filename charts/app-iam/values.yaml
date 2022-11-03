@@ -1,0 +1,17 @@
+
+
+app:
+  namespace: ''
+  ksa_name: ''
+  roles:
+    - cloudsql.client
+    - cloudsql.instanceUser
+    - errorreporting.writer
+    - iam.serviceAccountTokenCreator
+    - logging.logWriter
+    - monitoring.metricWriter
+    - storage.admin
+
+infra:
+  namespace: ''
+

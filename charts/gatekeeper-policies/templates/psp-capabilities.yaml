@@ -1,0 +1,9 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPCapabilities
+metadata:
+  name: psp-capabilities
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]

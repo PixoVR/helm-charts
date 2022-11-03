@@ -1,0 +1,65 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.autoscaler.enabled }}
+{{- if .Values.deploy_app }}
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-autoscaler
+  namespace: {{ .Release.Namespace }}
+  labels:
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-dep
+  minReplicas: {{ .Values.api.replicas }}
+  maxReplicas: {{ .Values.api.max_replicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: {{ .Values.api.target_mem }}
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.api.target_cpu }}
+
+---
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-autoscaler
+  namespace: {{ .Release.Namespace }}
+  labels:
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-dep
+  minReplicas: {{ .Values.nginx.replicas }}
+  maxReplicas: {{ .Values.nginx.max_replicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: {{ .Values.nginx.target_mem }}
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.nginx.target_cpu }}
+
+{{- end }}
+{{- end }}
+{{- end }}

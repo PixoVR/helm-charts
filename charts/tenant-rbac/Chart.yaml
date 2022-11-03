@@ -1,0 +1,6 @@
+apiVersion: v2
+name: tenant-rbac
+description: Used to managed rbac for tenants in a shared GKE cluster
+type: application
+appVersion: 1.0.0
+version: 0.0.1

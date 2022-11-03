@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sUniqueServiceSelector
+metadata:
+  name: unique-service-selector
+spec:
+  match:
+    kinds:
+      - apiGroups: ["extensions", "networking.k8s.io"]
+        kinds: ["Service"]
+
+
+

@@ -1,0 +1,37 @@
+{{- if .Values.make_cluster }}
+
+apiVersion: container.gcp.crossplane.io/v1beta2
+kind: Cluster
+metadata:
+  name: {{ .Release.Name -}}-cluster
+spec:
+  forProvider:
+    networkRef:
+      name: {{ .Release.Name -}}-vpc
+    subnetworkRef: 
+      name: {{ .Release.Name -}}-subnet
+
+    location: us-central1-a
+    initialClusterVersion: "1.21.5"
+    networkConfig:
+      datapathProvider: ADVANCED_DATAPATH
+      enableIntraNodeVisibility: false
+    ipAllocationPolicy:
+      useIpAliases: true
+    defaultMaxPodsConstraint:
+      maxPodsPerNode: 110
+    binaryAuthorization: 
+      enabled: false
+    legacyAbac:
+      enabled: false
+    loggingService: "none"
+    masterAuth:
+      clientCertificateConfig:
+        issueClientCertificate: false
+    monitoringService: "none"
+
+  writeConnectionSecretToRef:
+    name: {{ .Release.Name -}}-cluster-ref
+    namespace: {{ .Release.Namespace }}
+
+{{- end }}

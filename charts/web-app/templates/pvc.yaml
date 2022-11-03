@@ -1,0 +1,20 @@
+{{- if and (.Values.enabled) (.Values.use_pd) }}
+{{- if .Values.deploy_app }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gce-pvc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ required "REQUIRED: disk_size" .Values.disk_size }}
+
+{{- end }}
+{{- end }}

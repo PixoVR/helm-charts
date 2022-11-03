@@ -1,0 +1,22 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRestrictNamespaces
+metadata:
+  name: restrict-namespaces
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]
+  parameters:
+    restrictedNamespaces:
+      - "default"
+      - "kube-public"
+      - "kube-system"
+      - "kube-node-lease"
+      - "gatekeeper-system"
+      - "external-secrets"
+      - "rbac-manager"
+      - "argo-cd"
+      - "argo-events"
+      - "argo-rollouts"
+      - "argo-workflows"

@@ -1,0 +1,31 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPAllowedUsers
+metadata:
+  name: psp-allowed-linux-ranges
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    runAsUser:
+      rule: MustRunAs
+      ranges:
+        - min: 100
+          max: 200
+    runAsGroup:
+      rule: MustRunAs
+      ranges:
+        - min: 100
+          max: 200
+    fsGroup:
+      rule: MustRunAs
+      ranges:
+        - min: 100
+          max: 200
+    supplementalGroups:
+      rule: MustRunAs
+      ranges:
+        - min: 100
+          max: 200

@@ -1,0 +1,36 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.ingress.mci }}
+{{- if .Values.deploy_app }}
+
+apiVersion: networking.gke.io/v1
+kind: MultiClusterService
+metadata:
+  name: nginx-mcs
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+  annotations:
+    configsync.gke.io/cluster-name-selector: {{ include "primary_cluster" $ }}
+    # cloud.google.com/backend-config: '{"default": "gke-backendconfig"}'
+  labels:
+    app: nginx-mcs
+    tier: frontend
+spec:
+  template:
+    spec:
+      selector:
+        app: nginx-dep
+      ports:
+      - name: http
+        protocol: TCP
+        port: 443
+        targetPort: 80
+  clusters:
+  - link: us-central1/central-cluster
+  - link: us-east4/east-cluster
+
+{{- end }}
+{{- end }}
+{{- end }}
+

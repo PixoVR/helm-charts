@@ -1,0 +1,161 @@
+
+project_id: pixo-gke
+github_org: PixoVR
+lifecycle: dev
+app_code: apex
+microservice_name: web
+
+enabled: true
+local: false
+non_preemptible: false
+create_infra: true
+deploy_app: true
+nginx: false
+node: false
+
+toleration: ''
+
+primary_cluster_name: central-cluster
+primary_cluster: central-cluster-membership
+
+create_sa: false
+ksa_name: apex-sa
+default_branch: dev
+sa_microservice_name: api
+
+demo:
+  enabled: false
+  image: nginx
+
+image:
+  name: ""
+  tag: latest
+
+containerPort: 80
+healthCheckPath: /
+memory:
+  request: 8Mi
+  limit: 16Mi
+cpu:
+  request: .001
+  limit: .025
+sql:
+  proxy: false
+use_pd: false
+mount_pd: false
+disk_size: 10Gi
+
+memory:
+  request: 64Mi
+  limit: 256Mi
+cpu:
+  request: .005
+  limit: .5
+
+replicas: 1
+max_replicas: 5
+target_cpu: 80
+target_mem: 128Mi
+
+aws:
+  auth:
+    enabled: false
+  cloudfront:
+    enabled: false
+
+google:
+  region: us-central1
+  zone: us-central1-a
+  cdn:
+    enabled: false
+  config_connector_context: false
+  create_ip: false
+  create_cloudbuild: true
+  create_registry: false
+  create_monitoring_suite: false
+  notification_channel: ""
+  registry: gcr.io
+  sql:
+    enabled: false
+  storage:
+    enabled: false
+    create: false
+    bucket_list:
+      - name: modules
+        key: MODULES
+  iap:
+    enabled: false
+    test:
+      enabled: false
+  analytics:
+    enabled: false
+  wi_test: false
+
+security_policy: apex-policy
+ssl_policy: tls-policy
+
+oauth:
+  google:
+    enabled: false
+
+  github:
+    enabled: false
+
+  facebook:
+    enabled: false
+
+  twitter:
+    enabled: false
+
+external_dns:
+  enabled: true
+
+external_secrets:
+  enabled: false
+  secret_store:
+    enabled: false
+    name: pixo-secret-store
+  cluster_secret_store:
+    enabled: false
+    name: pixo-secret-store
+  app_secrets:
+    enabled: false
+  refresh_interval: 0
+
+secrets:
+  enabled: false
+
+cert_manager:
+  enabled: false
+
+ingress:
+  enabled: true
+  bring_ip: false
+  https: true
+  cert: false
+  mci: false
+  nginx: false
+
+network_policy:
+  enabled: false
+
+acm:
+  enabled: false
+
+autoscaler:
+  enabled: false
+
+db:
+  proxy: false
+  host: "127.0.0.1"
+  port: "5432"
+  password: fakepassword
+  proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.32.0
+
+sendgrid:
+  enabled: false
+
+cilium:
+  enabled: false
+
+

@@ -1,0 +1,33 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.deploy_app }}
+
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Release.Name -}}-backendconfig
+  namespace: {{ .Release.Namespace }}
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: {{ .Values.containerPort }}
+    type: HTTP
+    requestPath: {{ .Values.healthCheckPath }}
+
+  securityPolicy:
+    name: {{ .Values.security_policy }}
+
+  {{- if or (.Values.google.iap.enabled) (.Values.google.iap.test.enabled) }}
+  iap:
+    enabled: {{ .Values.google.iap.enabled }}
+    oauthclientCredentials:
+      secretName: oauth-credentials
+  {{- end }}
+
+  cdn:
+    enabled: {{ .Values.google.cdn.enabled }}
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+
+{{- end }}
+{{- end }}

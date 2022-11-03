@@ -1,0 +1,28 @@
+{{- range .Values.tenants }}
+{{- range .apps }}
+{{- $app := .}}
+{{- range $.Values.app_lifecycles }}
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata:
+  name: allowed-repos
+spec:
+  match:
+    kinds:
+    - apiGroups:
+      - ""
+      kinds:
+      - Pod
+    namespaces:
+    - {{ . -}}-{{- $app.name }}
+  parameters:
+    repos:
+    - us-central1-docker.pkg.dev/{{- $app.name -}}-app-project/{{- . }}
+    - us-central1-docker.pkg.dev/{{- $app.name -}}-app-project/{{- . -}}-images
+
+---
+
+{{- end }}
+{{- end }}
+{{- end }}

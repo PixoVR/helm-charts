@@ -1,0 +1,5 @@
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sBlockProcessNamespaceSharing
+metadata:
+  name: block-process-namespace-sharing

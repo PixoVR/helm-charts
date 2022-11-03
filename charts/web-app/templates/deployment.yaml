@@ -1,0 +1,386 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ include "deployment_name" $ }}'
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    microservice_name: {{ .Values.microservice_name }}
+    tier: backend
+spec:
+  replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
+  {{- if or (not .Values.use_pd) (not .Values.mount_pd) }}
+  strategy:
+    type: RollingUpdate
+  {{- end }}
+  selector:
+    matchLabels:
+      app: '{{ include "deployment_name" $ }}'
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        container.apparmor.security.beta.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
+      labels:
+        app: '{{ include "deployment_name" $ }}'
+        namespace: {{ .Release.Namespace }}
+        microservice_name: {{ .Values.microservice_name }}
+        tier: backend
+    spec:
+      {{- if .Values.toleration }}
+      tolerations:
+      - key: {{ .Values.toleration }}
+        operator: Equal
+        value: "true"
+        effect: PreferNoSchedule
+      {{- end }}
+
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      {{- if not .Values.demo.enabled }}
+      securityContext:
+        runAsUser: 115
+        runAsGroup: 125
+        fsGroup: 190
+        supplementalGroups:
+          - 150
+      {{- end }}
+
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
+        - name: usr-tmp-dir
+          emptyDir: {}
+        - name: var-tmp-dir
+          emptyDir: {}
+        - name: app-secrets
+          secret:
+            secretName: app-secrets
+
+        {{- if eq .Values.microservice_name "api" }}
+        - name: server-logs-dir
+          emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.node }}
+        - name: log-dir
+          emptyDir: {}
+        {{- else if .Values.nginx }}
+        - name: body-dir
+          emptyDir: {}
+        - name: proxy-dir
+          emptyDir: {}
+        - name: cache-proxy-dir
+          emptyDir: {}
+        - name: cache-client-dir
+          emptyDir: {}
+        - name: fast-cgi-dir
+          emptyDir: {}
+        - name: uwsgi-dir
+          emptyDir: {}
+        - name: scgi-dir
+          emptyDir: {}
+        - name: pid-dir
+          emptyDir: {}
+        {{- end }}
+
+        - name: db-volume
+        {{- if and (.Values.use_pd) (.Values.mount_pd) }}
+          persistentVolumeClaim:
+            claimName: gce-pvc
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+
+      serviceAccountName: '{{ include "ksa_name" . }}'
+      restartPolicy: Always
+      containers:
+      - name: {{ .Values.microservice_name }}
+        image: '{{ include "image" . }}'
+        imagePullPolicy: Always
+
+        {{- if not .Values.demo.enabled }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        {{- end }}
+
+        resources:
+          requests:
+            memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
+            cpu: {{ required "REQUIRED: cpu.request" .Values.cpu.request }}
+          limits:
+            memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
+            cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+
+        volumeMounts:
+          - mountPath: /backend/secrets
+            name: app-secrets
+          - mountPath: /backend/var
+            name: db-volume
+          - mountPath: /tmp
+            name: tmp-dir
+          - mountPath: /usr/tmp
+            name: usr-tmp-dir
+          - mountPath: /var/tmp
+            name: var-tmp-dir
+
+          {{- if eq .Values.microservice_name "api" }}
+          - name: server-logs-dir
+            mountPath: /apex-api/server/logs
+          {{- end }}
+
+          {{- if .Values.node }}
+          - name: log-dir
+            mountPath: /.npm
+          {{- else if .Values.nginx }}
+          - name: body-dir
+            mountPath: /var/lib/nginx/body
+          - name: proxy-dir
+            mountPath: /var/lib/nginx/proxy
+          - name: cache-proxy-dir
+            mountPath: /var/cache/nginx/proxy_temp
+          - name: cache-client-dir
+            mountPath: /var/cache/nginx/client_temp
+          - name: fast-cgi-dir
+            mountPath: /var/cache/nginx/fastcgi_temp
+          - name: uwsgi-dir
+            mountPath: /var/cache/nginx/uwsgi_temp
+          - name: scgi-dir
+            mountPath: /var/cache/nginx/scgi_temp
+          - name: pid-dir
+            mountPath: /var/run
+          {{- end }}
+
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.healthCheckPath }}
+            port: {{ .Values.containerPort }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.healthCheckPath }}
+            port: {{ .Values.containerPort }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        env:
+        - name: USE_GCS
+          value: "true"
+        - name: DOMAIN
+          value: '{{ include "full_domain" $ }}'
+        - name: PORT
+          value: "{{ .Values.containerPort }}"
+
+        - name: GCP_PROJECT_ID
+          value: "{{- include "app_project" $ -}}"
+
+        {{- if eq .Values.microservice_name "graphql" }}
+        - name: APP_ENV
+        {{- else }}
+        - name: NODE_ENV
+        {{- end }}
+          value: {{ upper .Values.lifecycle }}
+        - name: APP_URL
+          value: https://{{- include "app_domain" $ }}
+        - name: API_URL
+          value: https://{{- include "api_domain" $ }}
+
+        {{- if .Values.google.storage.enabled }}
+        {{- range .Values.google.storage.bucket_list }}
+        - name: GOOGLE_STORAGE_{{ .key }}
+          value: {{ include "sa_app_label" $ -}}-{{- .name }}
+        {{- end }}
+        {{- end }}
+
+
+        {{- if .Values.env }}
+          {{- toYaml .Values.env | nindent 8 }}
+        {{- end }}
+
+        {{- if .Values.aws.auth.enabled }}
+
+        {{- if eq .Values.microservice_name "web" }}
+        - name: AWS_ID
+        {{- else }}
+        - name: AWS_ACCESS_KEY_ID
+        {{- end }}
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
+        {{- if eq .Values.microservice_name "web" }}
+        - name: AWS_SECRET
+        {{- else }}
+        - name: AWS_SECRET_ACCESS_KEY
+        {{- end }}
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
+        {{- end }}
+
+        {{- if .Values.aws.cloudfront.enabled }}
+
+        - name: AWS_CLOUDFRONT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-cf-public-key
+
+        - name: AWS_CLOUDFRONT_PRIVATE_KEY_PATH
+          value: /backend/secrets/aws-cf-private-key
+
+        - name: AWS_CLOUDFRONT_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-cf-domain
+        {{- end }}
+
+        {{- if eq .Values.microservice_name "web" }}
+        - name: JWT_SECRET
+        {{- else }}
+        - name: SECRET_KEY
+        {{- end }}
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
+
+        {{- if eq .Values.microservice_name "api" }}
+        - name: EXTERNAL_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: external-auth-key
+        {{- end }}
+
+        {{ if .Values.oauth.google.enabled }}
+        - name: GOOGLE_OAUTH_ID
+          valueFrom:
+            secretKeyRef:
+              name: oauth-credentials
+              key: client_id
+
+        - name: GOOGLE_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oauth-credentials
+              key: client_secret
+        {{ end }}
+
+        {{- if .Values.oauth.github.enabled }}
+        - name: GITHUB_OAUTH_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: github-oauth-id
+
+        - name: GITHUB_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: github-oauth-secret
+        {{- end }}
+
+        {{- if .Values.oauth.facebook.enabled }}
+        - name: FACEBOOK_OAUTH_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: facebook-oauth-id
+
+        - name: FACEBOOK_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: facebook-oauth-secret
+        {{- end }}
+
+        {{- if .Values.oauth.twitter.enabled }}
+        - name: TWITTER_OAUTH_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: twitter-api-key
+
+        - name: TWITTER_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: twitter-api-key-secret
+        {{- end }}
+
+        {{- if .Values.sendgrid.enabled }}
+        - name: SENDGRID_EMAIL
+          value: {{ .Values.sendgrid.email }}
+
+        - name: SENDGRID_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: sendgrid-key
+        {{- end }}
+
+        {{- if .Values.sql.proxy }}
+        - name: DB_HOST
+          value: "{{ .Values.db.host }}"
+        - name: DB_PORT
+          value: "{{ .Values.db.port }}"
+
+        {{- if eq .Values.microservice_name "api" }}
+        - name: DB_DATABASE
+        {{- else }}
+        - name: DB_NAME
+        {{- end }}
+          value: {{ include "db_name" . }}
+        - name: DB_USER
+          value: {{ include "app_sa" . }}
+
+        {{- if ne .Values.microservice_name "graphql" }}
+        - name: DB_PASSWORD
+          value: "{{ .Values.db.password }}"
+        {{- end }}
+
+        {{- end }}
+
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+          name: api-port
+
+      {{- if .Values.sql.proxy }}
+      - name: proxy
+        image: "{{ .Values.db.proxy_version }}"
+        imagePullPolicy: Always
+        command:
+        - /cloud_sql_proxy
+        - -instances={{- include "app_project" . -}}:{{- required "REQUIRED: google.region" .Values.google.region -}}:{{- include "instance_name" . }}=tcp:127.0.0.1:5432
+        - -enable_iam_login
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      {{- end }}
+
+{{- end }}
+{{- end }}
+

@@ -1,0 +1,20 @@
+{{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.ingress.https }}
+{{- if .Values.deploy_app }}
+
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: {{ .Release.Name -}}-gke-frontendconfig
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    configsync.gke.io/cluster-name-selector: {{ include "primary_cluster" $ }}
+spec:
+  sslPolicy: {{ .Values.ssl_policy }}
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+
+{{- end }}
+{{- end }}
+{{- end }}

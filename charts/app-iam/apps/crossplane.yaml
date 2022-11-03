@@ -1,0 +1,16 @@
+
+app:
+  roles:
+    - artifactregistry.admin
+    - bigquery.admin
+    - cloudbuild.builds.editor
+    - cloudkms.admin
+    - container.admin
+    - compute.admin
+    - cloudsql.admin
+    - compute.publicIpAdmin
+    - monitoring.admin
+    - iam.securityAdmin
+    - iam.serviceAccountAdmin
+    - iam.serviceAccountUser
+    - storage.admin

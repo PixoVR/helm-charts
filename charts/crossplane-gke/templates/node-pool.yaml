@@ -1,0 +1,37 @@
+{{- if .Values.make_cluster }}
+
+apiVersion: container.gcp.crossplane.io/v1beta1
+kind: NodePool
+metadata:
+  name: {{ .Release.Name -}}-node-pool
+spec:
+  forProvider:
+    autoscaling:
+      autoprovisioned: false
+      enabled: true
+      maxNodeCount: 2
+      minNodeCount: 1  
+    clusterRef:
+      name: {{ .Release.Name -}}-cluster
+    config:
+      diskSizeGb: 50
+      diskType: pd-ssd
+      imageType: cos_containerd
+      labels:
+        test-label: crossplane-created
+      machineType: e2-small
+      oauthScopes:
+        - "https://www.googleapis.com/auth/devstorage.read_only"
+        - "https://www.googleapis.com/auth/logging.write"
+        - "https://www.googleapis.com/auth/monitoring"
+        - "https://www.googleapis.com/auth/servicecontrol"
+        - "https://www.googleapis.com/auth/service.management.readonly"
+        - "https://www.googleapis.com/auth/trace.append"
+    initialNodeCount: 1
+    locations:
+      - us-central1-a
+    management:
+      autoRepair: true
+      autoUpgrade: true
+
+{{- end }}

@@ -1,0 +1,5 @@
+
+app:
+  roles:
+    - storage.objectViewer
+    - iam.serviceAccountTokenCreator

@@ -1,0 +1,44 @@
+{{- if .Values.enabled }}
+{{- if .Values.network_policy.enabled }}
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-cluster
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector: {}
+    - from:
+        - ipBlock:
+            cidr: 130.211.0.0/22
+    - from:
+        - ipBlock:
+            cidr: 35.191.0.0/16
+  egress:
+    - to:
+        - namespaceSelector: {}
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+    - to:
+        - ipBlock:
+            cidr: 35.191.0.0/16
+    - to:
+        - ipBlock:
+            cidr: 130.211.0.0/22
+      ports:
+        - port: 443
+
+{{- end }}
+{{- end }}
