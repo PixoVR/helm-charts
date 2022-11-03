@@ -1,0 +1,58 @@
+apiVersion: v1
+entries:
+  app-iam:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-03T21:16:21.796140668Z"
+    description: Deploys app service accounts and workload identity
+    digest: 37afa4313dc061d2faf172dd816f00cb5ca7f5ef0efda846bafb6a4c6913712b
+    name: app-iam
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.1/app-iam-0.0.1.tgz
+    version: 0.0.1
+  crossplane-gke:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-03T21:16:21.959698665Z"
+    description: A Helm chart for deploying Kubernetes with crossplane
+    digest: 61d119292ee2bc3a9348df423f3483be512dcfb10f8285b9585678368f2a3004
+    name: crossplane-gke
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-gke-0.0.1/crossplane-gke-0.0.1.tgz
+    version: 0.0.1
+  gatekeeper-policies:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-03T21:16:22.118586556Z"
+    description: Gatekeeper policies
+    digest: 5fa322ae44158a7bbc85d8ff42393bb7464ffd7cabbff45d2ed32c4f3e951f11
+    name: gatekeeper-policies
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
+    version: 0.0.7
+  tenant-rbac:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-03T21:16:22.290340938Z"
+    description: Used to managed rbac for tenants in a shared GKE cluster
+    digest: 07f98d4fb7b382592bcf66a2c79e8392e4675f5b22fa4a03ac7816191aed301b
+    name: tenant-rbac
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
+    version: 0.0.1
+  web-app:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-03T21:16:22.455936281Z"
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: e8b6ea99a69ff2a872067c95e9022fcd81896ac00e083f38944f6527400bf6f6
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.1/web-app-0.0.1.tgz
+    version: 0.0.1
+generated: "2022-11-03T21:16:21.516053237Z"
