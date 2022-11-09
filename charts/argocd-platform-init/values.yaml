@@ -4,6 +4,8 @@ repo_name: replace-me
 github_team: platforms
 argocd_namespace: argocd
 
+helm_charts_repo: https://pixovr.github.io/helm-charts
+
 revision: HEAD
 target_revision: HEAD
 
@@ -27,7 +29,7 @@ tenants:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-tenant-app-sets
-    version: 0.0.6
+    version: 0.0.7
 
 backstage:
   enabled: false

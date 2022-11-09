@@ -14,4 +14,4 @@ app-deploy:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.1
+    version: 0.0.2
