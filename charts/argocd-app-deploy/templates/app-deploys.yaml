@@ -1,0 +1,70 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ include "fullname" $ -}}-services-deploy
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    tier: app
+    purpose: deploy
+    deployment: helm
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ .Values.service_filepath }}
+  template:
+    metadata:
+      name: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}-deploy'
+      labels:
+        tier: app
+        purpose: deploy
+        lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
+        deployment: helm
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: "{{ "{{" }} path.basename {{ "}}" }}=gcr.io/{{- .Values.app_project -}}/{{- .Values.app_name -}}/{{ "{{" }} app.lifecycle {{ "}}" }}/{{ "{{" }} path.basename {{ "}}" }}"
+        argocd-image-updater.argoproj.io/write-back-method: git
+
+        argocd-image-updater.argoproj.io/{{ "{{" }} path.basename {{ "}}" }}.pull-secret: pullsecret:argocd/gcr-credentials 
+        argocd-image-updater.argoproj.io/{{ "{{" }} path.basename {{ "}}" }}.force-update: "true"
+        argocd-image-updater.argoproj.io/{{ "{{" }} path.basename {{ "}}" }}.update-strategy: latest
+
+        argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_project }}
+      source:
+        repoURL: {{ .Values.app.chart.repoURL }}
+        chart: {{ .Values.app.chart.name }}
+        targetRevision: {{ .Values.app.chart.version }}
+        helm:
+          releaseName: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+          ignoreMissingValueFiles: true
+          values: |
+            github_org: {{- .Values.github_org -}}
+            project_id: {{ .Values.app_project_id }}
+            db_project_id: {{ .Values.db_project_id }}
+            sa_project_id: {{ .Values.sa_project_id }}
+            domain: {{ required "REQUIRED: domain" .Values.domain }}
+            app_code: {{ .Values.app_name }}
+            create_infra: false
+            microservice_name: '{{ "{{" }} path.basename {{ "}}" }}'
+            lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
+          valueFiles:
+          - './lifecycles/{{ "{{" }} app.lifecycle {{ "}}" }}.yaml'
+          - './services/{{ "{{" }} path.basename {{ "}}" }}.yaml'
+      destination:
+        server: {{ .Values.app.server }}
+        namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
+

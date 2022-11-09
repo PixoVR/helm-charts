@@ -1,0 +1,34 @@
+
+github_org: PixoVR
+repo_name: ''
+revision: HEAD
+
+app_name: sample
+
+services_file_path: services/*app-config.yaml
+destination_server: https://kubernetes.default.svc
+target_revision: HEAD
+
+argocd_namespace: argocd
+argocd_project: platform
+
+iam:
+  server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: app-iam
+    version: 0.0.2
+
+app:
+  server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: web-app
+    version: 0.0.1
+
+infra:
+  server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: web-app
+    version: 0.0.1

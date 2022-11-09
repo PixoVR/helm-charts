@@ -8,3 +8,10 @@ file_path: kustomize/tenants/*/config.yaml
 destination_server: https://kubernetes.default.svc
 argocd_namespace: argocd
 target_revision: HEAD
+
+app-deploy:
+  enabled: true
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: argocd-app-deploy
+    version: 0.0.1

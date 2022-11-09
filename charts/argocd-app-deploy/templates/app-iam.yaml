@@ -1,0 +1,51 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ include "fullname" $ -}}-services-iam
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    tier: app
+    purpose: iam
+    deployment: helm
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ .Values.service_filepath }}
+  template:
+    metadata:
+      name: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}-iam'
+      labels:
+        tier: app
+        purpose: iam
+        lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
+        deployment: helm
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_project }}
+      source:
+        repoURL: {{ .Values.iam.chart.repoURL }}
+        targetRevision: {{ .Values.iam.chart.version }}
+        chart: {{ .Values.iam.chart.name }}
+        helm:
+          releaseName: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+          ignoreMissingValueFiles: true
+          values: |
+            project_id: {{ .Values.sa_project_id }}
+            app:
+              namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}'
+              ksa_name: workload-sa
+      destination:
+        server: {{ .Values.iam.server }}
+        namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+

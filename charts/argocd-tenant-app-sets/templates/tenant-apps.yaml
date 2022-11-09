@@ -29,9 +29,9 @@ spec:
     spec:
       project: {{ .Values.argocd_project_name }}
       source:
-        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
-        targetRevision: {{ .Values.target_revision }}
-        path: '{{ "{{" }} path {{ "}}" }}/applications'
+        repoURL: {{ .Values.apps.repoURL }}
+        chart: {{ .Values.apps.name }}
+        targetRevision: {{ .Values.apps.version }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}
