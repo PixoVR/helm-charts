@@ -3,4 +3,4 @@ name: app-iam
 description: Deploys app service accounts and workload identity
 type: application
 appVersion: 1.0.0
-version: 0.0.1
+version: 0.0.2
