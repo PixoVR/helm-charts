@@ -21,6 +21,13 @@ app_cluster_addon_manifests_filepath: kustomize/addons/manifests/*/app-config.ya
 
 gcp_dns_project_id: replace-me-123
 
+tenants:
+  enabled: true
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: argocd-platform-init
+    version: 0.0.5
+
 backstage:
   enabled: false
   chart_path: kustomize/addons/charts/backstage/chart
