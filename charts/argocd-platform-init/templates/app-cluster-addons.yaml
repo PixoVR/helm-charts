@@ -33,7 +33,7 @@ spec:
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: {{ .Values.argocd_apl_project }}
+      project: {{ .Values.argocd_cpl_project }}
       source:
         path: '{{ "{{" }} path {{ "}}" }}/chart'
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
@@ -88,7 +88,7 @@ spec:
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: {{ .Values.argocd_apl_project }}
+      project: {{ .Values.argocd_cpl_project }}
       source:
         path: '{{ "{{" }} path {{ "}}" }}/chart'
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
