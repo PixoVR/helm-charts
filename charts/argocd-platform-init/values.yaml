@@ -25,8 +25,8 @@ tenants:
   enabled: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
-    name: argocd-platform-init
-    version: 0.0.5
+    name: argocd-tenant-app-sets
+    version: 0.0.3
 
 backstage:
   enabled: false
