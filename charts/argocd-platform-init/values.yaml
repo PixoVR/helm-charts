@@ -2,6 +2,7 @@
 github_org: PixoVR
 repo_name: replace-me
 github_team: platforms
+argocd_namespace: argocd
 
 revision: HEAD
 target_revision: HEAD

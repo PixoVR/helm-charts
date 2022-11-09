@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: tenant-app-sets
+  name: tenants-init
   annotations:
     argocd.argoproj.io/sync-wave: "-50"
   labels:
@@ -15,9 +15,14 @@ spec:
     repoURL: {{ .Values.tenants.chart.repoURL }}
     targetRevision: {{ .Values.tenants.chart.version }}
     chart: {{ .Values.tenants.chart.name }}
+    helm:
+      releaseName: tenants-init
+      values: |
+        github_org: {{ .Values.github_org }}
+        repo_name: {{ .Values.repo_name }}
   destination:
-    server: {{ .Values.destination_server }}
-    namespace: backstage
+    server: {{ .Values.cpl_server }}
+    namespace: {{ .Values.argocd_namespace }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
