@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ include "fullname" $ }}
+  namespace: {{ .Values.argocd_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    tier: platform
+    deployment: helm
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ .Values.file_path }}
+  template:
+    metadata:
+      name: '{{ "{{" }} path.basename {{ "}}" }}-apps'
+      annotations:
+        argocd.argoproj.io/sync-wave: "20"
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
+      labels:
+        tier: tenant
+        deployment: helm
+    spec:
+      project: {{ .Values.argocd_project_name }}
+      source:
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        path: '{{ "{{" }} path {{ "}}" }}/applications'
+      destination:
+        server: {{ .Values.destination_server }}
+        namespace: {{ .Values.argocd_namespace }}
+
+

@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: control-plane-addons
+  labels:
+    deployment: helm
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ .Values.cpl_cluster_addon_charts_filepath }}
+  template:
+    metadata:
+      name: '{{ "{{" }} path.basename {{ "}}" }}'
+      labels:
+        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        cluster: app
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{" }} path {{ "}}" }}/chart'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        helm:
+          releaseName: '{{ "{{" }} path.basename {{ "}}" }}'
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - env/values.yaml
+      destination:
+        server: {{ .Values.destination_server }}
+        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+

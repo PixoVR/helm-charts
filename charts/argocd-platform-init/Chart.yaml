@@ -1,0 +1,6 @@
+apiVersion: v2
+name: argocd-platform-init
+description: Initializes ArgoCD platform
+type: application
+appVersion: 1.0.0
+version: 0.0.1

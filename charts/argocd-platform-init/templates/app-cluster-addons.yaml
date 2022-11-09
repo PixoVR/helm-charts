@@ -1,0 +1,112 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-cluster-addon-charts
+  labels:
+    deployment: helm
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.app_cluster_addon_charts_filepath }}
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: '{{ "{{" }} nameNormalized {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}'
+      labels:
+        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_apl_project }}
+      source:
+        path: '{{ "{{" }} path {{ "}}" }}/chart'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        helm:
+          releaseName: '{{ "{{" }} path.basename {{ "}}" }}'
+          ignoreMissingValueFiles: true
+          values: |
+            external-dns:
+              extraArgs:
+              - --google-project={{- .Values.gcp_dns_project_id }}
+              - --txt-owner-id={{ "{{" }} nameNormalized {{ "}}" }}
+      destination:
+        server: '{{ "{{" }} app.server {{ "}}" }}'
+        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-cluster-addon-manifests
+  labels:
+    deployment: kustomize
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.app_cluster_addon_manifests_filepath }}
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: '{{ "{{" }} nameNormalized {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}'
+      labels:
+        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_apl_project }}
+      source:
+        path: '{{ "{{" }} path {{ "}}" }}/chart'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        helm:
+          releaseName: '{{ "{{" }} path.basename {{ "}}" }}'
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - env/values.yaml
+          values: |
+            external-dns:
+              extraArgs:
+              - --google-project={{- .Values.gcp_dns_project_id }}
+              - --txt-owner-id={{ "{{" }} nameNormalized {{ "}}" }}
+      destination:
+        server: '{{ "{{" }} app.server {{ "}}" }}'
+        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
