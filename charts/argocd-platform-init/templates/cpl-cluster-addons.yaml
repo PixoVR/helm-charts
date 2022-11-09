@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: control-plane-addons
+  name: control-plane-addon-charts
   labels:
     deployment: helm
     tier: platform
@@ -20,7 +20,7 @@ spec:
       name: '{{ "{{" }} path.basename {{ "}}" }}'
       labels:
         name: '{{ "{{" }} path.basename {{ "}}" }}'
-        cluster: app
+        deployment: helm
         tier: platform
       annotations:
         argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
@@ -38,7 +38,48 @@ spec:
           valueFiles:
           - env/values.yaml
       destination:
-        server: {{ .Values.destination_server }}
+        server: {{ .Values.cpl_server }}
+        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: control-plane-addon-manifests
+  labels:
+    deployment: helm
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ .Values.cpl_cluster_addon_manifests_filepath }}
+  template:
+    metadata:
+      name: '{{ "{{" }} path.basename {{ "}}" }}'
+      labels:
+        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        deployment: kustomize
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{" }} path {{ "}}" }}/manifests'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+      destination:
+        server: {{ .Values.cpl_server }}
         namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
       syncPolicy:
         syncOptions:

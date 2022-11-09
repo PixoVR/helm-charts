@@ -90,19 +90,9 @@ spec:
     spec:
       project: {{ .Values.argocd_cpl_project }}
       source:
-        path: '{{ "{{" }} path {{ "}}" }}/chart'
+        path: '{{ "{{" }} path {{ "}}" }}/manifests'
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
         targetRevision: {{ .Values.target_revision }}
-        helm:
-          releaseName: '{{ "{{" }} path.basename {{ "}}" }}'
-          ignoreMissingValueFiles: true
-          valueFiles:
-          - env/values.yaml
-          values: |
-            external-dns:
-              extraArgs:
-              - --google-project={{- .Values.gcp_dns_project_id }}
-              - --txt-owner-id={{ "{{" }} nameNormalized {{ "}}" }}
       destination:
         server: '{{ "{{" }} app.server {{ "}}" }}'
         namespace: '{{ "{{" }} app.namespace {{ "}}" }}'

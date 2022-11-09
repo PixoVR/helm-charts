@@ -8,8 +8,10 @@ target_revision: HEAD
 
 project_name: platform
 argocd_cpl_project: cluster-addons
-destination_server: https://kubernetes.default.svc
 sync_wave: '-100'
+
+cpl_server: https://kubernetes.default.svc
+destination_server: https://kubernetes.default.svc
 
 cpl_cluster_addon_charts_filepath: kustomize/addons/charts/*/cpl-config.yaml
 cpl_cluster_addon_manifests_filepath: kustomize/addons/manifests/*/cpl-config.yaml
