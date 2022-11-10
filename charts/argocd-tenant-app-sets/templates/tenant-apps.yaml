@@ -38,6 +38,8 @@ spec:
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
             app_name: '{{ "{{ path.basename }}" }}'
+            app_project_id: '{{ "{{ app.app_project_id }}" }}'
+            sa_project_id: '{{ "{{ app.sa_project_id }}" }}'
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}

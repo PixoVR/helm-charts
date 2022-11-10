@@ -41,8 +41,8 @@ spec:
           ignoreMissingValueFiles: true
           values: |
             github_org: {{ .Values.github_org }}
-            project_id: {{ .Values.project_id }}
-            sa_project_id: {{ .Values.project_id }}
+            project_id: {{ .Values.app_project_id }}
+            sa_project_id: {{ .Values.sa_project_id }}
             domain: {{ "{{ app.domain }}" }}
             app_code: {{ .Values.app_name }}
             deploy_app: false

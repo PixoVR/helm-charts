@@ -27,7 +27,7 @@ spec:
         service: '{{ "{{ path.basename }}" }}'
         lifecycle: '{{ "{{ app.lifecycle }}" }}'
       annotations:
-        argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
+        argocd.argoproj.io/sync-wave: '{{ "{{ app.syncWave }}" }}'
       finalizers:
       - resources-finalizer.argocd.argoproj.io
     spec:
@@ -37,16 +37,16 @@ spec:
         targetRevision: {{ .Values.iam.chart.version }}
         chart: {{ .Values.iam.chart.name }}
         helm:
-          releaseName: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+          releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
-            project_id: {{ .Values.sa_project_id }}
+            project_id: {{ required "sa_project_id" .Values.sa_project_id }}
             app:
-              namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}'
+              namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}'
               ksa_name: workload-sa
       destination:
         server: {{ .Values.iam.server }}
-        namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+        namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

@@ -27,7 +27,7 @@ spec:
         service: '{{ "{{ path.basename }}" }}'
         lifecycle: '{{ "{{ app.lifecycle }}" }}'
       annotations:
-        argocd-image-updater.argoproj.io/image-list: "appimage=gcr.io/{{- .Values.app_project -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}"
+        argocd-image-updater.argoproj.io/image-list: appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}
         argocd-image-updater.argoproj.io/write-back-method: git
 
         argocd-image-updater.argoproj.io/appimage.pull-secret: pullsecret:argocd/gcr-credentials 
@@ -49,6 +49,7 @@ spec:
           values: |
             github_org: {{- .Values.github_org -}}
             project_id: {{ .Values.app_project_id }}
+            sa_project_id: {{ .Values.sa_project_id }}
             app_code: {{ .Values.app_name }}
             domain: {{ "{{ app.domain }}" }}
             create_infra: false
