@@ -24,6 +24,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-10T02:44:40.980301904Z"
+    description: Deploys ArgoCD tenant apps
+    digest: be98a489a2aa7a598a48d643d1c510f7c61a88e8b0c258e77f9f8731c8b6ffb5
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.9/argocd-app-deploy-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-10T02:37:41.640712213Z"
     description: Deploys ArgoCD tenant apps
     digest: e3eb67a2930863fea3825961d11a32a8ca45d704f87697a84974294a0977472b
@@ -93,6 +103,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.1/argocd-app-deploy-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T02:44:41.10720882Z"
+    description: Initializes ArgoCD platform
+    digest: 5cf2fbfd20d90d2ff667fa36f6409ec40314d7f581bda382bf643670492a671c
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.21/argocd-platform-init-0.0.21.tgz
+    version: 0.0.21
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T02:37:41.844214331Z"
@@ -284,6 +304,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T02:44:41.22918489Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 0a4791d8f412b43ae349a2c37a4d1006dd0078fcefebcfdb66cc7aaae45a6466
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.17/argocd-tenant-app-sets-0.0.17.tgz
+    version: 0.0.17
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T02:37:42.056564088Z"
