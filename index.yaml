@@ -770,6 +770,16 @@ entries:
   web-app:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-10T15:11:14.264576248Z"
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: ba93e28fd5cc4b4dafd0cb53c75703e465831157e326c8a63dc1715ba081b1f9
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.2/web-app-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-03T21:16:22.455936281Z"
     description: A Helm chart for deploying web applications or web application micro services
     digest: e8b6ea99a69ff2a872067c95e9022fcd81896ac00e083f38944f6527400bf6f6
