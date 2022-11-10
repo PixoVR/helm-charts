@@ -18,7 +18,7 @@ spec:
       - path: {{ .Values.file_path }}
   template:
     metadata:
-      name: '{{ "{{" }} path.basename {{ "}}" }}-apps'
+      name: '{{ "{{ path.basename }}" }}-apps'
       annotations:
         argocd.argoproj.io/sync-wave: "20"
       finalizers:
@@ -37,6 +37,7 @@ spec:
             fullname: {{ "{{" }} path.basename {{ "}}" }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
+            app_name: '{{ "{{ path.basename }}" }}'
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}
