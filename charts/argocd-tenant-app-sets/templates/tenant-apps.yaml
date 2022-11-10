@@ -34,7 +34,7 @@ spec:
         targetRevision: {{ .Values.apps.chart.version }}
         helm:
           values: |
-            fullname: {{ "{{" }} path.basename {{ "}}" }}
+            fullname: {{ "{{ path.basename }}" }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
             app_name: '{{ "{{ path.basename }}" }}'

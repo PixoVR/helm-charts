@@ -51,13 +51,13 @@ spec:
             project_id: {{ .Values.app_project_id }}
             sa_project_id: {{ .Values.sa_project_id }}
             app_code: {{ .Values.app_name }}
-            domain: {{ "{{ app.domain }}" }}
+            domain: '{{ "{{ app.domain }}" }}'
             create_infra: false
             microservice_name: '{{ "{{ path.basename }}" }}'
             lifecycle: '{{ "{{ app.lifecycle }}" }}'
           valueFiles:
-          - './lifecycles/{{ "{{ app.lifecycle }}" }}.yaml'
           - './services/{{ "{{ path.basename }}" }}.yaml'
+          - './services/{{ "{{ path.basename }}" }}/{{ "{{ app.lifecycle }}" }}.yaml'
       destination:
         server: {{ .Values.app.server }}
         namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}'
