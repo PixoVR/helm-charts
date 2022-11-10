@@ -140,9 +140,9 @@
   {{- if $.Values.sa }}
     {{- $.Values.app_sa }}
   {{- else if $.Values.sa_microservice_name }}
-    {{- include "sa_app_label" $ -}}-iam-workload@{{- include "app_project" . -}}.iam
+    {{- include "sa_app_label" $ -}}-workload@{{- include "app_project" . -}}.iam
   {{- else }}
-    {{- include "app_label" $ -}}-iam-workload@{{- include "app_project" . -}}.iam
+    {{- include "app_label" $ -}}-workload@{{- include "app_project" . -}}.iam
   {{- end }}
 {{- end -}}
 
