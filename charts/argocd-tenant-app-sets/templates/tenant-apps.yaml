@@ -40,6 +40,10 @@ spec:
             app_name: '{{ "{{ path.basename }}" }}'
             app_project_id: '{{ "{{ app.app_project_id }}" }}'
             sa_project_id: '{{ "{{ app.sa_project_id }}" }}'
+            infra: 
+              namespace: {{ .Values.infra_namespace }}
+            iam:
+              namespace: {{ .Values.iam_namespace }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}

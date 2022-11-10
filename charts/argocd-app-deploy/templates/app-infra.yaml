@@ -49,12 +49,9 @@ spec:
               deploy_app: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: '{{ "{{ app.lifecycle }}" }}'
-          valueFiles:
-          - './services/{{ "{{ path.basename }}" }}.yaml'
-          - './services/{{ "{{ path.basename }}" }}/{{ "{{ app.lifecycle }}" }}.yaml'
       destination:
         server: {{ .Values.infra.server }}
-        namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}'
+        namespace: '{{ include "infra_namespace" $ }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

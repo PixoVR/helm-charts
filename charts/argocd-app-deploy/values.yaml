@@ -3,6 +3,9 @@ github_org: PixoVR
 repo_name: replaceme
 revision: HEAD
 
+app_project_id: replaceme
+sa_project_id: replaceme
+
 app_name: sample
 
 pre_tenant_services_filepath: kustomize/tenants

@@ -1,6 +1,6 @@
 
 github_org: PixoVR
-repo_name: ''
+repo_name: replaceme
 revision: HEAD
 
 argocd_project_name: platform
@@ -14,4 +14,7 @@ apps:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.16
+    version: 0.0.17
+
+infra_namespace: infra-admin
+iam_namespace: infra-admin

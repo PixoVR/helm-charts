@@ -46,7 +46,7 @@ spec:
               ksa_name: workload-sa
       destination:
         server: {{ .Values.iam.server }}
-        namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
+        namespace: '{{ include "iam_namespace" $ }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

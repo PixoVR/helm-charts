@@ -27,7 +27,7 @@ spec:
         service: '{{ "{{ path.basename }}" }}'
         lifecycle: '{{ "{{ app.lifecycle }}" }}'
       annotations:
-        argocd-image-updater.argoproj.io/image-list: appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}
+        argocd-image-updater.argoproj.io/image-list: 'appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
 
         argocd-image-updater.argoproj.io/appimage.pull-secret: pullsecret:argocd/gcr-credentials 
@@ -48,7 +48,7 @@ spec:
           ignoreMissingValueFiles: true
           values: |
             web-app:
-              github_org: {{- .Values.github_org -}}
+              github_org: {{ .Values.github_org }}
               project_id: {{ .Values.app_project_id }}
               sa_project_id: {{ .Values.sa_project_id }}
               app_code: {{ .Values.app_name }}
@@ -56,12 +56,9 @@ spec:
               create_infra: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: '{{ "{{ app.lifecycle }}" }}'
-          valueFiles:
-          - './services/{{ "{{ path.basename }}" }}.yaml'
-          - './services/{{ "{{ path.basename }}" }}/{{ "{{ app.lifecycle }}" }}.yaml'
       destination:
         server: {{ .Values.app.server }}
-        namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}'
+        namespace: '{{ include "deploy_namespace" $ }}'
       syncPolicy:
         automated:
           prune: true
