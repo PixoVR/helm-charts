@@ -47,6 +47,7 @@ spec:
               app_code: {{ .Values.app_name }}
               domain: '{{ "{{ app.domain }}" }}'
               deploy_app: false
+              create_sa: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: '{{ "{{ app.lifecycle }}" }}'
       destination:

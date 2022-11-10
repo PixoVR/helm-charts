@@ -9,12 +9,12 @@ destination_server: https://kubernetes.default.svc
 argocd_namespace: argocd
 target_revision: HEAD
 
+infra_namespace: infra-admin
+iam_namespace: infra-admin
+
 apps:
   enabled: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.17
-
-infra_namespace: infra-admin
-iam_namespace: infra-admin
+    version: 0.0.18
