@@ -15,7 +15,7 @@ spec:
       repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
       revision: {{ .Values.revision }}
       files:
-      - path: {{ .Values.service_filepath }}
+      - path: {{ .Values.services_filepath }}
   template:
     metadata:
       name: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}-iam'
