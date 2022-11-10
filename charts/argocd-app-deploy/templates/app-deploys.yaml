@@ -40,21 +40,22 @@ spec:
     spec:
       project: {{ .Values.argocd_project }}
       source:
-        repoURL: {{ .Values.app.chart.repoURL }}
-        chart: {{ .Values.app.chart.name }}
-        targetRevision: {{ .Values.app.chart.version }}
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        path: '{{ "{{ path }}" }}/web-app'
         helm:
           releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
-            github_org: {{- .Values.github_org -}}
-            project_id: {{ .Values.app_project_id }}
-            sa_project_id: {{ .Values.sa_project_id }}
-            app_code: {{ .Values.app_name }}
-            domain: '{{ "{{ app.domain }}" }}'
-            create_infra: false
-            microservice_name: '{{ "{{ path.basename }}" }}'
-            lifecycle: '{{ "{{ app.lifecycle }}" }}'
+            web-app:
+              github_org: {{- .Values.github_org -}}
+              project_id: {{ .Values.app_project_id }}
+              sa_project_id: {{ .Values.sa_project_id }}
+              app_code: {{ .Values.app_name }}
+              domain: '{{ "{{ app.domain }}" }}'
+              create_infra: false
+              microservice_name: '{{ "{{ path.basename }}" }}'
+              lifecycle: '{{ "{{ app.lifecycle }}" }}'
           valueFiles:
           - './services/{{ "{{ path.basename }}" }}.yaml'
           - './services/{{ "{{ path.basename }}" }}/{{ "{{ app.lifecycle }}" }}.yaml'
