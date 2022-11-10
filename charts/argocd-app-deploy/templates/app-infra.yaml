@@ -15,14 +15,14 @@ spec:
       repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
       revision: {{ .Values.revision }}
       files:
-      - path: {{ .Values.services_filepath }}
+      - path: {{ include "services_filepath" $ }}
   template:
     metadata:
-      name: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}-infra'
+      name: '{{ "{{ app.lifecycle }}" }}-{{ "{{ path.basename }}" }}-infra'
       labels:
         tier: app
         purpose: infra
-        lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
+        lifecycle: '{{ "{{ app.lifecycle }}" }}'
         deployment: helm
       annotations:
         argocd.argoproj.io/sync-wave: '-20'
@@ -35,23 +35,23 @@ spec:
         chart: {{ .Values.infra.chart.name }}
         targetRevision: {{ .Values.infra.chart.version }}
         helm:
-          releaseName: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}-{{ "{{" }} path.basename {{ "}}" }}'
+          releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
-            github_org: {{- .Values.github_org -}}
-            project_id: pixo-gke
-            sa_project_id: pixo-gke
-            domain: pixo-app.com
+            github_org: {{ .Values.github_org }}
+            project_id: {{ .Values.project_id }}
+            sa_project_id: {{ .Values.project_id }}
+            domain: {{ "{{ app.domain }}" }}
             app_code: {{ .Values.app_name }}
             deploy_app: false
-            microservice_name: {{ "{{" }} path.basename {{ "}}" }}
-            lifecycle: {{ "{{" }} app.lifecycle {{ "}}" }}
+            microservice_name: {{ "{{ path.basename }}" }}
+            lifecycle: {{ "{{ app.lifecycle }}" }}
           valueFiles:
-          - ./lifecycles/{{ "{{" }} app.lifecycle {{ "}}" }}.yaml
-          - ./services/{{ "{{" }} path.basename {{ "}}" }}.yaml
+          - ./lifecycles/{{ "{{ app.lifecycle }}" }}.yaml
+          - ./services/{{ "{{ path.basename }}" }}.yaml
       destination:
         server: {{ .Values.infra.server }}
-        namespace: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{- .Values.app_name -}}'
+        namespace: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

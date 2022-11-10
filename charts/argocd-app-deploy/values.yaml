@@ -1,11 +1,15 @@
 
 github_org: PixoVR
-repo_name: ''
+repo_name: replaceme
 revision: HEAD
 
 app_name: sample
 
-services_filepath: services/*/*app-config.yaml
+pre_tenant_services_filepath: kustomize/tenants
+post_tenant_services_filepath: services/*/*app-config.yaml
+
+services_filepath: ''
+
 destination_server: https://kubernetes.default.svc
 target_revision: HEAD
 
