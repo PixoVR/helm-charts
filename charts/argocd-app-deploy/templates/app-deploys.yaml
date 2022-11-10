@@ -47,10 +47,8 @@ spec:
           values: |
             github_org: {{- .Values.github_org -}}
             project_id: {{ .Values.app_project_id }}
-            db_project_id: {{ .Values.db_project_id }}
-            sa_project_id: {{ .Values.sa_project_id }}
-            domain: {{ required "REQUIRED: domain" .Values.domain }}
             app_code: {{ .Values.app_name }}
+            domain: {{ "{{" }} app.domain {{ "}}" }}
             create_infra: false
             microservice_name: '{{ "{{" }} path.basename {{ "}}" }}'
             lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
