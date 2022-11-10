@@ -3,6 +3,16 @@ entries:
   app-iam:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-10T16:33:48.972865608Z"
+    description: Deploys app service accounts and workload identity
+    digest: a737bf286c97d83eaeec74d00a38a28eeb21a571fb75b1fc696aab7fa3424c44
+    name: app-iam
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.3/app-iam-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-09T16:59:20.299048852Z"
     description: Deploys app service accounts and workload identity
     digest: d01620debd84a0667ef421c9c1c3ff1b9679e5b130698b5daccaae667e557932
@@ -22,6 +32,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.1/app-iam-0.0.1.tgz
     version: 0.0.1
   argocd-app-deploy:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T16:33:49.113368149Z"
+    description: Deploys ArgoCD tenant apps
+    digest: 5d4503d20ebcee70e612b2d07dbf64a6694efa7d0b632a52e31d1f59e8c35bcc
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.21/argocd-app-deploy-0.0.21.tgz
+    version: 0.0.21
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T05:26:54.720723137Z"
@@ -203,6 +223,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.1/argocd-app-deploy-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T16:33:49.285366714Z"
+    description: Initializes ArgoCD platform
+    digest: 2f1befa2d44d3b0331282ff1a509466b1bca2aa8285499d9c9c2e902d942265c
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.33/argocd-platform-init-0.0.33.tgz
+    version: 0.0.33
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T05:26:54.912190308Z"
@@ -504,6 +534,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T16:33:49.416640401Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 04894bd8ef7af73a57ca324643d43182a1814f435649eb38afdbea2419b5802e
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.29/argocd-tenant-app-sets-0.0.29.tgz
+    version: 0.0.29
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T05:26:55.073601567Z"
