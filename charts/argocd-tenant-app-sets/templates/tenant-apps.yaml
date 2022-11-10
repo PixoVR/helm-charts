@@ -32,6 +32,9 @@ spec:
         repoURL: {{ .Values.apps.chart.repoURL }}
         chart: {{ .Values.apps.chart.name }}
         targetRevision: {{ .Values.apps.chart.version }}
+        helm:
+          values: |
+            fullname: {{ "{{" }} path.basename {{ "}}" }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}

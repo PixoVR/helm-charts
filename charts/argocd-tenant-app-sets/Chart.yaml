@@ -3,4 +3,4 @@ name: argocd-tenant-app-sets
 description: Deploys ArgoCD platform tenants
 type: application
 appVersion: 1.0.0
-version: 0.0.9
+version: 0.0.10
