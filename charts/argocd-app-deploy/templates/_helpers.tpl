@@ -21,7 +21,7 @@
   {{- if .Values.app.namespace }}
     {{- .Values.app.namespace }}
   {{- else }}
-    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{- "{{ path.basename }}" }}
+    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}
   {{- end -}}
 {{- end -}}
 
@@ -30,7 +30,7 @@
   {{- if .Values.infra.namespace }}
     {{- .Values.infra.namespace }}
   {{- else }}
-    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{- "{{ path.basename }}" }}
+    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}
   {{- end -}}
 {{- end -}}
 
@@ -39,7 +39,7 @@
   {{- if .Values.iam.namespace }}
     {{- .Values.iam.namespace }}
   {{- else }}
-    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{- "{{ path.basename }}" }}
+    {{- "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}
   {{- end -}}
 {{- end -}}
 
