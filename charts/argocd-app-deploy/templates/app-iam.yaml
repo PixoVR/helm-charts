@@ -43,7 +43,6 @@ spec:
             project_id: {{ required "sa_project_id" .Values.sa_project_id }}
             app:
               namespace: {{ include "deploy_namespace" $ }}
-              ksa_name: apex-sa
       destination:
         server: {{ .Values.iam.server }}
         namespace: '{{ include "iam_namespace" $ }}'
