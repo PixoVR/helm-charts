@@ -18,12 +18,14 @@ spec:
       - path: {{ include "services_filepath" $ }}
   template:
     metadata:
-      name: '{{ "{{" }} app.lifecycle {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}-iam'
+      name: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-iam'
       labels:
+        deployment: helm
         tier: app
         purpose: iam
-        lifecycle: '{{ "{{" }} app.lifecycle {{ "}}" }}'
-        deployment: helm
+        app: {{ .Values.app_name }}
+        service: '{{ "{{ path.basename }}" }}'
+        lifecycle: '{{ "{{ app.lifecycle }}" }}'
       annotations:
         argocd.argoproj.io/sync-wave: '{{ "{{" }} app.syncWave {{ "}}" }}'
       finalizers:

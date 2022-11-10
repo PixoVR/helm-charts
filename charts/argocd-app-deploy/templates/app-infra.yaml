@@ -18,12 +18,14 @@ spec:
       - path: {{ include "services_filepath" $ }}
   template:
     metadata:
-      name: '{{ "{{ app.lifecycle }}" }}-{{ "{{ path.basename }}" }}-infra'
+      name: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra'
       labels:
+        deployment: helm
         tier: app
         purpose: infra
+        app: {{ .Values.app_name }}
+        service: '{{ "{{ path.basename }}" }}'
         lifecycle: '{{ "{{ app.lifecycle }}" }}'
-        deployment: helm
       annotations:
         argocd.argoproj.io/sync-wave: '-20'
       finalizers:
