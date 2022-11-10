@@ -34,7 +34,7 @@ spec:
       project: {{ .Values.argocd_project }}
       source:
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
-        path: '{{ "{{ path }}" }}/web-app'
+        path: '{{ "{{ path }}" }}/chart'
         targetRevision: {{ .Values.target_revision }}
         helm:
           releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'

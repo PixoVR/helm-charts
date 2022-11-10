@@ -42,7 +42,7 @@ spec:
       source:
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
         targetRevision: {{ .Values.target_revision }}
-        path: '{{ "{{ path }}" }}/web-app'
+        path: '{{ "{{ path }}" }}/chart'
         helm:
           releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
