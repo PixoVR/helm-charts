@@ -35,6 +35,8 @@ spec:
         helm:
           values: |
             fullname: {{ "{{" }} path.basename {{ "}}" }}
+            github_org: {{ required "github_org" .Values.github_org }} 
+            repo_name: {{ required "repo_name" .Values.repo_name }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}
