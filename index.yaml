@@ -24,6 +24,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-10T03:25:55.757676092Z"
+    description: Deploys ArgoCD tenant apps
+    digest: ac9dff7b6fd3161334a0652982f9bbfb4ec86dba6ead695fe1e7cfb211bb9123
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.13/argocd-app-deploy-0.0.13.tgz
+    version: 0.0.13
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-10T03:15:09.806540306Z"
     description: Deploys ArgoCD tenant apps
     digest: 23bb3f10bb862861e04be95085d4b2abbce8d0ededd83e432c03f32706542e88
@@ -123,6 +133,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.1/argocd-app-deploy-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T03:25:55.952635049Z"
+    description: Initializes ArgoCD platform
+    digest: ab3ea32225a9be519e2f62a065d25131d84d8c851fdcfb94cd3fa141da30d791
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.25/argocd-platform-init-0.0.25.tgz
+    version: 0.0.25
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T03:15:09.969564687Z"
@@ -344,6 +364,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-10T03:25:56.093315096Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 226f4199637b9a15e424c4751b59ff274e74d3441d889871d9bd56325d77179c
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.21/argocd-tenant-app-sets-0.0.21.tgz
+    version: 0.0.21
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T03:15:10.103746876Z"
