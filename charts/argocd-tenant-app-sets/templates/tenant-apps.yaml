@@ -37,6 +37,7 @@ spec:
             fullname: {{ "{{ path.basename }}" }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
+            app_domain: '{{ "{{ app.domain }}" }}'
             app_name: '{{ "{{ path.basename }}" }}'
             app_project_id: '{{ "{{ app.app_project_id }}" }}'
             sa_project_id: '{{ "{{ app.sa_project_id }}" }}'
