@@ -29,9 +29,9 @@ spec:
     spec:
       project: {{ .Values.argocd_project_name }}
       source:
-        repoURL: {{ .Values.apps.repoURL }}
-        chart: {{ .Values.apps.name }}
-        targetRevision: {{ .Values.apps.version }}
+        repoURL: {{ .Values.apps.chart.repoURL }}
+        chart: {{ .Values.apps.chart.name }}
+        targetRevision: {{ .Values.apps.chart.version }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}

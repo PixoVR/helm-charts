@@ -9,7 +9,7 @@ destination_server: https://kubernetes.default.svc
 argocd_namespace: argocd
 target_revision: HEAD
 
-app-deploy:
+apps:
   enabled: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
