@@ -18,9 +18,21 @@ argocd_project: platform
 
 iam:
   server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: app-iam
+    version: 0.0.2
 
 app:
   server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: web-app
+    version: 0.0.1
 
 infra:
   server: https://kubernetes.default.svc
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: web-app
+    version: 0.0.1
