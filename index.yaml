@@ -31,6 +31,18 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.1/app-iam-0.0.1.tgz
     version: 0.0.1
+  argo-cd:
+  - apiVersion: v2
+    created: "2022-11-14T21:16:27.902667513Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 4.9.12
+    digest: b1f3788fef042691a2972f033df1ff553212684ddd726fe7ca712848f6f4a583
+    name: argo-cd
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argo-cd-0.0.1/argo-cd-0.0.1.tgz
+    version: 0.0.1
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
