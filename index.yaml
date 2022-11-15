@@ -256,6 +256,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-15T22:51:03.192420217Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.5
+    description: A Helm chart for Kubernetes
+    digest: be40f142bbebced76bbfd32457b635bf0adc510b665b847ed250f9e75bf943dc
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.7/argocd-image-updater-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
     created: "2022-11-15T22:44:02.989217617Z"
     dependencies:
     - name: argocd-image-updater
@@ -980,6 +997,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-15T22:51:03.391254103Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.5
+    description: A Helm chart for Kubernetes
+    digest: 7e6369594daf7f0512ad5b454966889dfb6652628b4219c4ebe460a02b0fe420
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.8/crossplane-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
     created: "2022-11-15T22:44:03.201125244Z"
     dependencies:
     - name: crossplane
@@ -1073,6 +1107,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2022-11-15T22:51:03.580020593Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.5
+    description: External DNS Operator
+    digest: d2fb168b34ab08169497ddb487073979eafe3e3f342da473f46f041b5bf1655c
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.7/external-dns-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
     created: "2022-11-15T22:44:03.428244078Z"
     dependencies:
     - name: external-dns
@@ -1154,6 +1205,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-15T22:51:03.765806324Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.5
+    description: External Secrets Operator
+    digest: 11b52a072104cea219374d97bf6205f93bd84eb9e3ea5a5227d9c4db27908dbd
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.7/external-secrets-0.0.7.tgz
+    version: 0.0.7
   - apiVersion: v2
     created: "2022-11-15T22:44:03.65564423Z"
     dependencies:
