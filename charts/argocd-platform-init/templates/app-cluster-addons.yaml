@@ -23,9 +23,9 @@ spec:
                 argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: '{{ "{{" }} nameNormalized {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}'
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
       labels:
-        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        name: '{{ "{{ path.basename }}" }}'
         deployment: helm
         tier: platform
       annotations:
@@ -35,20 +35,39 @@ spec:
     spec:
       project: {{ .Values.argocd_cpl_project }}
       source:
-        path: '{{ "{{" }} path {{ "}}" }}/chart'
+        path: '{{ "{{ path }}" }}/chart'
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
         targetRevision: {{ .Values.target_revision }}
         helm:
-          releaseName: '{{ "{{" }} path.basename {{ "}}" }}'
+          releaseName: '{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
+            argocd-image-updater:
+              app-iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.sa_project_id }}
+            backstage:
+              app-iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.sa_project_id }}
+            crossplane:
+              app-iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.sa_project_id }}
+            external-secrets:
+              app-iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.sa_project_id }}
             external-dns:
+              app-iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.sa_project_id }}
               extraArgs:
-              - --google-project={{- .Values.gcp_dns_project_id }}
-              - --txt-owner-id={{ "{{" }} nameNormalized {{ "}}" }}
+              - --google-project={{- .Values.dns_project_id }}
+              - --txt-owner-id={{ "{{ nameNormalized }}" }}
       destination:
-        server: '{{ "{{" }} app.server {{ "}}" }}'
-        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+        server: '{{ "{{ app.server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
@@ -78,9 +97,9 @@ spec:
                 argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: '{{ "{{" }} nameNormalized {{ "}}" }}-{{ "{{" }} path.basename {{ "}}" }}'
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
       labels:
-        name: '{{ "{{" }} path.basename {{ "}}" }}'
+        name: '{{ "{{ path.basename }}" }}'
         deployment: helm
         tier: platform
       annotations:
@@ -90,12 +109,12 @@ spec:
     spec:
       project: {{ .Values.argocd_cpl_project }}
       source:
-        path: '{{ "{{" }} path {{ "}}" }}/manifests'
+        path: '{{ "{{ path }}" }}/manifests'
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
         targetRevision: {{ .Values.target_revision }}
       destination:
-        server: '{{ "{{" }} app.server {{ "}}" }}'
-        namespace: '{{ "{{" }} app.namespace {{ "}}" }}'
+        server: '{{ "{{ app.server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
