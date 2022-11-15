@@ -35,10 +35,10 @@
 {{- define "sa_email" -}}
   {{- if .Values.config_connector.sa_email }}
     {{- .Values.config_connector.sa_email }}
-  {{- else if .Values.sa_project_id }}
-    {{- .Values.config_connector.sa_name -}}@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+  {{- else if .Values.gke_project_id }}
+    {{- .Values.config_connector.sa_name -}}@{{- .Values.gke_project_id -}}.iam.gserviceaccount.com
   {{- else }}
-    {{- .Values.config_connector.sa_name -}}@{{- required "sa_project_id OR config_connector.sa_project_id" .Values.config_connector.sa_project_id -}}.iam.gserviceaccount.com
+    {{- .Values.config_connector.sa_name -}}@{{- required "gke_project_id OR config_connector.sa_project_id" .Values.config_connector.sa_project_id -}}.iam.gserviceaccount.com
   {{- end -}}
 {{- end -}}
 
