@@ -3,6 +3,16 @@ entries:
   app-iam:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-15T22:49:36.442781458Z"
+    description: Deploys app service accounts and workload identity
+    digest: a4e2bcddef5b85f821e57e1abeaa0e16d3c379f7b3438e9dde09c12d885d8145
+    name: app-iam
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.5/app-iam-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-15T08:30:58.382782801Z"
     description: Deploys app service accounts and workload identity
     digest: 93223365f5434246be62f5bbcb90ad85a796b9b10205584fd1783b8e4916a3bc
