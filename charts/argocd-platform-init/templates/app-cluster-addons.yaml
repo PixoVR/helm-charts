@@ -54,7 +54,7 @@ spec:
               - --google-project={{- .Values.dns_project_id }}
               - --txt-owner-id={{ "{{ nameNormalized }}" }}
       destination:
-        server: '{{ "{{ app.server }}" }}'
+        server: '{{ "{{ server }}" }}'
         namespace: '{{ "{{ app.namespace }}" }}'
       syncPolicy:
         syncOptions:
@@ -101,7 +101,7 @@ spec:
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
         targetRevision: {{ .Values.target_revision }}
       destination:
-        server: '{{ "{{ app.server }}" }}'
+        server: '{{ "{{ server }}" }}'
         namespace: '{{ "{{ app.namespace }}" }}'
       syncPolicy:
         syncOptions:
