@@ -14,6 +14,7 @@ serviceAccount:
 
 external-secrets:
   serviceAccount:
+    create: false
     annotations:
       iam.gke.io/gcp-service-account: external-secrets@walker-pixo-init-project.iam.gserviceaccount.com
 
