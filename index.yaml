@@ -246,6 +246,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-15T22:44:02.989217617Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.4
+    description: A Helm chart for Kubernetes
+    digest: 6844834e3a64a31ed969e1af2eb6cf1e23236d7f708ee8f59f30533167d5a55f
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.6/argocd-image-updater-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
     created: "2022-11-15T21:30:34.148005059Z"
     dependencies:
     - name: argocd-image-updater
@@ -953,6 +970,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-15T22:44:03.201125244Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.4
+    description: A Helm chart for Kubernetes
+    digest: 1d8476870ae3cc95ac7532852c14143eb0a8116aef1f055a44b11ae7fec3a341
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.7/crossplane-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
     created: "2022-11-15T21:30:34.312168297Z"
     dependencies:
     - name: crossplane
@@ -1029,6 +1063,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2022-11-15T22:44:03.428244078Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.4
+    description: External DNS Operator
+    digest: ccdeec3c08880ee7887af16b2ea3da1cd103735d0d70835c7c73f40bb4b55306
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.6/external-dns-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
     created: "2022-11-15T21:30:34.503128973Z"
     dependencies:
     - name: external-dns
@@ -1093,6 +1144,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-15T22:44:03.65564423Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.4
+    description: External Secrets Operator
+    digest: b09b6fd8bb3bfb3a476771b8bc7a265cf6cd5a1773a2edf31d6906cfcb22fc14
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.6/external-secrets-0.0.6.tgz
+    version: 0.0.6
   - apiVersion: v2
     created: "2022-11-15T21:30:34.68758134Z"
     dependencies:
@@ -1169,6 +1237,19 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
     version: 0.0.7
   opa-gatekeeper:
+  - apiVersion: v2
+    created: "2022-11-15T22:44:03.882522348Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://open-policy-agent.github.io/gatekeeper/charts
+      version: 3.7.1
+    description: A Helm chart for Kubernetes
+    digest: bc432b0050881dfe8ae91bd5a1eef37697d02e59cfd0ac499d8828d698cabf32
+    name: opa-gatekeeper
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/opa-gatekeeper-0.0.3/opa-gatekeeper-0.0.3.tgz
+    version: 0.0.3
   - apiVersion: v2
     created: "2022-11-15T22:39:57.177933897Z"
     dependencies:
