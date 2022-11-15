@@ -1267,6 +1267,23 @@ entries:
     version: 0.0.1
   external-secrets:
   - apiVersion: v2
+    created: "2022-11-15T23:49:42.136032631Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.5
+    description: External Secrets Operator
+    digest: 0730edc22d943492567153f1fce1f5fdb89def2350906f01cca9bf4264fad488
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.9/external-secrets-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
     created: "2022-11-15T23:01:48.311615423Z"
     dependencies:
     - name: external-secrets
