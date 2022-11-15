@@ -1,8 +1,9 @@
 ---
 
 app-iam:
-  sa_project_id: ''
-  gke_project_id: ''
+  sa_project_id: 'replace-me'
+  gke_project_id: 'replace-me'
+  app_project_id: 'replace-me'
   sa_name: external-dns
   app:
     ksa_name: external-dns

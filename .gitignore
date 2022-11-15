@@ -3,3 +3,5 @@
 **/secrets
 **/.terraform*
 **/.env
+**/Chart.lock
+charts/**/charts
