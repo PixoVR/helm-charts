@@ -37,23 +37,23 @@ spec:
           ignoreMissingValueFiles: true
           values: |
             argocd-image-updater:
-              app-iam: 
+              app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
             backstage:
-              app-iam: 
+              app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
             crossplane:
-              app-iam: 
+              app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
             external-secrets:
-              app-iam: 
+              app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
             external-dns:
-              app-iam: 
+              app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
               extraArgs:
