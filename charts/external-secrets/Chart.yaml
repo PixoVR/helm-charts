@@ -2,12 +2,12 @@ apiVersion: v2
 name: external-secrets
 description: External Secrets Operator
 type: application
-version: 0.0.1
+version: 0.0.2
 
 dependencies:
 - name: external-secrets
   version: 0.5.6
   repository: https://charts.external-secrets.io 
 - name: app-iam
-  version: "0.0.3"
+  version: 0.0.4
   repository: "https://pixovr.github.io/helm-charts"

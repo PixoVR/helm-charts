@@ -1,4 +1,12 @@
 
+app-iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  sa_name: ''
+  app:
+    ksa_name: app-workload
+    namespace: ''
+    
 project_id: pixo-gke
 github_org: PixoVR
 lifecycle: dev
@@ -19,7 +27,7 @@ primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
 create_sa: false
-ksa_name: workload-sa
+ksa_name: app-workload
 sa_microservice_name: api
 
 demo:
