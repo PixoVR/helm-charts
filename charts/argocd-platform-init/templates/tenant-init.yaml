@@ -21,6 +21,7 @@ spec:
         github_org: {{ .Values.github_org }}
         repo_name: {{ .Values.repo_name }}
         fullname: tenants-app-sets
+        revision: {{ .Values.revision }}
   destination:
     server: {{ .Values.cpl_server }}
     namespace: {{ .Values.argocd_namespace }}
