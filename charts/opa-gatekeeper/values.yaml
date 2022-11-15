@@ -1,0 +1,18 @@
+---
+
+gatekeeper:
+  controllerManager:
+    exemptNamespaces:
+      - argocd
+      - backstage
+      - cnrm-system
+      - configconnector-operator-system
+      - crossplane-system
+      - gatekeeper-system
+      - gke-mcs
+      - gmp-system
+      - kube-node-lease
+      - kube-public
+      - kube-system
+
+

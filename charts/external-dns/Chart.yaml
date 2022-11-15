@@ -1,0 +1,13 @@
+apiVersion: v2
+name: external-dns
+description: External DNS Operator
+type: application
+version: 0.0.1
+
+dependencies:
+- name: external-dns
+  version: 1.11.0
+  repository: https://kubernetes-sigs.github.io/external-dns 
+- name: app-iam
+  version: "0.0.3"
+  repository: "https://pixovr.github.io/helm-charts"

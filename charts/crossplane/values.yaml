@@ -1,0 +1,31 @@
+---
+
+app-iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  sa_name: crossplane-gcp
+  app:
+    ksa_name: gcp-provider
+    namespace: crossplane-system
+
+rbac:
+  enabled: true
+gcp:
+  image: crossplane/provider-gcp
+  tag: v0.21.0
+  serviceAccount:
+    enabled: true
+    name: gcp-provider
+helm:
+  image: us.gcr.io/bradw-nextgen-devops/provider-helm-amd64
+  tag: v0.11.0-rc.7.gf3c0452
+kubernetes:
+  image: us.gcr.io/bradw-nextgen-devops/provider-kubernetes-amd64
+  tag: v0.5.0-rc.10.gb13a762
+  serviceAccount:
+    enabled: true
+    name: kubernetes-provider
+platform:
+  image: ghcr.io/mavenwave-devops/projectx-crossplane-platform
+  tag: main
+

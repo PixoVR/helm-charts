@@ -1,0 +1,38 @@
+---
+
+app-iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  sa_name: external-dns
+  app:
+    ksa_name: external-dns
+    namespace: external-dns
+
+serviceAccount:
+  create: true
+  name: external-dns
+
+external-dns:
+  serviceAccount:
+    create: false
+    name: external-dns
+    annotations:
+      iam.gke.io/gcp-service-account: external-dns@walker-pixo-init-project.iam.gserviceaccount.com
+
+  provider: google
+  policy: sync
+  extraArgs:
+  - --google-project=walker-pixo-init-project
+  - --txt-owner-id=walker-sandbox-cpl
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  resources:
+    requests:
+      cpu: ".01"
+      memory: 32Mi
+    limits:
+      cpu: ".05"
+      memory: 64Mi
+

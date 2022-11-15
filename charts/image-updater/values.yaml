@@ -1,0 +1,16 @@
+---
+argocd-image-updater:
+  serviceAccount:
+    name: image-updater
+app-iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  sa_name: image-updater
+  app:
+    ksa_name: image-updater
+    namespace: argocd
+serviceAccount:
+  create: false
+  name: image-updater
+gcr:
+  registry: gcr.io

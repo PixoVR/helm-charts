@@ -1,0 +1,11 @@
+{{- with .Values.platform }}
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: platform
+spec:
+  package: {{ printf "%s:%s" .image .tag }}
+  packagePullPolicy: Always
+  skipDependencyResolution: true
+{{- end }}

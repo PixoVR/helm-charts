@@ -1,0 +1,26 @@
+{{- if .Values.rbac.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: crossplane-provider-rb
+subjects:
+{{- with .Values.gcp.serviceAccount }}
+{{- if .enabled }}
+- kind: ServiceAccount
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
+{{- with .Values.kubernetes.serviceAccount }}
+{{- if .enabled }}
+- kind: ServiceAccount
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

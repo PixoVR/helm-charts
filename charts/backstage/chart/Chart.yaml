@@ -1,0 +1,10 @@
+apiVersion: v2
+name: backstage
+description: Backstage Instance
+type: application
+version: 0.0.1
+
+dependencies:
+- name: backstage
+  version: 0.0.38
+  repository: https://mavenwave-devops.github.io/mw-charts 

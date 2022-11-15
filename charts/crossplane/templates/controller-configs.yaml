@@ -1,0 +1,38 @@
+{{- with  .Values.gcp.serviceAccount }}
+---
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: ControllerConfig
+metadata:
+  name: gcp-provider
+spec:
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+{{- if .enabled }}
+  serviceAccountName: {{ .name }}
+{{- end }}
+{{- end }}
+{{- with  .Values.kubernetes.serviceAccount }}
+---
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: ControllerConfig
+metadata:
+  name: kubernetes-provider
+spec:
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+{{- if .enabled }}
+  serviceAccountName: {{ .name }}
+{{- end }}
+{{- end }}
