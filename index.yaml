@@ -1170,6 +1170,19 @@ entries:
     version: 0.0.7
   opa-gatekeeper:
   - apiVersion: v2
+    created: "2022-11-15T22:39:57.177933897Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://open-policy-agent.github.io/gatekeeper/charts
+      version: 3.7.1
+    description: A Helm chart for Kubernetes
+    digest: dbf52b8bf21b752c2032a1038957764a23abfefaaa584f7ef7d8adcec52e7525
+    name: opa-gatekeeper
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/opa-gatekeeper-0.0.2/opa-gatekeeper-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2022-11-15T08:03:34.993258201Z"
     dependencies:
     - name: gatekeeper
