@@ -22,6 +22,10 @@ spec:
         repo_name: {{ .Values.repo_name }}
         fullname: tenants-app-sets
         revision: {{ .Values.revision }}
+        target_revision: {{ .Values.target_revision }}
+        lifecycle: {{ .Values.lifecycle }}
+        sa_project_id: {{ .Values.sa_project_id }}
+        gke_project_id: {{ .Values.gke_project_id }}
   destination:
     server: {{ .Values.cpl_server }}
     namespace: {{ .Values.argocd_namespace }}
