@@ -1,0 +1,121 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-cluster-addon-charts
+  labels:
+    deployment: helm
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.all_cluster_addon_charts_filepath }}
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      labels:
+        name: '{{ "{{ path.basename }}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{ path }}" }}/chart'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        helm:
+          releaseName: '{{ "{{ path.basename }}" }}'
+          ignoreMissingValueFiles: true
+          values: |
+            argocd-image-updater:
+              app_iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+            backstage:
+              app_iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+            crossplane:
+              app_iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+            external-secrets:
+              app_iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+            external-dns:
+              app_iam: 
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+              extraArgs:
+              - --google-project={{- .Values.dns_project_id }}
+              - --txt-owner-id={{ "{{ nameNormalized }}" }}
+      destination:
+        server: '{{ "{{ server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-cluster-addon-manifests
+  labels:
+    deployment: kustomize
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.all_cluster_addon_manifests_filepath }}
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      labels:
+        name: '{{ "{{ path.basename }}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{ path }}" }}/manifests'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+      destination:
+        server: '{{ "{{ server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
