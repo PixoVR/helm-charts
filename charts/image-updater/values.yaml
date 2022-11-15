@@ -2,7 +2,7 @@
 argocd-image-updater:
   serviceAccount:
     name: image-updater
-app-iam:
+app_iam:
   sa_project_id: ''
   gke_project_id: ''
   sa_name: image-updater

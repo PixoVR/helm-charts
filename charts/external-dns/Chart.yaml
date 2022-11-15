@@ -2,7 +2,7 @@ apiVersion: v2
 name: external-dns
 description: External DNS Operator
 type: application
-version: 0.0.7
+version: 0.0.8
 
 dependencies:
 - name: external-dns

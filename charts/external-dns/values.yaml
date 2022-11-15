@@ -1,6 +1,6 @@
 ---
 
-app-iam:
+app_iam:
   sa_project_id: 'replace-me'
   gke_project_id: 'replace-me'
   app_project_id: 'replace-me'
