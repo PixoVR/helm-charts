@@ -4,6 +4,12 @@ repo_name: replace-me
 github_team: platforms
 argocd_namespace: argocd
 
+config_connector:
+  enabled: true
+  admin_namespace: infra-admin
+  sa_name: infra-admin
+  sa_project_id: replace-me
+
 helm_charts_repo: https://pixovr.github.io/helm-charts
 
 revision: HEAD
