@@ -234,6 +234,23 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.1/argocd-app-deploy-0.0.1.tgz
     version: 0.0.1
+  argocd-image-updater:
+  - apiVersion: v2
+    created: "2022-11-15T08:03:34.384823163Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.3
+    description: A Helm chart for Kubernetes
+    digest: 27a5ed02627b747d31b04a0b04390dadad5656472011f6be0b0ea4d8772fbb11
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
+    version: 0.0.1
   argocd-platform-init:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -796,6 +813,23 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.3/argocd-tenant-app-sets-0.0.3.tgz
     version: 0.0.3
+  crossplane:
+  - apiVersion: v2
+    created: "2022-11-15T08:03:34.529194082Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.3
+    description: A Helm chart for Kubernetes
+    digest: 3865313058e920b09e8546c0aff1434fa96dcd24de0fe2ace6a57f962bb4ce30
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.1/crossplane-0.0.1.tgz
+    version: 0.0.1
   crossplane-gke:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -806,6 +840,40 @@ entries:
     type: application
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/crossplane-gke-0.0.1/crossplane-gke-0.0.1.tgz
+    version: 0.0.1
+  external-dns:
+  - apiVersion: v2
+    created: "2022-11-15T08:03:34.679384863Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.3
+    description: External DNS Operator
+    digest: d23a956ed7f34f968d139b8c45c1440d6af88784ee672042a2f111a2291e2d8c
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
+    version: 0.0.1
+  external-secrets:
+  - apiVersion: v2
+    created: "2022-11-15T08:03:34.855038853Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.3
+    description: External Secrets Operator
+    digest: 91d3a17b6f955343bcfc39323866a48ffc9a2a2a6717f1f1ca8146553b4da30e
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.1/external-secrets-0.0.1.tgz
     version: 0.0.1
   gatekeeper-policies:
   - apiVersion: v2
@@ -818,6 +886,20 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
     version: 0.0.7
+  opa-gatekeeper:
+  - apiVersion: v2
+    created: "2022-11-15T08:03:34.993258201Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://open-policy-agent.github.io/gatekeeper/charts
+      version: 3.7.1
+    description: A Helm chart for Kubernetes
+    digest: e277d83d0d33be8f5e9ccc4814021c1a5d9eefadf83caf2a99412eec53f44d82
+    name: opa-gatekeeper
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/opa-gatekeeper-0.0.1/opa-gatekeeper-0.0.1.tgz
+    version: 0.0.1
   tenant-rbac:
   - apiVersion: v2
     appVersion: 1.0.0
