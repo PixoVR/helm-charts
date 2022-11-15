@@ -1,4 +1,5 @@
 
+add_bindings: false
 
 app:
   namespace: ''
