@@ -5,7 +5,7 @@ github_team: platforms
 argocd_namespace: argocd
 
 config_connector:
-  enabled: true
+  enabled: false
   admin_namespace: infra-admin
   sa_name: infra-admin
   sa_project_id: replace-me
