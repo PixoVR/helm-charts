@@ -59,9 +59,10 @@ spec:
               app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
-              extraArgs:
-              - --google-project={{- .Values.dns_project_id }}
-              - --txt-owner-id={{ "{{ nameNormalized }}" }}
+              external-dns:
+                extraArgs:
+                - --google-project={{- .Values.dns_project_id }}
+                - --txt-owner-id={{ "{{ nameNormalized }}" }}
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ "{{ app.namespace }}" }}'
