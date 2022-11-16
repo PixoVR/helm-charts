@@ -3,6 +3,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   name: '{{ include "sa_name" $ }}'
+  namespace: {{ .Values.target_namespace }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "sa_project_id" $ }}
 spec:
@@ -14,6 +15,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
   name: '{{ include "sa_name" $ -}}-wi'
+  namespace: {{ .Values.target_namespace }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "sa_project_id" $ }}
 spec:

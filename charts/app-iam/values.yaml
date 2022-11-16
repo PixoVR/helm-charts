@@ -1,6 +1,8 @@
 
 add_bindings: false
 
+target_namespace: infra-admin
+
 app:
   namespace: ''
   ksa_name: workload-sa
