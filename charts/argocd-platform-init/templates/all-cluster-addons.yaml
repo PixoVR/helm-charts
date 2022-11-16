@@ -20,7 +20,7 @@ spec:
         - clusters: {}
   template:
     metadata:
-      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      name: '{{ "{{ name }}" }}-{{ "{{ path.basename }}" }}'
       labels:
         name: '{{ "{{ path.basename }}" }}'
         deployment: helm
@@ -61,7 +61,7 @@ spec:
                 gke_project_id: {{ .Values.gke_project_id }}
               extraArgs:
               - --google-project={{- .Values.dns_project_id }}
-              - --txt-owner-id={{ "{{ nameNormalized }}" }}
+              - --txt-owner-id={{ "{{ name }}" }}
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ "{{ app.namespace }}" }}'
@@ -94,7 +94,7 @@ spec:
                 argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      name: '{{ "{{ name }}" }}-{{ "{{ path.basename }}" }}'
       labels:
         name: '{{ "{{ path.basename }}" }}'
         deployment: helm
