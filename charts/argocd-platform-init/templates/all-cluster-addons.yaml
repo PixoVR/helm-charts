@@ -68,6 +68,8 @@ spec:
                 extraArgs:
                 - --google-project={{- .Values.dns_project_id }}
                 - --txt-owner-id={{ "{{ nameNormalized }}" }}
+            infra-admin:
+              gke_project_id: {{ .Values.gke_project_id }}
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ "{{ app.namespace }}" }}'
