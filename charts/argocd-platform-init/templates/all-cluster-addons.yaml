@@ -17,10 +17,7 @@ spec:
             revision: {{ .Values.revision }}
             files:
             - path: {{ .Values.all_cluster_addon_charts_filepath }}
-        - clusters:
-            selector:
-              matchLabels:
-                argocd.argoproj.io/secret-type: cluster
+        - clusters: {}
   template:
     metadata:
       name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
