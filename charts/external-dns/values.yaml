@@ -5,9 +5,12 @@ app_iam:
   gke_project_id: 'replace-me'
   app_project_id: 'replace-me'
   sa_name: external-dns
+  add_bindings: true
   app:
     ksa_name: external-dns
     namespace: external-dns
+    roles:
+      - dns.admin
 
 serviceAccount:
   create: true

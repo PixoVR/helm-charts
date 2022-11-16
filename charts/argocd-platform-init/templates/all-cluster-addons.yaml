@@ -43,6 +43,7 @@ spec:
               app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.dns_project_id }}
             backstage:
               app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
@@ -59,6 +60,7 @@ spec:
               app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.dns_project_id }}
               external-dns:
                 extraArgs:
                 - --google-project={{- .Values.dns_project_id }}

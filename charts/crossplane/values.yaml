@@ -3,10 +3,26 @@
 app_iam:
   sa_project_id: ''
   gke_project_id: ''
+  app_project_id: ''
   sa_name: crossplane-gcp
+  add_bindings: true
   app:
     ksa_name: gcp-provider
     namespace: crossplane-system
+    roles:
+      - artifactregistry.admin
+      - bigquery.admin
+      - cloudbuild.builds.editor
+      - cloudkms.admin
+      - container.admin
+      - compute.admin
+      - cloudsql.admin
+      - compute.publicIpAdmin
+      - monitoring.admin
+      - iam.securityAdmin
+      - iam.serviceAccountAdmin
+      - iam.serviceAccountUser
+      - storage.admin
 
 rbac:
   enabled: true

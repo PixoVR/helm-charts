@@ -3,10 +3,14 @@
 app_iam:
   sa_project_id: ''
   gke_project_id: ''
+  app_project_id: ''
   sa_name: external-secrets
+  add_bindings: true
   app:
     ksa_name: external-secrets
     namespace: external-secrets
+    roles:
+      - secretmanager.secretAccessor
 
 serviceAccount:
   create: true
@@ -15,8 +19,6 @@ serviceAccount:
 external-secrets:
   serviceAccount:
     create: false
-    annotations:
-      iam.gke.io/gcp-service-account: external-secrets@walker-pixo-init-project.iam.gserviceaccount.com
 
   resources:
     requests:

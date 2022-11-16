@@ -9,6 +9,6 @@ dependencies:
   version: 1.8.1
   repository: https://charts.crossplane.io/stable
 - name: app-iam
-  version: 0.0.5
+  version: 0.0.6
   repository: "https://pixovr.github.io/helm-charts"
   alias: app_iam
