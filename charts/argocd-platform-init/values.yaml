@@ -19,6 +19,7 @@ project_name: platform
 argocd_cpl_project: cluster-addons
 sync_wave: '-100'
 
+cpl_cluster_name: us-central1
 cpl_server: https://kubernetes.default.svc
 destination_server: https://kubernetes.default.svc
 
@@ -43,4 +44,4 @@ tenants:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-tenant-app-sets
-    version: 0.0.29
+    version: 0.0.30

@@ -18,6 +18,7 @@ spec:
     helm:
       releaseName: tenants-init
       values: |
+        cpl_cluster_name: {{ .Values.cpl_cluster_name }}
         github_org: {{ .Values.github_org }}
         repo_name: {{ .Values.repo_name }}
         fullname: tenants-app-sets
