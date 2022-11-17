@@ -24,7 +24,7 @@ spec:
   template:
     metadata:
       {{- if .Values.multi_cluster }}
-      name: '{{ "{{ server }}" }}-{{ "{{ path.basename }}" }}-apps'
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}-apps'
       {{- else }}
       name: '{{ "{{ path.basename }}" }}-apps'
       {{- end }}
