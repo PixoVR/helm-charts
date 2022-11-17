@@ -11,23 +11,14 @@ metadata:
     deployment: helm
 spec:
   generators:
-  - matrix:
-      generators:
-        - git:
-            repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
-            revision: {{ .Values.revision }}
-            files:
-            - path: {{ .Values.file_path }}
-        {{- if .Values.multi_cluster }}
-        - clusters: {}
-        {{- end }}
+    - git:
+        repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
+        revision: {{ .Values.revision }}
+        files:
+        - path: {{ .Values.file_path }}
   template:
     metadata:
-      {{- if .Values.multi_cluster }}
-      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}-apps'
-      {{- else }}
       name: '{{ "{{ path.basename }}" }}-apps'
-      {{- end }}
       annotations:
         argocd.argoproj.io/sync-wave: "20"
       finalizers:
@@ -45,10 +36,6 @@ spec:
           values: |
             {{- if .Values.multi_cluster }}
             cpl_cluster_name: {{ .Values.cpl_cluster_name }}
-            cluster_name: {{ "{{ server }}" }}
-            fullname: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
-            {{- else }}
-            fullname: {{ "{{ path.basename }}" }}
             {{- end }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}

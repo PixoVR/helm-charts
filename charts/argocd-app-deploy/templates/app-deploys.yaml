@@ -18,9 +18,7 @@ spec:
             revision: {{ .Values.revision }}
             files:
             - path: {{ include "services_filepath" $ }}
-        {{- if .Values.multi_cluster }}
         - clusters: {}
-        {{- end }}
   template:
     metadata:
       {{- if .Values.multi_cluster }}
