@@ -911,6 +911,16 @@ entries:
   argocd-tenant-app-sets:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-17T02:23:02.987544601Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 5151d1234b7496695483b98820a6a5d1204999ccbc2c1cc0e1d912d949ce9c86
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.30/argocd-tenant-app-sets-0.0.30.tgz
+    version: 0.0.30
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-10T16:33:49.416640401Z"
     description: Deploys ArgoCD platform tenants
     digest: 04894bd8ef7af73a57ca324643d43182a1814f435649eb38afdbea2419b5802e
