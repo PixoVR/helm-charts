@@ -36,6 +36,9 @@ spec:
           releaseName: '{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
+            sa_project_id: {{ .Values.sa_project_id }}
+            gke_project_id: {{ .Values.gke_project_id }}
+            dns_project_id: {{ .Values.dns_project_id }}
             argocd-image-updater:
               app_iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
