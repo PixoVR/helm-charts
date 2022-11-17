@@ -43,9 +43,9 @@ spec:
         targetRevision: {{ .Values.apps.chart.version }}
         helm:
           values: |
+            {{- if .Values.multi_cluster }}
             cpl_cluster_name: {{ .Values.cpl_cluster_name }}
             cluster_name: {{ "{{ server }}" }}
-            {{- if .Values.multi_cluster }}
             fullname: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
             {{- else }}
             fullname: {{ "{{ path.basename }}" }}
