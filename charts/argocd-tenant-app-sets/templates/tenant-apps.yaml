@@ -45,7 +45,11 @@ spec:
           values: |
             cpl_cluster_name: {{ .Values.cpl_cluster_name }}
             cluster_name: {{ "{{ server }}" }}
+            {{- if .Values.multi_cluster }}
+            fullname: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+            {{- else }}
             fullname: {{ "{{ path.basename }}" }}
+            {{- end }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
             app_domain: '{{ "{{ app.domain }}" }}'
