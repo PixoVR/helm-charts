@@ -75,7 +75,7 @@ spec:
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: '{{ "{{ app.lifecycle }}" }}'
       destination:
-        server: {{ .Values.app.server }}
+        server: '{{ "{{ server }}" }}'
         namespace: '{{ include "deploy_namespace" $ }}'
       syncPolicy:
         automated:
