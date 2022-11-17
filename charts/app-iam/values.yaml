@@ -3,6 +3,9 @@ add_bindings: false
 
 target_namespace: infra-admin
 
+config_connector:
+  enabled: false
+
 app:
   namespace: ''
   ksa_name: workload-sa
@@ -17,4 +20,4 @@ app:
 
 infra:
   namespace: ''
-
+  ksa_name: infra-admin
