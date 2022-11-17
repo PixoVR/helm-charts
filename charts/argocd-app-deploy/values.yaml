@@ -12,7 +12,8 @@ multi_cluster: true
 cpl_cluster_name: "us-central1"
 
 pre_tenant_services_filepath: kustomize/tenants
-post_tenant_services_filepath: services/*/*app-config.yaml
+post_tenant_services_filepath: services/*
+post_tenant_services_filename: app-config.yaml
 
 services_filepath: ''
 

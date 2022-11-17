@@ -12,7 +12,7 @@
   {{- if .Values.services_filepath }}
     {{- .Values.services_filepath }}
   {{- else }}
-    {{- .Values.pre_tenant_services_filepath -}}/{{- required "app_name" .Values.app_name -}}/{{- .Values.post_tenant_services_filepath -}}
+    {{- .Values.pre_tenant_services_filepath -}}/{{- required "app_name" .Values.app_name -}}/{{- .Values.post_tenant_services_filepath -}}/{{- .Values.lifecycle -}}-{{- .Values.post_tenant_services_filename }}
   {{- end -}}
 {{- end -}}
 
