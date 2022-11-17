@@ -9,6 +9,7 @@ metadata:
     tier: app
     purpose: deploy
     deployment: helm
+    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
 spec:
   generators:
   - matrix:
@@ -35,7 +36,7 @@ spec:
         purpose: deploy
         app: {{ .Values.app_name }}
         service: '{{ "{{ path.basename }}" }}'
-        lifecycle: '{{ "{{ app.lifecycle }}" }}'
+        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       annotations:
         argocd-image-updater.argoproj.io/image-list: 'appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
@@ -73,7 +74,7 @@ spec:
               domain: '{{ required "app_domain" .Values.app_domain }}'
               create_infra: false
               microservice_name: '{{ "{{ path.basename }}" }}'
-              lifecycle: '{{ "{{ app.lifecycle }}" }}'
+              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ include "deploy_namespace" $ }}'

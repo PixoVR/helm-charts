@@ -9,6 +9,7 @@ metadata:
     tier: app
     purpose: infra
     deployment: helm
+    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
 spec:
   generators:
   - git:
@@ -25,7 +26,7 @@ spec:
         purpose: infra
         app: {{ .Values.app_name }}
         service: '{{ "{{ path.basename }}" }}'
-        lifecycle: '{{ "{{ app.lifecycle }}" }}'
+        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       annotations:
         argocd.argoproj.io/sync-wave: '-20'
       finalizers:
@@ -49,7 +50,7 @@ spec:
               deploy_app: false
               create_sa: false
               microservice_name: '{{ "{{ path.basename }}" }}'
-              lifecycle: '{{ "{{ app.lifecycle }}" }}'
+              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       destination:
         server: {{ .Values.infra.server }}
         namespace: '{{ include "infra_namespace" $ }}'

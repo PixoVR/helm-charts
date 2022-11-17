@@ -9,6 +9,7 @@ metadata:
     tier: app
     purpose: iam
     deployment: helm
+    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
 spec:
   generators:
   - git:
@@ -25,7 +26,7 @@ spec:
         purpose: iam
         app: {{ .Values.app_name }}
         service: '{{ "{{ path.basename }}" }}'
-        lifecycle: '{{ "{{ app.lifecycle }}" }}'
+        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       annotations:
         argocd.argoproj.io/sync-wave: '{{ "{{ app.syncWave }}" }}'
       finalizers:
@@ -41,6 +42,7 @@ spec:
           ignoreMissingValueFiles: true
           values: |
             project_id: {{ required "sa_project_id" .Values.sa_project_id }}
+            lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
             app:
               namespace: {{ include "deploy_namespace" $ }}
       destination:
