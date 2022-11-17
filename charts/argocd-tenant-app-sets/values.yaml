@@ -12,6 +12,9 @@ target_revision: HEAD
 infra_namespace: infra-admin
 iam_namespace: infra-admin
 
+multi_cluster: true
+cpl_cluster_name: "us-central1"
+
 apps:
   enabled: true
   chart:

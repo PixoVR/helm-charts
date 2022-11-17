@@ -11,11 +11,16 @@ metadata:
     deployment: helm
 spec:
   generators:
-  - git:
-      repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
-      revision: {{ .Values.revision }}
-      files:
-      - path: {{ .Values.file_path }}
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.file_path }}
+        {{- if .Values.multi_cluster }}
+        - clusters: {}
+        {{- end }}
   template:
     metadata:
       name: '{{ "{{ path.basename }}" }}-apps'
@@ -34,6 +39,8 @@ spec:
         targetRevision: {{ .Values.apps.chart.version }}
         helm:
           values: |
+            cpl_cluster_name: {{ .Values.cpl_cluster_name }}
+            cluster_name: {{ "{{ server }}" }}
             fullname: {{ "{{ path.basename }}" }}
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
