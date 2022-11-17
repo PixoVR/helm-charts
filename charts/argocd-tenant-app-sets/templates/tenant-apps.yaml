@@ -41,8 +41,9 @@ spec:
             repo_name: {{ required "repo_name" .Values.repo_name }}
             app_domain: '{{ "{{ app.domain }}" }}'
             app_name: '{{ "{{ path.basename }}" }}'
-            app_project_id: '{{ "{{ app.app_project_id }}" }}'
-            sa_project_id: '{{ "{{ app.sa_project_id }}" }}'
+            db_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-db-project'
+            app_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-app-project'
+            sa_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-sa-project'
             infra: 
               namespace: {{ .Values.infra_namespace }}
             iam:
