@@ -28,7 +28,7 @@ spec:
       {{- end }}
       labels:
         {{- if .Values.multi_cluster }}
-        cluster: {{ "{{ nameNormalized }}" }}
+        cluster: '{{ "{{ nameNormalized }}" }}'
         {{- end }}
         deployment: helm
         tier: app
