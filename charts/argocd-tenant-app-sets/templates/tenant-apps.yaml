@@ -23,7 +23,11 @@ spec:
         {{- end }}
   template:
     metadata:
+      {{- if .Values.multi_cluster }}
+      name: '{{ "{{ server }}" }}-{{ "{{ path.basename }}" }}-apps'
+      {{- else }}
       name: '{{ "{{ path.basename }}" }}-apps'
+      {{- end }}
       annotations:
         argocd.argoproj.io/sync-wave: "20"
       finalizers:
