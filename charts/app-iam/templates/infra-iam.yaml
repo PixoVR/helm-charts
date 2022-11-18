@@ -7,7 +7,7 @@ metadata:
   name: '{{ include "infra_sa_name" $ }}'
   namespace: {{ .Values.target_namespace }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "sa_project_id" $ }}
+    cnrm.cloud.google.com/project-id: '{{ include "sa_project_id" $ }}'
 spec:
   displayName: "{{ .Release.Name }} infra admin service account"
 
@@ -19,7 +19,7 @@ metadata:
   name: '{{ include "infra_sa_name" $ -}}-wi'
   namespace: {{ .Values.target_namespace }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "sa_project_id" $ }}
+    cnrm.cloud.google.com/project-id: '{{ include "sa_project_id" $ }}'
 spec:
   resourceRef:
     apiVersion: iam.cnrm.cloud.google.com/v1beta1
