@@ -43,8 +43,9 @@ spec:
           values: |
             web-app:
               github_org: {{ .Values.github_org }}
-              project_id: {{ .Values.app_project_id }}
-              sa_project_id: {{ .Values.sa_project_id }}
+              app_project_id: {{ required "app_project_id" .Values.app_project_id }}
+              db_project_id: {{ required "db_project_id" .Values.db_project_id }}
+              sa_project_id: {{ required "sa_project_id" .Values.sa_project_id }}
               app_code: {{ .Values.app_name }}
               domain: '{{ "{{ app.domain }}" }}'
               deploy_app: false
