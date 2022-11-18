@@ -52,7 +52,7 @@ spec:
               create_sa: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
-              app_iam: 
+              app-iam: 
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.dns_project_id }}
