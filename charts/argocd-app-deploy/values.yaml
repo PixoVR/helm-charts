@@ -23,3 +23,5 @@ target_revision: HEAD
 argocd_namespace: argocd
 argocd_project: platform
 
+infra:
+  server: https://kubernetes.default.svc
