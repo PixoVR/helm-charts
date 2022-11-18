@@ -96,6 +96,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-18T07:23:51.604600912Z"
+    description: Deploys ArgoCD tenant apps
+    digest: 28caf071b3bf7973138ba69a847efb746eea4a5d5bfaf9c7aab0e90a957dcc70
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.31/argocd-app-deploy-0.0.31.tgz
+    version: 0.0.31
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-18T06:35:35.810052438Z"
     description: Deploys ArgoCD tenant apps
     digest: dc15eb5e574d58b8d5c37ac96461f35ae3b7b85807de0becdeda80c0d75ccf84
@@ -542,6 +552,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-18T07:23:51.72466844Z"
+    description: Initializes ArgoCD platform
+    digest: 44f529d3e4800dc7355d5aa73ac23e154aa000914669ff2e70573c67fe050fc7
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.68/argocd-platform-init-0.0.68.tgz
+    version: 0.0.68
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-18T06:35:36.104224657Z"
@@ -1193,6 +1213,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-18T07:23:51.854427092Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 1d51c1afc2d59e7544d8c524f63da3dcc82ae342f78369ca1f2656ba278092af
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.45/argocd-tenant-app-sets-0.0.45.tgz
+    version: 0.0.45
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-18T06:35:36.247282312Z"
@@ -2175,6 +2205,19 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-18T07:23:51.991450236Z"
+    dependencies:
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: 51259905c6cc831322b2314af0d807d2a8b39335145f0c0623db1e6603c08548
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.7/web-app-0.0.7.tgz
+    version: 0.0.7
   - apiVersion: v2
     created: "2022-11-18T06:35:36.818730302Z"
     dependencies:
