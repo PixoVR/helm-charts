@@ -5,7 +5,7 @@ kind: ArtifactRegistryRepository
 metadata:
   name: {{ include "registry_name" . }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" . }}
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
 spec:
   format: DOCKER
   location: {{ required "REQUIRED: google.region" .Values.google.region }}

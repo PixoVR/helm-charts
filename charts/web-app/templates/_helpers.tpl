@@ -83,8 +83,47 @@
 {{- end -}}
 
 
-{{- define "app_project" -}}
-  {{- required "REQUIRED: project_id" .Values.project_id }}
+{{- define "sa_project_id" -}}
+  {{- if .Values.sa_project_id }}
+    {{- .Values.sa_project_id }}
+  {{- else if .Values.project_id }}
+    {{- .Values.project_id }}
+  {{- else }}
+    {{- required "sa_project_id" $.Values.sa_project_id -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "gke_project_id" -}}
+  {{- if .Values.gke_project_id }}
+    {{- .Values.gke_project_id }}
+  {{- else if .Values.project_id }}
+    {{- .Values.project_id }}
+  {{- else }}
+    {{- required "gke_project_id" $.Values.gke_project_id -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "db_project_id" -}}
+  {{- if .Values.db_project_id }}
+    {{- .Values.db_project_id }}
+  {{- else if .Values.project_id }}
+    {{- .Values.project_id }}
+  {{- else }}
+    {{- required "db_project_id" $.Values.db_project_id -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "app_project_id" -}}
+  {{- if .Values.app_project_id }}
+    {{- .Values.app_project_id }}
+  {{- else if .Values.project_id }}
+    {{- .Values.project_id }}
+  {{- else }}
+    {{- required "app_project_id" $.Values.app_project_id -}}
+  {{- end -}}
 {{- end -}}
 
 
@@ -94,7 +133,7 @@
   {{- else if .Values.image.name }}
     {{- .Values.image.name -}}
   {{- else -}}
-    {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}
+    {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project_id" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}
   {{- end -}}
 {{- end -}}
 
@@ -131,18 +170,13 @@
 {{- end -}}
 
 
-{{- define "cicd_sa" -}}
-  {{- "projects/" -}}{{- include "app_project" $ }}/serviceAccounts/{{- include "app_label" $ -}}-cicd@{{- include "app_project" . }}.iam.gserviceaccount.com
-{{- end -}}
-
-
 {{- define "app_sa" -}}
   {{- if $.Values.sa }}
     {{- $.Values.app_sa }}
   {{- else if $.Values.sa_microservice_name }}
-    {{- include "sa_app_label" $ -}}-workload@{{- include "app_project" . -}}.iam
+    {{- include "sa_app_label" $ -}}-workload-sa@{{- include "sa_project_id" . -}}.iam
   {{- else }}
-    {{- include "app_label" $ -}}-workload@{{- include "app_project" . -}}.iam
+    {{- include "app_label" $ -}}-workload-sa@{{- include "sa_project_id" . -}}.iam
   {{- end }}
 {{- end -}}
 

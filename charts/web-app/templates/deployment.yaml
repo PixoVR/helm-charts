@@ -185,7 +185,7 @@ spec:
           value: "{{ .Values.containerPort }}"
 
         - name: GCP_PROJECT_ID
-          value: "{{- include "app_project" $ -}}"
+          value: "{{- include "app_project_id" $ -}}"
 
         {{- if eq .Values.microservice_name "graphql" }}
         - name: APP_ENV

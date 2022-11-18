@@ -7,7 +7,7 @@ kind: CloudBuildTrigger
 metadata:
   name: {{ include "deployment_name" $ -}}-ci
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" . }}
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
   labels:
     namespace: {{ .Release.Namespace }}
 spec:

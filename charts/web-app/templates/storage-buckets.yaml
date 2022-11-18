@@ -9,7 +9,7 @@ kind: StorageBucket
 metadata:
   name: {{ include "app_label" $ -}}-{{- .name }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
     cnrm.cloud.google.com/force-destroy: "false"
   labels:
     namespace: {{ $.Release.Namespace }}

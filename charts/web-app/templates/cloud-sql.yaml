@@ -6,7 +6,7 @@ kind: SQLDatabase
 metadata:
   name: {{ include "lifecycle" $ -}}-db
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
   labels:
     namespace: {{ $.Release.Namespace }}
     backstage.io/kubernetes-id: {{ $.Values.app_code }}
@@ -21,7 +21,7 @@ kind: SQLUser
 metadata:
   name: {{ include "app_label" $ }}-user
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
   labels:
     namespace: {{ $.Release.Namespace }}
     backstage.io/kubernetes-id: {{ $.Values.app_code }}

@@ -8,7 +8,7 @@ metadata:
   name: {{ include "ip_name" $ }}
   namespace: {{ $.Release.Namespace }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "gke_project_id" $ }}
   labels:
     namespace: {{ .Release.Namespace }}
 spec:
