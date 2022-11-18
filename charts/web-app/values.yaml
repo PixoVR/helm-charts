@@ -75,7 +75,7 @@ google:
   zone: us-central1-a
   cdn:
     enabled: false
-  config_connector_context: false
+  config_connector_context: true
   create_ip: false
   create_cloudbuild: true
   create_registry: false
