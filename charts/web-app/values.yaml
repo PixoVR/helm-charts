@@ -2,13 +2,13 @@
 app_iam:
   sa_project_id: ''
   gke_project_id: ''
+  db_project_id: ''
   app_project_id: ''
   add_bindings: true
   app:
     ksa_name: app-workload
     namespace: ''
     
-project_id: pixo-gke
 github_org: PixoVR
 lifecycle: dev
 app_code: sample

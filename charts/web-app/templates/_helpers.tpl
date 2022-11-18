@@ -162,12 +162,10 @@
 
 
 {{- define "app_sa" -}}
-  {{- if $.Values.sa }}
+  {{- if $.Values.app_sa }}
     {{- $.Values.app_sa }}
-  {{- else if $.Values.sa_microservice_name }}
-    {{- .Values.app_iam.sa_name -}}@{{- required "app_iam.sa_project_id" .Values.app_iam.sa_project_id -}}.iam
   {{- else }}
-    {{- include "app_label" $ -}}-workload-sa@{{- include "sa_project_id" . -}}.iam
+    {{- .Values.app_iam.app.ksa_name -}}@{{- required "app_iam.sa_project_id" .Values.app_iam.sa_project_id -}}.iam
   {{- end }}
 {{- end -}}
 
