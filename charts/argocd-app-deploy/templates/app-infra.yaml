@@ -56,6 +56,8 @@ spec:
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.dns_project_id }}
+                app:
+                  namespace: '{{- include "deploy_namespace" $ -}}'
       destination:
         server: {{ .Values.infra.server }}
         namespace: '{{ include "infra_namespace" $ }}'

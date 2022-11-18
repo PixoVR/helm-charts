@@ -5,7 +5,7 @@
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
-    {{- required "sa_project_id" $.Values.sa_project_id -}}
+    {{- required "REQUIRED: sa_project_id" $.Values.sa_project_id -}}
   {{- end -}}
 {{- end -}}
 
@@ -16,7 +16,7 @@
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
-    {{- required "gke_project_id" $.Values.gke_project_id -}}
+    {{- required "REQUIRED: gke_project_id" $.Values.gke_project_id -}}
   {{- end -}}
 {{- end -}}
 
@@ -27,7 +27,7 @@
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
-    {{- required "app_project_id" $.Values.app_project_id -}}
+    {{- required "REQUIRED: app_project_id" $.Values.app_project_id -}}
   {{- end -}}
 {{- end -}}
 
@@ -36,7 +36,7 @@
   {{- if .Values.sa_name }}
     {{- .Values.sa_name }}
   {{- else }}
-    {{- required "app.ksa_name" $.Values.app.ksa_name -}}
+    {{- required "REQUIRED: app.ksa_name" $.Values.app.ksa_name -}}
   {{- end -}}
 {{- end -}}
 
@@ -45,6 +45,6 @@
   {{- if .Values.sa_name }}-infra
     {{- .Values.sa_name }}-infra
   {{- else }}
-    {{- required "infra.ksa_name" $.Values.infra.ksa_name -}}
+    {{- required "REQUIRED: infra.ksa_name" $.Values.infra.ksa_name -}}
   {{- end -}}
 {{- end -}}

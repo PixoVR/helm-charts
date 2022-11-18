@@ -161,20 +161,11 @@
 {{- end -}}
 
 
-{{- define "app_admin_sa" -}}
-  {{- if $.Values.sa }}
-    {{- $.Values.app_sa }}
-  {{- else }}
-    {{- required "REQUIRED: app_code" .Values.app_code -}}-admin@{{- include "sa_project_id" . -}}.iam.gserviceaccount.com
-  {{- end }}
-{{- end -}}
-
-
 {{- define "app_sa" -}}
   {{- if $.Values.sa }}
     {{- $.Values.app_sa }}
   {{- else if $.Values.sa_microservice_name }}
-    {{- include "sa_app_label" $ -}}-workload-sa@{{- include "sa_project_id" . -}}.iam
+    {{- .Values.app_iam.sa_name -}}@{{- required "app_iam.sa_project_id" .Values.app_iam.sa_project_id -}}.iam
   {{- else }}
     {{- include "app_label" $ -}}-workload-sa@{{- include "sa_project_id" . -}}.iam
   {{- end }}
@@ -182,7 +173,7 @@
 
 
 {{- define "ksa_name" -}}
-  {{- .Values.ksa_name }}
+  {{- .Values.app.ksa_name }}
 {{- end -}}
 
 
@@ -196,21 +187,6 @@
 {{- end -}}
 
 
-{{- define "bucket" -}}
-  {{- include "app_label" $ -}}-v2-web-static
-{{- end -}}
-
-
-{{- define "ingest_bucket" -}}
-  {{- include "app_label" $ -}}-v2-ingest
-{{- end -}}
-
-
-{{- define "clean_data_bucket" -}}
-  {{- include "app_label" $ -}}-v2-cleaned-data
-{{- end -}}
-
-
 {{- define "ip_name" -}}
   {{- if .Values.ip_name }}
     {{- .Values.ip_name }}
@@ -218,15 +194,6 @@
     {{- include "app_label" $ -}}-ip
   {{- end }}
 {{- end -}}
-
-
-{{- define "cluster_secret_store" -}}
-  {{- if .Values.external_secrets.cluster_secret_store.name }}
-    {{- .Values.external_secrets.cluster_secret_store.name }}
-  {{- else }}
-    {{- "cluster" -}}-secret-store
-  {{- end }}
-{{- end }}
 
 
 {{- define "secret_store" -}}

@@ -1,8 +1,10 @@
 
-app-iam:
+app_iam:
   sa_project_id: ''
   gke_project_id: ''
-  sa_name: ''
+  app_project_id: ''
+  sa_name: external-dns
+  add_bindings: true
   app:
     ksa_name: app-workload
     namespace: ''
@@ -27,7 +29,6 @@ primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
 create_sa: false
-ksa_name: app-workload
 sa_microservice_name: api
 
 demo:
