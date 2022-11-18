@@ -96,6 +96,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-18T06:35:35.810052438Z"
+    description: Deploys ArgoCD tenant apps
+    digest: dc15eb5e574d58b8d5c37ac96461f35ae3b7b85807de0becdeda80c0d75ccf84
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.30/argocd-app-deploy-0.0.30.tgz
+    version: 0.0.30
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-18T06:29:46.925840117Z"
     description: Deploys ArgoCD tenant apps
     digest: 9347499a48b94c8e5c2bbdbd1752705b9eceb80e13c4f56866b215fd190a4cbf
@@ -366,6 +376,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-18T06:35:35.945107985Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: A Helm chart for Kubernetes
+    digest: a36262b8d9aadb0c6aa4771a34afed1ed1f6a1b34c0a64a4d20677f66494de8b
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.13/argocd-image-updater-0.0.13.tgz
+    version: 0.0.13
+  - apiVersion: v2
     created: "2022-11-18T01:07:19.672479644Z"
     dependencies:
     - name: argocd-image-updater
@@ -515,6 +542,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-18T06:35:36.104224657Z"
+    description: Initializes ArgoCD platform
+    digest: df907e1bae7145caa6babd3e85adf5204407fef178e869d421c5bf825f22235c
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.67/argocd-platform-init-0.0.67.tgz
+    version: 0.0.67
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-18T06:06:27.532389776Z"
@@ -1158,6 +1195,16 @@ entries:
   argocd-tenant-app-sets:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-18T06:35:36.247282312Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 0b78d05af26fb3383b6bbe8645c192344c74216b58cbd5273e43caed569cdfaa
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.44/argocd-tenant-app-sets-0.0.44.tgz
+    version: 0.0.44
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-18T06:06:27.712521716Z"
     description: Deploys ArgoCD platform tenants
     digest: bab03983e7dfea11eb4e31843b79dc3e1aa0e6504d9a60ad401f44a8ed52fff3
@@ -1538,6 +1585,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-18T06:35:36.388166465Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: A Helm chart for Kubernetes
+    digest: 8db961be2c37fd25151272655541118fbfe9ad3d7a4b86da2b0f8d92fd2d7a8b
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.15/crossplane-0.0.15.tgz
+    version: 0.0.15
+  - apiVersion: v2
     created: "2022-11-18T01:07:19.790659661Z"
     dependencies:
     - name: crossplane
@@ -1699,6 +1763,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2022-11-18T06:35:36.505827693Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: External DNS Operator
+    digest: 2266e3a6107a1af188bbc781765c19977ea70459c4f6efa36eb07c18ae2bbfc2
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.13/external-dns-0.0.13.tgz
+    version: 0.0.13
+  - apiVersion: v2
     created: "2022-11-18T01:07:19.912110254Z"
     dependencies:
     - name: external-dns
@@ -1848,6 +1929,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-18T06:35:36.648579648Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: External Secrets Operator
+    digest: 2fd6f7150ad1fd34648e16467d239c21fd66e00e5c5f1968baba885a6dcc8e00
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.13/external-secrets-0.0.13.tgz
+    version: 0.0.13
   - apiVersion: v2
     created: "2022-11-18T01:07:20.038445159Z"
     dependencies:
@@ -2077,6 +2175,19 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-18T06:35:36.818730302Z"
+    dependencies:
+    - name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.9
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: d56a89423ecea43091b65ddf3cce15735c973647eaa4b692b2622a81314dd192
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.6/web-app-0.0.6.tgz
+    version: 0.0.6
   - apiVersion: v2
     created: "2022-11-17T23:34:31.757623025Z"
     dependencies:
