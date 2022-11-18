@@ -29,7 +29,4 @@ app:
 
 infra:
   server: https://kubernetes.default.svc
-  chart:
-    repoURL: https://pixovr.github.io/helm-charts
-    name: web-app
-    version: 0.0.7
+  namespace: ''

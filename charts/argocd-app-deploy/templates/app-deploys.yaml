@@ -23,9 +23,9 @@ spec:
   template:
     metadata:
       {{- if .Values.multi_cluster }}
-      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-deploy'
+      name: '{{ "{{ nameNormalized }}" }}-{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-deploy'
       {{- else }}
-      name: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-deploy'
+      name: '{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-deploy'
       {{- end }}
       labels:
         {{- if .Values.multi_cluster }}
@@ -38,7 +38,7 @@ spec:
         service: '{{ "{{ path.basename }}" }}'
         lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       annotations:
-        argocd-image-updater.argoproj.io/image-list: 'appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{ "{{ app.lifecycle }}" }}/{{ "{{ path.basename }}" }}'
+        argocd-image-updater.argoproj.io/image-list: 'appimage=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
 
         argocd-image-updater.argoproj.io/appimage.pull-secret: pullsecret:argocd/gcr-credentials 
@@ -56,9 +56,9 @@ spec:
         path: '{{ "{{ path }}" }}/chart'
         helm:
           {{- if .Values.multi_cluster }}
-          releaseName: '{{ "{{ nameNormalized }}" }}-{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
+          releaseName: '{{ "{{ nameNormalized }}" }}-{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           {{- else }}
-          releaseName: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
+          releaseName: '{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           {{- end }}
           ignoreMissingValueFiles: true
           values: |

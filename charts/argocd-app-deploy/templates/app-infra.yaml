@@ -19,7 +19,7 @@ spec:
       - path: {{ include "services_filepath" $ }}
   template:
     metadata:
-      name: '{{ "{{ app.lifecycle }}" }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra'
+      name: '{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra'
       labels:
         deployment: helm
         tier: app
