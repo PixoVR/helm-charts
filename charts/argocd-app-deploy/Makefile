@@ -2,4 +2,4 @@
 all: test
 
 test:
-	helm template pixo-app .
+	helm template pixo-app . --set lifecycle=dev
