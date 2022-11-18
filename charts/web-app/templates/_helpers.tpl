@@ -84,8 +84,8 @@
 
 
 {{- define "sa_project_id" -}}
-  {{- if .Values.sa_project_id }}
-    {{- .Values.sa_project_id }}
+  {{- if .Values.app_iam.sa_project_id }}
+    {{- .Values.app_iam.sa_project_id }}
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
@@ -95,8 +95,8 @@
 
 
 {{- define "gke_project_id" -}}
-  {{- if .Values.gke_project_id }}
-    {{- .Values.gke_project_id }}
+  {{- if .Values.app_iam.gke_project_id }}
+    {{- .Values.app_iam.gke_project_id }}
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
@@ -106,8 +106,8 @@
 
 
 {{- define "db_project_id" -}}
-  {{- if .Values.db_project_id }}
-    {{- .Values.db_project_id }}
+  {{- if .Values.app_iam.db_project_id }}
+    {{- .Values.app_iam.db_project_id }}
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
@@ -117,8 +117,8 @@
 
 
 {{- define "app_project_id" -}}
-  {{- if .Values.app_project_id }}
-    {{- .Values.app_project_id }}
+  {{- if .Values.app_iam.app_project_id }}
+    {{- .Values.app_iam.app_project_id }}
   {{- else if .Values.project_id }}
     {{- .Values.project_id }}
   {{- else }}
@@ -165,13 +165,13 @@
   {{- if $.Values.app_sa }}
     {{- $.Values.app_sa }}
   {{- else }}
-    {{- .Values.app_iam.app.ksa_name -}}@{{- required "app_iam.sa_project_id" .Values.app_iam.sa_project_id -}}.iam
+    {{- .Values.app_iam.app.ksa_name -}}@{{- include "sa_project_id" $ -}}.iam
   {{- end }}
 {{- end -}}
 
 
 {{- define "ksa_name" -}}
-  {{- .Values.app.ksa_name }}
+  {{- .Values.app_iam.app.ksa_name }}
 {{- end -}}
 
 

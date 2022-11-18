@@ -1,13 +1,13 @@
 
 app_iam:
-  sa_project_id: ''
-  gke_project_id: ''
-  db_project_id: ''
-  app_project_id: ''
+  sa_project_id: 'r'
+  gke_project_id: 'r'
+  db_project_id: 'r'
+  app_project_id: 'r'
   add_bindings: true
   app:
+    namespace: 'r'
     ksa_name: app-workload
-    namespace: ''
     
 github_org: PixoVR
 lifecycle: dev
