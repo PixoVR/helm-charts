@@ -76,6 +76,9 @@ spec:
               create_infra: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+              app_iam: 
+                enabled: false
+                
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ include "deploy_namespace" $ }}'

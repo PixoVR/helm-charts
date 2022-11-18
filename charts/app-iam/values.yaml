@@ -1,4 +1,5 @@
 
+enabled: true
 add_bindings: false
 
 target_namespace: infra-admin
