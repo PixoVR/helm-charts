@@ -3,7 +3,6 @@ app_iam:
   sa_project_id: ''
   gke_project_id: ''
   app_project_id: ''
-  sa_name: external-dns
   add_bindings: true
   app:
     ksa_name: app-workload
