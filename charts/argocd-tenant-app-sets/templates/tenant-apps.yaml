@@ -42,7 +42,7 @@ spec:
             repo_name: {{ required "repo_name" .Values.repo_name }}
             app_domain: '{{ "{{ app.domain }}" }}'
             app_name: '{{ "{{ path.basename }}" }}'
-            gke_project_id: '{{- required "REQUIRED: gke_project" .Values.gke_project -}}'
+            gke_project_id: '{{- required "REQUIRED: gke_project_id" .Values.gke_project_id -}}'
             db_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-db-project'
             app_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-app-project'
             sa_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-sa-project'
