@@ -44,4 +44,4 @@ tenants:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-tenant-app-sets
-    version: 0.0.51
+    version: 0.0.52
