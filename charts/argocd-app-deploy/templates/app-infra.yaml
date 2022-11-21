@@ -46,6 +46,7 @@ spec:
               app_project_id: {{ required "REQUIRED: app_project_id" .Values.app_project_id }}
               db_project_id: {{ required "REQUIRED: db_project_id" .Values.db_project_id }}
               sa_project_id: {{ required "REQUIRED: sa_project_id" .Values.sa_project_id }}
+              gke_project_id: {{ required "REQUIRED: gke_project_id" .Values.gke_project_id }}
               app_code: {{ .Values.app_name }}
               domain: '{{ "{{ app.domain }}" }}'
               deploy_app: false
@@ -56,6 +57,7 @@ spec:
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.app_project_id }}
+                db_project_id: {{ .Values.db_project_id }}
                 sa_name: "{{ .Values.app_name -}}-{{ "{{ path.basename }}" }}"
                 app:
                   namespace: '{{- include "deploy_namespace" $ -}}'
