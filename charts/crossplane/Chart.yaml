@@ -2,13 +2,13 @@ apiVersion: v2
 name: crossplane
 description: A Helm chart for Kubernetes
 type: application
-version: 0.0.24
+version: 0.0.25
 
 dependencies:
 - name: crossplane
   version: 1.8.1
   repository: https://charts.crossplane.io/stable
 - name: app-iam
-  version: 0.0.20
+  version: 0.0.21
   repository: "https://pixovr.github.io/helm-charts"
   alias: app_iam

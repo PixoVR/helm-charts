@@ -24,6 +24,7 @@ app_iam:
   db_project_id: ''
   app_project_id: ''
   add_bindings: true
+  target_namespace: infra-admin
   app:
     namespace: ''
     ksa_name: app-workload
