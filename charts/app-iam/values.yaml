@@ -12,7 +12,7 @@ db_project_id: replaceme
 
 infra:
   namespace: ''
-  ksa_name: infra-admin
+  ksa_name: cnrm-controller-manager-infra-admin
 
 gke:
   enabled: false
