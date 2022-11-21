@@ -64,6 +64,7 @@ spec:
                 app_project_id: {{ .Values.app_project_id }}
                 db_project_id: {{ .Values.db_project_id }}
                 sa_name: "{{ .Values.app_name -}}-{{ "{{ path.basename }}" }}"
+                target_namespace: '{{- include "iam_namespace" $ -}}'
                 app:
                   namespace: '{{- include "deploy_namespace" $ -}}'
                 infra:
