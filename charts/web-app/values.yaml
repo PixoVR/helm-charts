@@ -34,7 +34,6 @@ app_iam:
 
 
 ksa_name: app-workload
-infra_ksa_name: app-admin
 
 
 toleration: ''

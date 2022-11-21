@@ -19,7 +19,7 @@ spec:
       - memberFrom:
           serviceAccountRef:
             name: '{{ include "infra_sa_name" $ }}'
-            namespace: {{ $.Release.Namespace }}
+            namespace: {{ $.Values.target_namespace }}
     {{- end }}
     {{- range .Values.sa.app_roles }}
     - role: roles/{{- . }}
@@ -27,7 +27,7 @@ spec:
       - memberFrom:
           serviceAccountRef:
             name: '{{ include "sa_name" $ }}'
-            namespace: {{ $.Release.Namespace }}
+            namespace: {{ $.Values.target_namespace }}
     {{- end }}
 
 {{- end }}
