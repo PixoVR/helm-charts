@@ -21,6 +21,17 @@
 {{- end -}}
 
 
+{{- define "db_project_id" -}}
+  {{- if .Values.db_project_id }}
+    {{- .Values.db_project_id }}
+  {{- else if .Values.project_id }}
+    {{- .Values.project_id }}
+  {{- else }}
+    {{- required "REQUIRED: db_project_id" $.Values.db_project_id -}}
+  {{- end -}}
+{{- end -}}
+
+
 {{- define "app_project_id" -}}
   {{- if .Values.app_project_id }}
     {{- .Values.app_project_id }}

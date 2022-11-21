@@ -27,10 +27,14 @@ app_iam:
   app:
     namespace: ''
     ksa_name: app-workload
+  infra:
+    namespace: ''
+    ksa_name: app-admin
 
 
 
 ksa_name: app-workload
+infra_ksa_name: app-admin
 
 
 toleration: ''

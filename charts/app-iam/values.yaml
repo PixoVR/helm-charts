@@ -4,21 +4,53 @@ add_bindings: false
 
 target_namespace: infra-admin
 
-config_connector:
-  enabled: false
+sa_project_id: replaceme
+gke_project_id: replaceme
+app_project_id: replaceme
+db_project_id: replaceme
 
-app:
-  namespace: ''
-  ksa_name: workload-sa
-  roles:
-    - cloudsql.client
-    - cloudsql.instanceUser
-    - errorreporting.writer
-    - iam.serviceAccountTokenCreator
-    - logging.logWriter
-    - monitoring.metricWriter
-    - storage.admin
 
 infra:
   namespace: ''
   ksa_name: infra-admin
+
+gke:
+  enabled: false
+  infra_roles: []
+    # - compute.publicIpAdmin
+  roles: []
+
+db:
+  enabled: false
+  infra_roles:
+    - cloudsql.admin
+  app_roles:
+    - cloudsql.client
+    - cloudsql.instanceUser
+
+sa:
+  enabled: false
+  infra_roles:
+    - iam.serviceAccountTokenCreator
+  user_roles:
+    - iam.serviceAccountTokenCreator
+
+app:
+  enabled: true
+  namespace: replaceme
+  ksa_name: workload-sa
+  infra_roles:
+    - artifactregistry.admin
+    - cloudbuild.builds.editor
+    - cloudfunctions.admin
+    - dns.admin
+    - secretmanager.admin
+    - storage.admin
+    - run.admin
+  app_roles:
+    - errorreporting.writer
+    - logging.logWriter
+    - monitoring.metricWriter
+    - secretmanager.secretAccessor
+    - storage.objectAdmin
+

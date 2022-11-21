@@ -1,0 +1,58 @@
+{{- if .Values.enabled }}
+{{- if .Values.add_bindings }}
+{{- if .Values.app.enabled }}
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: {{ .Release.Name -}}-app-policy
+  namespace: {{ .Values.target_namespace }}
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: '{{ include "app_project_id" $ }}'
+  bindings:
+    {{- range .Values.app.infra_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "infra_sa_name" $ }}'
+            namespace: {{ $.Release.Namespace }}
+    {{- end }}
+
+    {{- if not .Values.gke.enabled }}
+    {{- range .Values.gke.infra_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "infra_sa_name" $ }}'
+            namespace: {{ $.Release.Namespace }}
+    {{- end }}
+    {{- end }}
+
+    {{- if not .Values.db.enabled }}
+    {{- range .Values.db.infra_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "infra_sa_name" $ }}'
+            namespace: {{ $.Release.Namespace }}
+    {{- end }}
+    {{- end }}
+
+    {{- range .Values.app.app_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "sa_name" $ }}'
+            namespace: {{ $.Release.Namespace }}
+    {{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}

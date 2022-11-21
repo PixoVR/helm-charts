@@ -1,5 +1,4 @@
 {{- if .Values.enabled }}
-{{- if .Values.config_connector.enabled }}
 
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
@@ -31,5 +30,4 @@ spec:
       - serviceAccount:{{- include "gke_project_id" $ -}}.svc.id.goog[cnrm-system/cnrm-controller-manager-{{- required "REQUIRED: app.namespace" .Values.app.namespace -}}]
 
 
-{{- end }}
 {{- end }}

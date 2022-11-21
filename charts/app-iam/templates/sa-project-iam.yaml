@@ -1,18 +1,27 @@
 {{- if .Values.enabled }}
 {{- if .Values.add_bindings }}
+{{- if .Values.sa.enabled }}
 
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: {{ .Release.Name -}}-policy
+  name: {{ .Release.Name -}}-sa-policy
   namespace: {{ .Values.target_namespace }}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: '{{ include "app_project_id" $ }}'
+    external: '{{ include "sa_project_id" $ }}'
   bindings:
-    {{- range .Values.app.roles }}
+    {{- range .Values.sa.infra_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "infra_sa_name" $ }}'
+            namespace: {{ $.Release.Namespace }}
+    {{- end }}
+    {{- range .Values.sa.app_roles }}
     - role: roles/{{- . }}
       members:
       - memberFrom:
@@ -21,5 +30,6 @@ spec:
             namespace: {{ $.Release.Namespace }}
     {{- end }}
 
+{{- end }}
 {{- end }}
 {{- end }}
