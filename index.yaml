@@ -3,6 +3,16 @@ entries:
   app-iam:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-21T21:03:13.867539578Z"
+    description: Deploys app service accounts and workload identity
+    digest: 01e34b44ac8b2bf7e262b6215e0cc72de7754bc4b2d492ce6646a6b8dd57f594
+    name: app-iam
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.14/app-iam-0.0.14.tgz
+    version: 0.0.14
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-18T09:12:26.765257719Z"
     description: Deploys app service accounts and workload identity
     digest: 564f4b4ed87f359111835f4bb53533d086e68922832ca6818eec7cb2ea90e1f4
@@ -2669,6 +2679,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-21T21:03:14.021799618Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.12
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: 8b1ac3e67b4444929fa905b8deb1acd5fc47c236364036fe6031a03ea85661f0
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.20/web-app-0.0.20.tgz
+    version: 0.0.20
   - apiVersion: v2
     created: "2022-11-21T20:13:29.265410676Z"
     dependencies:
