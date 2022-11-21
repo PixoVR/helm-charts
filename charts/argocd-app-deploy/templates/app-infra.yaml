@@ -42,6 +42,10 @@ spec:
           ignoreMissingValueFiles: true
           values: |
             web-app:
+              {{- if .Values.multi_cluster }}
+              cpl_cluster_name: {{ .Values.cpl_cluster_name }}
+              cluster_name: {{ "{{ server }}" }}
+              {{- end }}
               github_org: {{ .Values.github_org }}
               app_project_id: {{ required "REQUIRED: app_project_id" .Values.app_project_id }}
               db_project_id: {{ required "REQUIRED: db_project_id" .Values.db_project_id }}
@@ -61,6 +65,8 @@ spec:
                 sa_name: "{{ .Values.app_name -}}-{{ "{{ path.basename }}" }}"
                 app:
                   namespace: '{{- include "deploy_namespace" $ -}}'
+                infra:
+                  namespace: {{ .Values.iam.namespace }}
       destination:
         server: {{ .Values.infra.server }}
         namespace: '{{ include "infra_namespace" $ }}'

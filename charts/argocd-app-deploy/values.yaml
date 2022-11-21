@@ -30,3 +30,6 @@ app:
 infra:
   server: https://kubernetes.default.svc
   namespace: ''
+
+iam:
+  namespace: infra-admin

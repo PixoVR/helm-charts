@@ -30,7 +30,7 @@
   {{- if .Values.infra.namespace }}
     {{- .Values.infra.namespace }}
   {{- else }}
-    {{- .Values.lifecycle -}}-{{- .Values.app_name -}}
+    {{- include "deploy_namespace" $ -}}
   {{- end -}}
 {{- end -}}
 
@@ -39,7 +39,7 @@
   {{- if .Values.iam.namespace }}
     {{- .Values.iam.namespace }}
   {{- else }}
-    {{- .Values.lifecycle -}}-{{- .Values.app_name -}}
+    {{- include "infra_namespace" $ -}}
   {{- end -}}
 {{- end -}}
 
