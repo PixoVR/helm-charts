@@ -53,8 +53,8 @@
 
 
 {{- define "infra_sa_name" -}}
-  {{- if .Values.sa_name }}-infra
-    {{- .Values.sa_name }}-infra
+  {{- if .Values.sa_name }}
+    {{- .Values.sa_name -}}-infra
   {{- else }}
     {{- required "REQUIRED: infra.ksa_name" $.Values.infra.ksa_name -}}
   {{- end -}}
