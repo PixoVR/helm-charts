@@ -516,6 +516,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-21T22:02:19.077070072Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.15
+    description: A Helm chart for Kubernetes
+    digest: fafbb4642ed8d4c008d0d3dc2d06f2ba71f1df96231eead6a02745fc9aff57b6
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.18/argocd-image-updater-0.0.18.tgz
+    version: 0.0.18
+  - apiVersion: v2
     created: "2022-11-18T09:14:51.024817282Z"
     dependencies:
     - name: argocd-image-updater
@@ -1976,6 +1993,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-21T22:02:19.211144104Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.15
+    description: A Helm chart for Kubernetes
+    digest: 70d0123318d4df212555a0a0251ec67c76b94e9a33dab7a91ddf453200594396
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.20/crossplane-0.0.20.tgz
+    version: 0.0.20
+  - apiVersion: v2
     created: "2022-11-18T09:14:51.345741132Z"
     dependencies:
     - name: crossplane
@@ -2205,6 +2239,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2022-11-21T22:02:19.413235397Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.15
+    description: External DNS Operator
+    digest: dcd35ae9c3a96e76166db161850a8e3aa2f0e988c22354c93eef8875f2b334a4
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.18/external-dns-0.0.18.tgz
+    version: 0.0.18
+  - apiVersion: v2
     created: "2022-11-18T09:14:51.625977535Z"
     dependencies:
     - name: external-dns
@@ -2422,6 +2473,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-21T22:02:19.704484145Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.15
+    description: External Secrets Operator
+    digest: 424bddff19a53711b6c02fa812206f67dd3b4551672267e9a96736282dafb931
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.19/external-secrets-0.0.19.tgz
+    version: 0.0.19
   - apiVersion: v2
     created: "2022-11-18T09:14:51.837245477Z"
     dependencies:
@@ -2719,6 +2787,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-21T22:02:19.875952291Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.15
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: b6ab859d83815a1115437c369223d67051c81a50b1104ad5bfbdf7aa437bf4eb
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.24/web-app-0.0.24.tgz
+    version: 0.0.24
   - apiVersion: v2
     created: "2022-11-21T21:15:02.351084032Z"
     dependencies:
