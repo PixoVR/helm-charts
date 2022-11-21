@@ -65,7 +65,7 @@ spec:
                 sa_name: "{{ .Values.app_name -}}-{{ "{{ path.basename }}" }}"
                 app:
                   namespace: '{{- include "deploy_namespace" $ -}}'
-                infra:
+                iam:
                   namespace: {{ .Values.iam.namespace }}
       destination:
         server: {{ .Values.infra.server }}
