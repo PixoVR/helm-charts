@@ -216,6 +216,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-22T23:25:40.23326688Z"
+    description: Deploys ArgoCD tenant apps
+    digest: 2c70e7fb0b57acec6769e73c57c92cef017ed7bc80265d6ce1f55b60320acdd3
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.62/argocd-app-deploy-0.0.62.tgz
+    version: 0.0.62
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-22T06:30:44.876300364Z"
     description: Deploys ArgoCD tenant apps
     digest: f1dc296d82802d9564c2764e4891821c171caa85a359e613a42091ed1496648f
@@ -1166,6 +1176,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T23:25:40.436457487Z"
+    description: Initializes ArgoCD platform
+    digest: f0ea0db2a7ccd17892fa9a81ba85be245ade72e071f14f845322ee334e5e732e
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.100/argocd-platform-init-0.0.100.tgz
+    version: 0.0.100
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-22T08:42:04.519174625Z"
@@ -2137,6 +2157,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T23:25:40.643122433Z"
+    description: Deploys ArgoCD platform tenants
+    digest: f140eff269bd220a914aac8a02d206f4281292104c1366983829a1e2604e2604
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.75/argocd-tenant-app-sets-0.0.75.tgz
+    version: 0.0.75
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-22T06:30:45.381466693Z"
