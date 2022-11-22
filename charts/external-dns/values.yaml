@@ -13,15 +13,7 @@ app_iam:
     ksa_name: external-dns
     namespace: external-dns
 
-serviceAccount:
-  create: true
-  name: external-dns
-
 external-dns:
-  serviceAccount:
-    create: false
-    name: external-dns
-
   provider: google
   policy: sync
   extraArgs:

@@ -13,15 +13,8 @@ app_iam:
     ksa_name: external-secrets
     namespace: external-secrets
 
-serviceAccount:
-  create: true
-  name: external-secrets
 
 external-secrets:
-  serviceAccount:
-    create: false
-    name: external-secrets
-
   resources:
     requests:
       cpu: ".01"

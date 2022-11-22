@@ -47,6 +47,10 @@ spec:
             gke_project_id: {{ .Values.gke_project_id }}
             dns_project_id: {{ .Values.dns_project_id }}
             argocd-image-updater:
+              argocd-image-updater:
+                serviceAccount:
+                  annotations:
+                    serviceAccount.annotations.iam.gke.io/gcp-service-account: image-updater@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
@@ -59,26 +63,38 @@ spec:
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             crossplane:
+              crossplane:
+                serviceAccount:
+                  annotations:
+                    serviceAccount.annotations.iam.gke.io/gcp-service-account: crossplane-gcp@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             external-secrets:
+              external-secrets:
+                serviceAccount:
+                  annotations:
+                    serviceAccount.annotations.iam.gke.io/gcp-service-account: external-secrets@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             external-dns:
+              external-dns:
+                serviceAccount:
+                  annotations:
+                    serviceAccount.annotations.iam.gke.io/gcp-service-account: external-dns@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                extraArgs:
+                  - --google-project={{- .Values.dns_project_id }}
+                  - --txt-owner-id={{ "{{ nameNormalized }}" }}
               app_iam: 
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.dns_project_id }}
-              extraArgs:
-                - --google-project={{- .Values.dns_project_id }}
-                - --txt-owner-id={{ "{{ nameNormalized }}" }}
             infra-admin:
               parent_folder_id: {{ .Values.parent_folder_id }}
               gke_project_id: {{ .Values.gke_project_id }}
