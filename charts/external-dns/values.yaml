@@ -21,14 +21,12 @@ external-dns:
   serviceAccount:
     create: false
     name: external-dns
-    annotations:
-      iam.gke.io/gcp-service-account: external-dns@walker-pixo-init-project.iam.gserviceaccount.com
 
   provider: google
   policy: sync
   extraArgs:
-  - --google-project=walker-pixo-init-project
-  - --txt-owner-id=walker-sandbox-cpl
+  - --google-project=replace-me
+  - --txt-owner-id=replace-me
 
   securityContext:
     allowPrivilegeEscalation: false
