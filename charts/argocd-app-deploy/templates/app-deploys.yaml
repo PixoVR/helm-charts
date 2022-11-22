@@ -65,7 +65,7 @@ spec:
             web-app:
               {{- if .Values.multi_cluster }}
               cpl_cluster_name: {{ .Values.cpl_cluster_name }}
-              cluster_name: {{ "{{ server }}" }}
+              cluster_name: {{ "{{ nameNormalized }}" }}
               {{- end }}
               github_org: {{ .Values.github_org }}
               app_project_id: {{ required "app_project_id" .Values.app_project_id }}
