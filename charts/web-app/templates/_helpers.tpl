@@ -19,28 +19,15 @@
 
 
 {{- define "api_domain" -}}
-  {{- if eq .Values.lifecycle "prod" }}
-    {{- "api" -}}.{{- include "domain" . -}}
-  {{- else }}
-    {{- include "lifecycle" $ -}}.api.{{- include "domain" . -}}
-  {{- end }}
-{{- end }}
-
-
-{{- define "subdomain" -}}
-  {{- if .Values.subdomain -}}
-    {{- .Values.subdomain }}.{{- include "domain" $ -}}
-  {{- else }}
-    {{- include "domain" $ }}
-  {{- end }}
+  {{- "api" -}}.{{- include "app_domain" $ -}}
 {{- end }}
 
 
 {{- define "full_domain" -}}
-  {{- if eq .Values.lifecycle "prod" }}
-    {{- include "subdomain" . }}
+  {{- if .Values.subdomain -}}
+    {{- .Values.subdomain }}.{{- include "app_domain" $ -}}
   {{- else }}
-    {{- include "lifecycle" $ -}}.{{- include "subdomain" . -}}
+    {{- include "app_domain" $ }}
   {{- end }}
 {{- end }}
 
