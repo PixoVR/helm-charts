@@ -23,7 +23,7 @@
 {{- end }}
 
 
-{{- define "full_domain" -}}
+{{- define "sub_domain" -}}
   {{- if .Values.subdomain }}
     {{- .Values.subdomain -}}.{{- include "app_domain" . }}
   {{- else }}
@@ -32,8 +32,21 @@
 {{- end }}
 
 
+{{- define "full_domain" -}}
+  {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+    {{- include "sub_domain" . }}
+  {{- else }}
+    {{- .Values.cluster_name -}}.{{- include "sub_domain" . }}
+  {{- end }}
+{{- end }}
+
+
 {{- define "api_domain" -}}
-  {{- "api" -}}.{{- include "app_domain" $ -}}
+  {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+    {{- "api" -}}.{{- include "app_domain" $ -}}
+  {{- else }}
+    {{- .Values.cluster_name -}}.{{- "api" -}}.{{- include "app_domain" $ -}}
+  {{- end }}
 {{- end }}
 
 
