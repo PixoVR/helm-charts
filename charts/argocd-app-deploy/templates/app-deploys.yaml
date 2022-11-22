@@ -75,7 +75,6 @@ spec:
               domain: '{{ required "app_domain" .Values.app_domain }}'
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
               app_code: {{ .Values.app_name }}
-              infra_sa_name: "{{ "{{ path.basename }}" }}-infra"
               microservice_name: '{{ "{{ path.basename }}" }}'
               sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
               infra:
