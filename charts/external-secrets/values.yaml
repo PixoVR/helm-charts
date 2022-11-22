@@ -20,6 +20,7 @@ serviceAccount:
 external-secrets:
   serviceAccount:
     create: false
+    name: external-secrets
 
   resources:
     requests:
