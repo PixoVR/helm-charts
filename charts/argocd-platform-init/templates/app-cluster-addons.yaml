@@ -77,8 +77,8 @@ spec:
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.dns_project_id }}
               extraArgs:
-              - --google-project={{- .Values.dns_project_id }}
-              - --txt-owner-id={{ "{{ nameNormalized }}" }}
+                - --google-project={{- .Values.dns_project_id }}
+                - --txt-owner-id={{ "{{ nameNormalized }}" }}
             infra-admin:
               parent_folder_id: {{ .Values.parent_folder_id }}
               gke_project_id: {{ .Values.gke_project_id }}
