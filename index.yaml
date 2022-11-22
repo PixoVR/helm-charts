@@ -796,6 +796,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-22T19:37:11.183713994Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for Kubernetes
+    digest: ebd2e345aba7e8f8f94a4e4985528f45a8b5e6e222cb5c1b489cf389d42b86f0
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.29/argocd-image-updater-0.0.29.tgz
+    version: 0.0.29
+  - apiVersion: v2
     created: "2022-11-22T19:35:19.309845723Z"
     dependencies:
     - name: argocd-image-updater
@@ -2812,6 +2829,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-22T19:37:11.344061187Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for Kubernetes
+    digest: 29d00c4c7505d3611d7fc941452f55406f620329151f026658372f06c0d81a8f
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.30/crossplane-0.0.30.tgz
+    version: 0.0.30
+  - apiVersion: v2
     created: "2022-11-22T19:35:19.478502494Z"
     dependencies:
     - name: crossplane
@@ -3176,6 +3210,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/crossplane-gke-0.0.1/crossplane-gke-0.0.1.tgz
     version: 0.0.1
   external-dns:
+  - apiVersion: v2
+    created: "2022-11-22T19:37:11.503679071Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: External DNS Operator
+    digest: 86668958b305a84cf8662b46bd56ae3eab3273e54934164ec773e9a8fa3f1390
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.30/external-dns-0.0.30.tgz
+    version: 0.0.30
   - apiVersion: v2
     created: "2022-11-22T19:35:19.626455783Z"
     dependencies:
@@ -3547,6 +3598,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-22T19:37:11.6756095Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: External Secrets Operator
+    digest: 407aac3b1fc37c567249767709ccf74bfa17007c1adcc93fda9d0e63176fdfec
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.31/external-secrets-0.0.31.tgz
+    version: 0.0.31
   - apiVersion: v2
     created: "2022-11-22T19:35:19.792937946Z"
     dependencies:
@@ -3997,6 +4065,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-22T19:37:11.849159349Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: 57e598d48d22a2b6f3f0f3cfeede435a03d81dd5d29f909bca657d5783a34df3
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.42/web-app-0.0.42.tgz
+    version: 0.0.42
   - apiVersion: v2
     created: "2022-11-22T19:35:19.949046567Z"
     dependencies:
