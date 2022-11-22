@@ -21,8 +21,7 @@ folder:
 
 gke:
   enabled: false
-  infra_roles:
-    - iam.serviceAccountTokenCreator
+  infra_roles: []
     # - compute.publicIpAdmin
   app_roles: []
 
@@ -36,11 +35,9 @@ db:
 
 sa:
   enabled: false
-  infra_roles:
-    - iam.serviceAccountUser
-    - iam.serviceAccountTokenCreator
+  infra_roles: []
+  app_roles: []
   user_roles:
-    - iam.serviceAccountUser
     - iam.serviceAccountTokenCreator
 
 app:
