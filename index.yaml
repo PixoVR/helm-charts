@@ -3,6 +3,16 @@ entries:
   app-iam:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-22T06:30:44.640090733Z"
+    description: Deploys app service accounts and workload identity
+    digest: 15b9fdeccd2a3365b4ffea07b65c6f7dba08afd0f18caeaabbc39ff361de9747
+    name: app-iam
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/app-iam-0.0.26/app-iam-0.0.26.tgz
+    version: 0.0.26
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-22T04:42:30.291267671Z"
     description: Deploys app service accounts and workload identity
     digest: e58a7a4e1ddec07e263d3dac6a4519bf6d396c5a390937d9cd665e4cb6768e76
@@ -184,6 +194,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argo-cd-0.0.1/argo-cd-0.0.1.tgz
     version: 0.0.1
   argocd-app-deploy:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T06:30:44.876300364Z"
+    description: Deploys ArgoCD tenant apps
+    digest: f1dc296d82802d9564c2764e4891821c171caa85a359e613a42091ed1496648f
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.61/argocd-app-deploy-0.0.61.tgz
+    version: 0.0.61
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-22T05:28:58.560775978Z"
@@ -756,6 +776,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2022-11-22T06:30:45.047670652Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.24
+    description: A Helm chart for Kubernetes
+    digest: 466c697edd7d725fb751b6e13dc406e62b38b9c044f7c75589b9c43f49d18a1d
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.25/argocd-image-updater-0.0.25.tgz
+    version: 0.0.25
+  - apiVersion: v2
     created: "2022-11-21T23:06:38.600152163Z"
     dependencies:
     - name: argocd-image-updater
@@ -1041,6 +1078,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T06:30:45.214485973Z"
+    description: Initializes ArgoCD platform
+    digest: b77c891a91e53c1dd52a31d57ab4f598fcf85b5cc3b2b7a3a74b7e5e4e94c765
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.96/argocd-platform-init-0.0.96.tgz
+    version: 0.0.96
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-22T05:28:58.68011709Z"
@@ -1974,6 +2021,16 @@ entries:
   argocd-tenant-app-sets:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-22T06:30:45.381466693Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 7c59c379f37996aa3600a5c384b9009eda49515e0c6162a1ac4f9534ac6de01a
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.74/argocd-tenant-app-sets-0.0.74.tgz
+    version: 0.0.74
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-22T05:28:58.829012282Z"
     description: Deploys ArgoCD platform tenants
     digest: 709d6c62daa3f5cc51fed6dbb8f663721c7a5b0cb7b8848582b306f3cca184e2
@@ -2654,6 +2711,23 @@ entries:
     version: 0.0.3
   crossplane:
   - apiVersion: v2
+    created: "2022-11-22T06:30:45.546061629Z"
+    dependencies:
+    - name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.8.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.21
+    description: A Helm chart for Kubernetes
+    digest: bab3f3f31a24daa21205ffa66bbeb90df074c160035ba700de4fd3321af3ecbb
+    name: crossplane
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/crossplane-0.0.26/crossplane-0.0.26.tgz
+    version: 0.0.26
+  - apiVersion: v2
     created: "2022-11-21T23:06:38.749028117Z"
     dependencies:
     - name: crossplane
@@ -2951,6 +3025,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2022-11-22T06:30:45.688027126Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.11.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.24
+    description: External DNS Operator
+    digest: cdd30937d221256480d5331661d365fa4de473403822b970347a53417bed40d6
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.25/external-dns-0.0.25.tgz
+    version: 0.0.25
+  - apiVersion: v2
     created: "2022-11-21T23:06:38.915796083Z"
     dependencies:
     - name: external-dns
@@ -3236,6 +3327,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.1/external-dns-0.0.1.tgz
     version: 0.0.1
   external-secrets:
+  - apiVersion: v2
+    created: "2022-11-22T06:30:45.92605845Z"
+    dependencies:
+    - name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: 0.5.6
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.24
+    description: External Secrets Operator
+    digest: cbc031bc350872d6dbac47fc5eea22fdf7e970cdc3db49abc81135aa3c1264ef
+    name: external-secrets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-secrets-0.0.26/external-secrets-0.0.26.tgz
+    version: 0.0.26
   - apiVersion: v2
     created: "2022-11-21T23:06:39.054550279Z"
     dependencies:
@@ -3601,6 +3709,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2022-11-22T06:30:46.094093444Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.22
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: ef1dd439d027618a419107ce64929fe66709ef78aee9884bb4d026a7566ecdb3
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.33/web-app-0.0.33.tgz
+    version: 0.0.33
   - apiVersion: v2
     created: "2022-11-22T05:49:20.551684307Z"
     dependencies:
