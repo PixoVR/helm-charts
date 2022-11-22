@@ -73,12 +73,12 @@ spec:
               sa_project_id: {{ required "sa_project_id" .Values.sa_project_id }}
               gke_project_id: {{ required "gke_project_id" .Values.gke_project_id }}
               domain: '{{ required "app_domain" .Values.app_domain }}'
+              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
               app_code: {{ .Values.app_name }}
               infra_sa_name: "{{ "{{ path.basename }}" }}-infra"
-              sa_name: "{{ "{{ path.basename }}" }}"
               microservice_name: '{{ "{{ path.basename }}" }}'
-              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
-              ksa_name: {{ "{{ path.basename }}" }}-workload
+              sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
+              ksa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-workload"
               app_iam: 
                 enabled: false
       destination:
