@@ -41,19 +41,18 @@ spec:
           releaseName: '{{- "{{ app.lifecycle }}" -}}-{{- .Values.app_name -}}-{{- "{{ path.basename }}" -}}'
           ignoreMissingValueFiles: true
           values: |
-            app_iam: 
-              sa_project_id: {{ .Values.sa_project_id }}
-              gke_project_id: {{ .Values.gke_project_id }}
-              app_project_id: {{ .Values.app_project_id }}
-              db_project_id: {{ .Values.db_project_id }}
-              sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" -}}"
-              target_namespace: '{{- include "iam_namespace" $ -}}'
-              app:
-                namespace: '{{- include "deploy_namespace" $ -}}'
-              infra:
-                namespace: '{{- include "infra_namespace" $ -}}'
-              iam:
-                namespace: '{{- include "iam_namespace" $ -}}'
+            sa_project_id: {{ .Values.sa_project_id }}
+            gke_project_id: {{ .Values.gke_project_id }}
+            app_project_id: {{ .Values.app_project_id }}
+            db_project_id: {{ .Values.db_project_id }}
+            sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" -}}"
+            target_namespace: '{{- include "iam_namespace" $ -}}'
+            app:
+              namespace: '{{- include "deploy_namespace" $ -}}'
+            infra:
+              namespace: '{{- include "infra_namespace" $ -}}'
+            iam:
+              namespace: '{{- include "iam_namespace" $ -}}'
       destination:
         server: {{ .Values.infra.server }}
         namespace: '{{ include "iam_namespace" $ }}'
