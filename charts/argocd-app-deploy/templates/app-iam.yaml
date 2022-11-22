@@ -47,6 +47,7 @@ spec:
             db_project_id: {{ .Values.db_project_id }}
             sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" -}}"
             target_namespace: '{{- include "iam_namespace" $ -}}'
+            add_bindings: {{ .Values.add_bindings }}
             sa:
               enabled: {{ .Values.sa.enabled }}
             gke:

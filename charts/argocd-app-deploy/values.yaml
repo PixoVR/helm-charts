@@ -7,6 +7,7 @@ helm_charts_repo: https://pixovr.github.io/helm-charts
 iam_chart: app-iam
 iam_chart_version: 0.0.21
 
+add_bindings: true
 
 app_project_id: app-project
 sa_project_id: sa-project
