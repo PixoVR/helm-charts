@@ -9,7 +9,7 @@
 {{- end }}
 
 
-{{- define "app_domain" -}}
+{{- define "lifecycle_domain" -}}
   {{- if eq .Values.lifecycle "prod" }}
     {{- include "domain" . }}
   {{- else }}
@@ -18,17 +18,22 @@
 {{- end }}
 
 
-{{- define "api_domain" -}}
-  {{- "api" -}}.{{- include "app_domain" $ -}}
+{{- define "app_domain" -}}
+  {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
 {{- end }}
 
 
 {{- define "full_domain" -}}
-  {{- if .Values.subdomain -}}
-    {{- .Values.subdomain }}.{{- include "app_domain" $ -}}
+  {{- if .Values.subdomain }}
+    {{- .Values.subdomain -}}.{{- include "app_domain" . }}
   {{- else }}
-    {{- include "app_domain" $ }}
+    {{- include "app_domain" . }}
   {{- end }}
+{{- end }}
+
+
+{{- define "api_domain" -}}
+  {{- "api" -}}.{{- include "app_domain" $ -}}
 {{- end }}
 
 
