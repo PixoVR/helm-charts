@@ -67,6 +67,7 @@ spec:
               cpl_cluster_name: {{ .Values.cpl_cluster_name }}
               cluster_name: {{ "{{ nameNormalized }}" }}
               {{- end }}
+              multi_cluster: {{ .Values.multi_cluster }}
               github_org: {{ .Values.github_org }}
               app_project_id: {{ required "app_project_id" .Values.app_project_id }}
               db_project_id: {{ required "db_project_id" .Values.db_project_id }}
