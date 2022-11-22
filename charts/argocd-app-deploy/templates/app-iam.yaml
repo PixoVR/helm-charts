@@ -45,7 +45,7 @@ spec:
             gke_project_id: {{ .Values.gke_project_id }}
             app_project_id: {{ .Values.app_project_id }}
             db_project_id: {{ .Values.db_project_id }}
-            sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" -}}"
+            sa_name: "{{ "{{ path.basename }}" }}"
             target_namespace: '{{- include "iam_namespace" $ -}}'
             add_bindings: {{ .Values.add_bindings }}
             sa:
@@ -57,6 +57,7 @@ spec:
             app:
               enabled: {{ .Values.app.enabled }}
               namespace: '{{- include "deploy_namespace" $ -}}'
+              ksa_name: {{ "{{ path.basename }}" }}-workload
             infra:
               namespace: '{{- include "infra_namespace" $ -}}'
             iam:

@@ -165,7 +165,7 @@
   {{- if $.Values.app_admin_sa }}
     {{- $.Values.app_admin_sa }}
   {{- else }}
-    {{- .Values.infra_ksa_name -}}@{{- include "sa_project_id" $ -}}.iam.gserviceaccount.com
+    {{- .Values.infra_sa_name -}}@{{- include "sa_project_id" $ -}}.iam.gserviceaccount.com
   {{- end }}
 {{- end -}}
 
@@ -174,7 +174,7 @@
   {{- if $.Values.app_sa }}
     {{- $.Values.app_sa }}
   {{- else }}
-    {{- .Values.ksa_name -}}@{{- include "sa_project_id" $ -}}.iam
+    {{- .Values.sa_name -}}@{{- include "sa_project_id" $ -}}.iam
   {{- end }}
 {{- end -}}
 

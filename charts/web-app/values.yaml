@@ -11,28 +11,10 @@ lifecycle: dev
 app_code: sample
 microservice_name: web
 
-repo_name: replceme
-
-sa_project_id: ''
-gke_project_id: ''
-db_project_id: ''
-app_project_id: ''
+repo_name: replaceme
 
 app_iam:
-  sa_project_id: ''
-  gke_project_id: ''
-  db_project_id: ''
-  app_project_id: ''
   add_bindings: true
-  target_namespace: infra-admin
-  app:
-    namespace: ''
-    ksa_name: app-workload
-  infra:
-    namespace: ''
-    ksa_name: app-admin
-
-
 
 ksa_name: app-workload
 
