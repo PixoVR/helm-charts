@@ -79,7 +79,6 @@ spec:
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
               app_iam: 
                 enabled: false
-                
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ include "deploy_namespace" $ }}'
