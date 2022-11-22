@@ -50,14 +50,18 @@ spec:
               argocd-image-updater:
                 serviceAccount:
                   annotations:
-                    serviceAccount.annotations.iam.gke.io/gcp-service-account: image-updater@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                    iam.gke.io/gcp-service-account: image-updater@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             backstage:
               app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
@@ -66,8 +70,10 @@ spec:
               crossplane:
                 serviceAccount:
                   annotations:
-                    serviceAccount.annotations.iam.gke.io/gcp-service-account: crossplane-gcp@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                    iam.gke.io/gcp-service-account: crossplane-gcp@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
@@ -76,8 +82,10 @@ spec:
               external-secrets:
                 serviceAccount:
                   annotations:
-                    serviceAccount.annotations.iam.gke.io/gcp-service-account: external-secrets@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                    iam.gke.io/gcp-service-account: external-secrets@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
               app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
@@ -86,11 +94,13 @@ spec:
               external-dns:
                 serviceAccount:
                   annotations:
-                    serviceAccount.annotations.iam.gke.io/gcp-service-account: external-dns@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                    iam.gke.io/gcp-service-account: external-dns@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
                 extraArgs:
                   - --google-project={{- .Values.dns_project_id }}
                   - --txt-owner-id={{ "{{ nameNormalized }}" }}
               app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
                 parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}

@@ -26,6 +26,9 @@ destination_server: https://kubernetes.default.svc
 cpl_cluster_addon_charts_filepath: kustomize/addons/charts/*/cpl-config.yaml
 cpl_cluster_addon_manifests_filepath: kustomize/addons/manifests/*/cpl-config.yaml
 
+app:
+  enabled: false
+
 app_cluster_addon_charts_filepath: kustomize/addons/charts/*/app-config.yaml
 app_cluster_addon_manifests_filepath: kustomize/addons/manifests/*/app-config.yaml
 
