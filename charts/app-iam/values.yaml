@@ -14,12 +14,17 @@ infra:
   namespace: ''
   ksa_name: cnrm-controller-manager-infra-admin
 
+parent_folder_id: ''
+folder:
+  infra_roles: []
+  app_roles: []
+
 gke:
   enabled: false
   infra_roles:
     - iam.serviceAccountTokenCreator
     # - compute.publicIpAdmin
-  roles: []
+  app_roles: []
 
 db:
   enabled: false

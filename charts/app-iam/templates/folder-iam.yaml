@@ -1,0 +1,35 @@
+{{- if .Values.enabled }}
+{{- if .Values.add_bindings }}
+{{- if .Values.parent_folder_id }}
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: {{ .Release.Name -}}-folder-policy
+  namespace: {{ .Values.target_namespace }}
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Folder
+    external: '{{- .Values.parent_folder_id -}}'
+  bindings:
+    {{- range .Values.folder.infra_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "infra_sa_name" $ }}'
+            namespace: {{ $.Values.target_namespace }}
+    {{- end }}
+    {{- range .Values.folder.app_roles }}
+    - role: roles/{{- . }}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: '{{ include "sa_name" $ }}'
+            namespace: {{ $.Values.target_namespace }}
+    {{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}

@@ -6,11 +6,12 @@ app_iam:
   app_project_id: ''
   sa_name: external-secrets
   add_bindings: true
+  folder:
+    app_roles:
+      - secretmanager.secretAccessor
   app:
     ksa_name: external-secrets
     namespace: external-secrets
-    roles:
-      - secretmanager.secretAccessor
 
 serviceAccount:
   create: true

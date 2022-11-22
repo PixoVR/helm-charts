@@ -12,7 +12,8 @@ app_iam:
   app:
     ksa_name: image-updater
     namespace: argocd
-    roles:
+  folder:
+    app_roles:
       - storage.objectViewer
       - iam.serviceAccountTokenCreator
 

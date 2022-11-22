@@ -36,31 +36,37 @@ spec:
           releaseName: '{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
           values: |
+            parent_folder_id: {{ .Values.parent_folder_id }}
             sa_project_id: {{ .Values.sa_project_id }}
             gke_project_id: {{ .Values.gke_project_id }}
             dns_project_id: {{ .Values.dns_project_id }}
             argocd-image-updater:
               app_iam: 
+                parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             backstage:
               app_iam: 
+                parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             crossplane:
               app_iam: 
+                parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             external-secrets:
               app_iam: 
+                parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             external-dns:
               app_iam: 
+                parent_folder_id: {{ .Values.parent_folder_id }}
                 sa_project_id: {{ .Values.sa_project_id }}
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.dns_project_id }}
@@ -68,6 +74,7 @@ spec:
               - --google-project={{- .Values.dns_project_id }}
               - --txt-owner-id={{ "{{ nameNormalized }}" }}
             infra-admin:
+              parent_folder_id: {{ .Values.parent_folder_id }}
               gke_project_id: {{ .Values.gke_project_id }}
       destination:
         server: {{ .Values.cpl_server }}
