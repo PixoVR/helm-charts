@@ -31,7 +31,17 @@ target_revision: HEAD
 argocd_namespace: argocd
 argocd_project: platform
 
+sa:
+  enabled: true
+
+gke:
+  enabled: true
+
+db:
+  enabled: true
+
 app:
+  enabled: true
   server: https://kubernetes.default.svc
   namespace: ''
 

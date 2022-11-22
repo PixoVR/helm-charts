@@ -47,7 +47,14 @@ spec:
             db_project_id: {{ .Values.db_project_id }}
             sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" -}}"
             target_namespace: '{{- include "iam_namespace" $ -}}'
+            sa:
+              enabled: {{ .Values.sa.enabled }}
+            gke:
+              enabled: {{ .Values.gke.enabled }}
+            db:
+              enabled: {{ .Values.db.enabled }}
             app:
+              enabled: {{ .Values.app.enabled }}
               namespace: '{{- include "deploy_namespace" $ -}}'
             infra:
               namespace: '{{- include "infra_namespace" $ -}}'
