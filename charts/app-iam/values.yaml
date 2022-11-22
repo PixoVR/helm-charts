@@ -16,7 +16,8 @@ infra:
 
 gke:
   enabled: false
-  infra_roles: []
+  infra_roles:
+    - iam.serviceAccountTokenCreator
     # - compute.publicIpAdmin
   roles: []
 
@@ -31,8 +32,10 @@ db:
 sa:
   enabled: false
   infra_roles:
+    - iam.serviceAccountUser
     - iam.serviceAccountTokenCreator
   user_roles:
+    - iam.serviceAccountUser
     - iam.serviceAccountTokenCreator
 
 app:

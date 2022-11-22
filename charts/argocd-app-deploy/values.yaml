@@ -5,7 +5,7 @@ revision: HEAD
 
 helm_charts_repo: https://pixovr.github.io/helm-charts
 iam_chart: app-iam
-iam_chart_version: 0.0.21
+iam_chart_version: 0.0.23
 
 add_bindings: true
 
