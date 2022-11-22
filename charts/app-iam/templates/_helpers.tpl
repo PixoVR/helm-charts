@@ -44,7 +44,7 @@
 
 
 {{- define "sa_name" -}}
-  {{- if ne .Values.sa_name "" }}
+  {{- if .Values.sa_name }}
     {{- .Values.sa_name }}
   {{- else }}
     {{- required "REQUIRED: app.ksa_name" $.Values.app.ksa_name -}}
@@ -53,7 +53,7 @@
 
 
 {{- define "infra_sa_name" -}}
-  {{- if ne .Values.sa_name "" }}
+  {{- if .Values.sa_name }}
     {{- .Values.sa_name -}}-infra
   {{- else }}
     {{- required "REQUIRED: infra.ksa_name" $.Values.infra.ksa_name -}}
