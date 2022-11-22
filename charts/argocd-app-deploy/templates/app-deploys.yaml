@@ -74,7 +74,6 @@ spec:
               gke_project_id: {{ required "gke_project_id" .Values.gke_project_id }}
               app_code: {{ .Values.app_name }}
               domain: '{{ required "app_domain" .Values.app_domain }}'
-              create_infra: false
               microservice_name: '{{ "{{ path.basename }}" }}'
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
               app_iam: 

@@ -37,6 +37,7 @@ spec:
             {{- if .Values.multi_cluster }}
             cpl_cluster_name: {{ .Values.cpl_cluster_name }}
             {{- end }}
+            revision: {{ .Values.revision }}
             lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
             github_org: {{ required "github_org" .Values.github_org }} 
             repo_name: {{ required "repo_name" .Values.repo_name }}
