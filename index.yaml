@@ -166,6 +166,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-11-22T02:09:20.161935537Z"
+    description: Deploys ArgoCD tenant apps
+    digest: c6b3508a833382c534e8be96e288ea942ed5bf4a17cc774b4deb20c3568c1c32
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.47/argocd-app-deploy-0.0.47.tgz
+    version: 0.0.47
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-21T22:59:01.873608673Z"
     description: Deploys ArgoCD tenant apps
     digest: 8dff14c656ccb3fc4ef2cef3ded943cfe82099e081a6e2473e90aac2b4ca7efc
@@ -881,6 +891,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T02:09:20.282809908Z"
+    description: Initializes ArgoCD platform
+    digest: 5e8454ecac2766b161bc2a86413011ab64140549afcf1dabe6407b1531c623b2
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.83/argocd-platform-init-0.0.83.tgz
+    version: 0.0.83
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-21T22:59:02.15091061Z"
@@ -1682,6 +1702,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-22T02:09:20.416460671Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 546023bfed09060cc711a8c316e84224b924242d9b1e7e664ebccab9ce1701b4
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.60/argocd-tenant-app-sets-0.0.60.tgz
+    version: 0.0.60
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-21T22:59:02.403283052Z"
