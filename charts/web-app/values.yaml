@@ -27,7 +27,7 @@ toleration: ''
 primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
-create_sa: false
+create_sa: true
 sa_microservice_name: api
 
 demo:
