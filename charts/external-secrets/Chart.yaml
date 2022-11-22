@@ -2,7 +2,7 @@ apiVersion: v2
 name: external-secrets
 description: External Secrets Operator
 type: application
-version: 0.0.29
+version: 0.0.30
 
 dependencies:
 - name: external-secrets
