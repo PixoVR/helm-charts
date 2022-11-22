@@ -78,6 +78,8 @@ spec:
               infra_sa_name: "{{ "{{ path.basename }}" }}-infra"
               microservice_name: '{{ "{{ path.basename }}" }}'
               sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
+              infra:
+                sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
               ksa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-workload"
               app_iam: 
                 enabled: false

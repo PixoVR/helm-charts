@@ -18,6 +18,9 @@ app_iam:
 
 ksa_name: app-workload
 
+infra:
+  sa_name: app-infra
+
 
 toleration: ''
 
