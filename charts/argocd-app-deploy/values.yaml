@@ -3,8 +3,16 @@ github_org: PixoVR
 repo_name: replaceme
 revision: HEAD
 
-app_project_id: replaceme
-sa_project_id: replaceme
+helm_charts_repo: https://pixovr.github.io/helm-charts
+iam_chart: app-iam
+iam_chart_version: 0.0.21
+
+
+app_project_id: app-project
+sa_project_id: sa-project
+db_project_id: db-project
+gke_project_id: gke-project
+app_domain: example.com
 
 app_name: sample
 
