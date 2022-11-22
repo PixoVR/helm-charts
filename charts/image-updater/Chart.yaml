@@ -9,6 +9,6 @@ dependencies:
   version: "0.8.0"
   repository: "https://argoproj.github.io/argo-helm"
 - name: app-iam
-  version: 0.0.26
+  version: 0.0.27
   repository: "https://pixovr.github.io/helm-charts"
   alias: app_iam
