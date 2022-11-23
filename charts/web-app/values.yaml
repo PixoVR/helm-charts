@@ -10,6 +10,7 @@ github_org: PixoVR
 lifecycle: dev
 app_code: sample
 microservice_name: web
+default_branch: main
 
 repo_name: replaceme
 
