@@ -3,6 +3,6 @@
 **/secrets
 **/.terraform*
 **/.env
+**/.idea
 **/Chart.lock
-charts/**/charts
-
+**/*.tgz
