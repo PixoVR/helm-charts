@@ -10,7 +10,7 @@
 
 
 {{- define "lifecycle_domain" -}}
-  {{- if eq .Values.lifecycle "prod" }}
+  {{- if or (eq .Values.lifecycle "prod") (not .Values.add_lifecycle_to_domain) }}
     {{- include "domain" . }}
   {{- else }}
     {{- include "lifecycle" $ -}}.{{- include "domain" . }}

@@ -5,6 +5,7 @@ create_infra: true
 deploy_app: true
 nginx: false
 node: false
+add_lifecycle_to_domain: false
 
 github_org: PixoVR
 lifecycle: dev
