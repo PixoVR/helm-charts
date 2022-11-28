@@ -82,7 +82,7 @@ spec:
                 sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
               ksa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-workload"
               ingress:
-                enabled: "{{- .Values.app.ingress.enabled -}}"
+                enabled: {{ .Values.app.ingress.enabled }}
               app_iam: 
                 enabled: false
       destination:

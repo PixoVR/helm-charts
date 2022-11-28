@@ -49,7 +49,7 @@ spec:
             sa_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-sa-project'
             app:
               ingress:
-                enabled: "{{- .Values.apps.ingress.enabled -}}"
+                enabled: {{ .Values.apps.ingress.enabled }}
             iam:
               namespace: {{ .Values.iam_namespace }}
       destination:
