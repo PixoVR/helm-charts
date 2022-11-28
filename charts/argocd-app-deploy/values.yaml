@@ -45,6 +45,7 @@ app:
   enabled: true
   ingress:
     enabled: true
+    https: true
   server: https://kubernetes.default.svc
   namespace: ''
 

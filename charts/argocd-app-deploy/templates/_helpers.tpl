@@ -44,3 +44,21 @@
 {{- end -}}
 
 
+{{- define "deploy_repo_name" -}}
+  {{- if .Values.deploy_repo_name }}
+    {{- .Values.deploy_repo_name }}
+  {{- else }}
+    {{- required "REQUIRED: repo_name" .Values.repo_name }}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "iam_repo_name" -}}
+  {{- if .Values.iam_repo_name }}
+    {{- .Values.iam_repo_name }}
+  {{- else }}
+    {{- required "REQUIRED: repo_name" .Values.repo_name }}
+  {{- end -}}
+{{- end -}}
+
+

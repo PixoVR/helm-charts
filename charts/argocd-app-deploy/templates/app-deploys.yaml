@@ -15,7 +15,7 @@ spec:
   - matrix:
       generators:
         - git:
-            repoURL: git@github.com:{{- required "github_org" .Values.github_org -}}/{{- required "repo_name" .Values.repo_name -}}.git
+            repoURL: git@github.com:{{- required "github_org" .Values.github_org -}}/{{- include "deploy_repo_name" $ -}}.git
             revision: {{ .Values.revision }}
             files:
             - path: {{ include "services_filepath" $ }}
@@ -83,6 +83,7 @@ spec:
               ksa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-workload"
               ingress:
                 enabled: {{ .Values.app.ingress.enabled }}
+                https: {{ .Values.app.ingress.https }}
               app_iam: 
                 enabled: false
       destination:

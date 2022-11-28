@@ -21,7 +21,8 @@ apps:
   enabled: true
   ingress:
     enabled: true
+    https: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.65
+    version: 0.0.66

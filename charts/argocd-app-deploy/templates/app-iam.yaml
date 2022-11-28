@@ -13,7 +13,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- include "iam_repo_name" $ -}}.git
       revision: {{ .Values.revision }}
       files:
       - path: {{ include "services_filepath" $ }}

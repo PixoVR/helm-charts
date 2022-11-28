@@ -50,6 +50,7 @@ spec:
             app:
               ingress:
                 enabled: {{ .Values.apps.ingress.enabled }}
+                https: {{ .Values.apps.ingress.https }}
             iam:
               namespace: {{ .Values.iam_namespace }}
       destination:
