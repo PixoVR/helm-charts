@@ -29,6 +29,9 @@ spec:
         lifecycle: {{ .Values.lifecycle }}
         sa_project_id: {{ .Values.sa_project_id }}
         gke_project_id: {{ .Values.gke_project_id }}
+        apps:
+          ingress:
+            enabled: {{ .Values.tenants.ingress.enabled }}
   destination:
     server: {{ .Values.cpl_server }}
     namespace: {{ .Values.argocd_namespace }}

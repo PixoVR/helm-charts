@@ -46,6 +46,8 @@ backstage:
 
 tenants:
   enabled: true
+  ingress:
+    enabled: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-tenant-app-sets

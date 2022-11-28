@@ -19,6 +19,8 @@ cpl_cluster_name: "us-central1"
 
 apps:
   enabled: true
+  ingress:
+    enabled: true
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
