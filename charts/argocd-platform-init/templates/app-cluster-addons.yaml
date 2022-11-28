@@ -59,6 +59,8 @@ spec:
                 gke_project_id: {{ .Values.gke_project_id }}
                 app_project_id: {{ .Values.gke_project_id }}
             backstage:
+              backstage:
+                domain: {{ .Values.domain }}
               app_iam: 
                 app:
                   enabled: {{ .Values.app.enabled }}

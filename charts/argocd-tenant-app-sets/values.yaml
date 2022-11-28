@@ -3,6 +3,8 @@ github_org: PixoVR
 repo_name: replaceme
 revision: HEAD
 
+domain: ''
+
 argocd_project_name: platform
 file_path: kustomize/tenants/*/config.yaml
 destination_server: https://kubernetes.default.svc

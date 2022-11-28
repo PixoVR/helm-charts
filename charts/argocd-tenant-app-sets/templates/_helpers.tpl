@@ -9,3 +9,13 @@
 
 
 
+{{- define "app_domain" -}}
+  {{- if .Values.domain }}
+    {{- .Values.domain }}
+  {{- else }}
+    {{- "{{ app.domain }}" }}
+  {{- end -}}
+{{- end -}}
+
+
+

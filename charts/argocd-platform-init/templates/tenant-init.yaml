@@ -21,6 +21,7 @@ spec:
         parent_folder_id: {{ .Values.parent_folder_id }}
         cpl_cluster_name: {{ .Values.cpl_cluster_name }}
         github_org: {{ .Values.github_org }}
+        domain: {{ .Values.domain }}
         repo_name: {{ .Values.repo_name }}
         fullname: tenants-app-sets
         revision: {{ .Values.revision }}
