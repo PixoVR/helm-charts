@@ -11,7 +11,7 @@
 
 
 {{- define "extra_domain" -}}
-  {{- if or (eq .Values.lifecycle "prod") (not .Values.add_lifecycle_to_domain) }}
+  {{- if eq .Values.lifecycle "prod" }}
     {{- required "REQUIRED: extra_domain" .Values.extra_domain }}
   {{- else }}
     {{- include "lifecycle" $ -}}.{{- required "REQUIRED: extra_domain" .Values.extra_domain }}
