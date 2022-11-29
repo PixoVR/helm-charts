@@ -350,12 +350,8 @@ spec:
           value: {{ include "db_name" . }}
         - name: DB_USER
           value: {{ include "app_sa" . }}
-
-        {{- if eq .Values.microservice_name "api" }}
         - name: DB_PASSWORD
           value: "{{ .Values.db.password }}"
-        {{- end }}
-
         {{- end }}
 
         ports:
