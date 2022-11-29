@@ -17,6 +17,9 @@ metadata:
 spec:
   domains:
     - {{ include "full_domain" . }}
+    {{- if .Values.extra_domain }}
+    - {{ .Values.extra_domain }}
+    {{- end }}
 
 {{- end }}
 {{- end }}
