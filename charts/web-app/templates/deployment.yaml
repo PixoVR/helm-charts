@@ -187,6 +187,15 @@ spec:
         - name: GCP_PROJECT_ID
           value: "{{- include "app_project_id" $ -}}"
 
+        - name: DB_PROJECT_ID
+          value: "{{- include "db_project_id" $ -}}"
+        - name: REGION
+          value: "{{- .Values.google.region }}"
+        {{- if .Values.sql.proxy }}
+        - name: INSTANCE_NAME
+          value: "{{- include "instance_name" $ -}}"
+        {{- end }}
+
         {{- if eq .Values.microservice_name "graphql" }}
         - name: APP_ENV
         {{- else }}
