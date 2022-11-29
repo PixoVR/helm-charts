@@ -100,7 +100,7 @@ google:
     enabled: false
   wi_test: false
 
-security_policy: us-only
+security_policy: no-russia
 ssl_policy: tls-12
 
 oauth:
