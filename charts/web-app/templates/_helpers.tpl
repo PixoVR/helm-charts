@@ -9,6 +9,25 @@
 {{- end }}
 
 
+
+{{- define "extra_domain" -}}
+  {{- if or (eq .Values.lifecycle "prod") (not .Values.add_lifecycle_to_domain) }}
+    {{- required "REQUIRED: extra_domain" .Values.extra_domain }}
+  {{- else }}
+    {{- include "lifecycle" $ -}}.{{- required "REQUIRED: extra_domain" .Values.extra_domain }}
+  {{- end }}
+{{- end }}
+
+
+{{- define "extra_subdomain" -}}
+  {{- if .Values.extra_subdomain }}
+    {{ .Values.extra_subdomain }}.{{- include "extra_domain" $ }}
+  {{- else }}
+    {{- include "extra_domain" $ }}
+  {{- end }}
+{{- end }}
+
+
 {{- define "lifecycle_domain" -}}
   {{- if or (eq .Values.lifecycle "prod") (not .Values.add_lifecycle_to_domain) }}
     {{- include "domain" . }}

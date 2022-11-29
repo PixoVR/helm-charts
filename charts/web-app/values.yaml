@@ -1,12 +1,16 @@
+
 enabled: true
 local: false
 non_preemptible: false
 create_infra: true
 deploy_app: true
+
 nginx: false
 node: false
+
 add_lifecycle_to_domain: false
 extra_domain: ''
+extra_subdomain: ''
 
 github_org: PixoVR
 lifecycle: dev
