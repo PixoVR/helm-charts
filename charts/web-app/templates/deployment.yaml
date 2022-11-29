@@ -361,10 +361,10 @@ spec:
         {{- end }}
           value: {{ include "db_name" . }}
         - name: DB_USER
-        {{- if .Values.google.sql.use_iam }}
+        {{- if not .Values.google.sql.use_password }}
           value: {{ include "app_sa" . }}
         {{- else }}
-          value: {{ include "app_label" $ }}-user
+          value: {{ include "app_label" $ }}-basic
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
