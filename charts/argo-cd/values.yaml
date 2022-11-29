@@ -79,7 +79,7 @@ argo-cd:
       enabled: true
       spec:
         securityPolicy:
-          name: us-only
+          name: no-russia
         iap:
           enabled: false
           oauthclientCredentials:
