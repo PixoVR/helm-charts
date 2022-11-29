@@ -203,6 +203,17 @@ entries:
     version: 0.0.1
   argo-cd:
   - apiVersion: v2
+    created: "2022-11-29T04:12:15.040992359Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 4.9.12
+    digest: dc4136cce73d8e9a4ffae8ba8884faba095e667577793f569c0b849b5d553b18
+    name: argo-cd
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argo-cd-0.0.2/argo-cd-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2022-11-14T21:16:27.902667513Z"
     dependencies:
     - name: argo-cd
@@ -4235,20 +4246,6 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
-  - apiVersion: v2
-    created: "2022-11-29T04:11:47.931723717Z"
-    dependencies:
-    - alias: app_iam
-      name: app-iam
-      repository: https://pixovr.github.io/helm-charts
-      version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
-    digest: e66dc87d522a5d27989fbcd9d9c8d89c70ac03ca1d30f5cc6b9384b88828a905
-    name: web-app
-    type: application
-    urls:
-    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.46/web-app-0.0.46.tgz
-    version: 0.0.46
   - apiVersion: v2
     created: "2022-11-28T15:40:40.631472737Z"
     dependencies:
