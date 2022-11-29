@@ -18,7 +18,7 @@ spec:
   domains:
     - {{ include "full_domain" . }}
     {{- if .Values.extra_domain }}
-    - {{ include "extra_subdomain" }}
+    - {{ include "extra_subdomain" $ }}
     {{- end }}
 
 {{- end }}
