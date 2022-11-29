@@ -69,7 +69,7 @@
 
 
 {{- define "sa_app_label" -}}
-  {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-{{- .Values.sa_microservice_name }}
+  {{- required "REQUIRED: app_code" .Values.app_code -}}-{{- .Values.sa_microservice_name }}
 {{- end }}
 
 
@@ -178,6 +178,8 @@
 {{- define "app_sa" -}}
   {{- if $.Values.app_sa }}
     {{- $.Values.app_sa }}
+  {{- else if $.Values.sa_microservice_name }}
+    {{- include "sa_app_label" $ -}}@{{- include "sa_project_id" $ -}}.iam
   {{- else }}
     {{- .Values.sa_name -}}@{{- include "sa_project_id" $ -}}.iam
   {{- end }}
