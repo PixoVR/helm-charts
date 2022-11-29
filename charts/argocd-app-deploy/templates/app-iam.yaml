@@ -57,7 +57,7 @@ spec:
             app:
               enabled: {{ .Values.app.enabled }}
               namespace: '{{- include "deploy_namespace" $ -}}'
-              ksa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-workload"
+              ksa_name: "{{- .Values.app_name -}}-workload"
             infra:
               namespace: '{{- include "infra_namespace" $ -}}'
             iam:
