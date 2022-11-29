@@ -192,6 +192,8 @@ spec:
         - name: REGION
           value: "{{- .Values.google.region }}"
         {{- if .Values.sql.proxy }}
+        - name: MODE
+          value: "PROXY"
         - name: INSTANCE_NAME
           value: "{{- include "instance_name" $ -}}"
         {{- end }}
