@@ -86,6 +86,7 @@ google:
   registry: gcr.io
   sql:
     enabled: false
+    use_iam: true
   storage:
     enabled: false
     create: false

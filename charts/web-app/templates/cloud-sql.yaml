@@ -29,7 +29,16 @@ spec:
   instanceRef:
     external: {{ include "instance_name" $ }}
   resourceID: {{ include "app_sa" $ }}
+  {{- if .Values.google.sql.use_iam }}
   type: CLOUD_IAM_SERVICE_ACCOUNT
+  {{- else }}
+  type: BUILT_IN
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: app-secrets
+        key: db-password
+  {{- end }}
 
 {{- end }}
 {{- end }}

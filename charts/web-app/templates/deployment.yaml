@@ -353,6 +353,7 @@ spec:
         - name: DB_PORT
           value: "{{ .Values.db.port }}"
 
+
         {{- if eq .Values.microservice_name "api" }}
         - name: DB_DATABASE
         {{- else }}
@@ -360,9 +361,17 @@ spec:
         {{- end }}
           value: {{ include "db_name" . }}
         - name: DB_USER
+        {{- if .Values.google.sql.use_iam }}
           value: {{ include "app_sa" . }}
+        {{- else }}
+          value: {{ include "app_label" $ }}-user
         - name: DB_PASSWORD
-          value: "{{ .Values.db.password }}"
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: db-password
+        {{- end }}
+
         {{- end }}
 
         ports:
