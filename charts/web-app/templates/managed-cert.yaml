@@ -3,6 +3,7 @@
 
 {{- if or (.Values.ingress.enabled) (.Values.ingress.cert) }}
 {{- if .Values.ingress.https }}
+{{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
 
 apiVersion: networking.gke.io/v1 
 kind: ManagedCertificate
@@ -21,6 +22,7 @@ spec:
     - {{ include "extra_subdomain" $ }}
     {{- end }}
 
+{{- end }}
 {{- end }}
 {{- end }}
 
