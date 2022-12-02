@@ -196,7 +196,7 @@ spec:
           value: "{{- include "instance_name" $ -}}"
         {{- end }}
 
-        {{- if eq .Values.microservice_name "graphql" }}
+        {{- if or (eq .Values.microservice_name "graphql") (eq .Values.microservice_name "web") }}
         - name: APP_ENV
         {{- else }}
         - name: NODE_ENV
