@@ -40,7 +40,7 @@ spec:
       annotations:
         argocd-image-updater.argoproj.io/image-list: '{{ "{{ path.basename }}" }}=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
-        argocd-image-updater.argoproj.io/git-branch: :image-updates
+        argocd-image-updater.argoproj.io/git-branch: :{{- .Values.target_revision -}}-image-updates
 
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.pull-secret: pullsecret:argocd/gcr-credentials 
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.force-update: "true"
