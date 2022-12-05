@@ -4,6 +4,7 @@ repo_name: replaceme
 revision: HEAD
 
 helm_charts_repo: https://pixovr.github.io/helm-charts
+helm_image_alias: web-app.image.tag
 iam_chart: app-iam
 iam_chart_version: 0.0.24
 

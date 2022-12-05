@@ -38,7 +38,7 @@ spec:
         service: '{{ "{{ path.basename }}" }}'
         lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
       annotations:
-        argocd-image-updater.argoproj.io/image-list: '{{ "{{ path.basename }}" }}=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
+        argocd-image-updater.argoproj.io/image-list: 'web-app.{{ "{{ path.basename }}" }}=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
         {{- if .Values.multi_cluster }}
         argocd-image-updater.argoproj.io/git-branch: '{{ .Values.target_revision -}}:{{- .Values.target_revision -}}-{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}-image-updates-{{ "{{ .SHA256 }}" }}'
@@ -49,6 +49,7 @@ spec:
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.pull-secret: pullsecret:argocd/gcr-credentials 
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.force-update: "true"
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.update-strategy: latest
+        argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.helm.image-tag: {{ .Values.helm_image_alias }}
 
         argocd.argoproj.io/sync-wave: '{{ "{{ app.syncWave }}" }}'
       finalizers:
