@@ -56,3 +56,6 @@ infra:
 
 iam:
   namespace: infra-admin
+
+image_updater:
+  use_new_branch: false

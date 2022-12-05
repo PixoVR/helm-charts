@@ -44,6 +44,9 @@ backstage:
   chart_path: kustomize/addons/charts/backstage/chart
   image_list: backend=PUT_BACKSTAGE_IMAGE_HERE
 
+image_updater:
+  use_new_branch: false
+
 tenants:
   enabled: true
   ingress:
@@ -52,4 +55,4 @@ tenants:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-tenant-app-sets
-    version: 0.0.93
+    version: 0.0.94

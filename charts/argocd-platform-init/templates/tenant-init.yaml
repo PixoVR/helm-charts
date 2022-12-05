@@ -33,6 +33,8 @@ spec:
           ingress:
             enabled: {{ .Values.tenants.ingress.enabled }}
             https: {{ .Values.tenants.ingress.https }}
+        image_updater:
+          use_new_branch: {{ .Values.image_updater.use_new_branch }}
   destination:
     server: {{ .Values.cpl_server }}
     namespace: {{ .Values.argocd_namespace }}

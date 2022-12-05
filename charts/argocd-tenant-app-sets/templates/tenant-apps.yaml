@@ -54,6 +54,8 @@ spec:
                 https: {{ .Values.apps.ingress.https }}
             iam:
               namespace: {{ .Values.iam_namespace }}
+            image_updater:
+              use_new_branch: {{ .Values.image_updater.use_new_branch }}
       destination:
         server: {{ .Values.destination_server }}
         namespace: {{ .Values.argocd_namespace }}

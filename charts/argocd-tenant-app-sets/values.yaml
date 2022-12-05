@@ -17,6 +17,9 @@ iam_namespace: infra-admin
 multi_cluster: true
 cpl_cluster_name: "us-central1"
 
+image_updater:
+  use_new_branch: false
+
 apps:
   enabled: true
   ingress:
@@ -25,4 +28,4 @@ apps:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.78
+    version: 0.0.79

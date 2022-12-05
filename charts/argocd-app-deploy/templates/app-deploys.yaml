@@ -40,10 +40,12 @@ spec:
       annotations:
         argocd-image-updater.argoproj.io/image-list: '{{ "{{ path.basename }}" }}=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
+        {{- if .Values.image_updater.use_new_branch }}
         {{- if .Values.multi_cluster }}
         argocd-image-updater.argoproj.io/git-branch: '{{ .Values.target_revision -}}:{{- .Values.target_revision -}}-{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}-image-updates-{{ "{{ .SHA256 }}" }}'
         {{- else }}
         argocd-image-updater.argoproj.io/git-branch: {{ .Values.target_revision -}}:{{- .Values.target_revision -}}-{{ "{{ path.basename }}" }}-image-updates-{{ "{{ .SHA256 }}" }}
+        {{- end }}
         {{- end }}
 
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.pull-secret: pullsecret:argocd/gcr-credentials 
