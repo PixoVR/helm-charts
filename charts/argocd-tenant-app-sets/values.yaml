@@ -6,7 +6,7 @@ revision: HEAD
 domain: ''
 
 argocd_project_name: platform
-file_path: kustomize/tenants/*/config.yaml
+file_path: kubernetes/tenants/*/config.yaml
 destination_server: https://kubernetes.default.svc
 argocd_namespace: argocd
 target_revision: HEAD
@@ -28,4 +28,4 @@ apps:
   chart:
     repoURL: https://pixovr.github.io/helm-charts
     name: argocd-app-deploy
-    version: 0.0.79
+    version: 0.0.80

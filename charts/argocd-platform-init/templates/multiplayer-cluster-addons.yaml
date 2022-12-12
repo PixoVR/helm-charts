@@ -2,11 +2,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: app-cluster-addon-charts
+  name: multiplayer-addon-charts
   labels:
     deployment: helm
     tier: platform
-    tenant: app
+    tenant: multiplayer
   annotations:
     argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
 spec:
@@ -17,11 +17,11 @@ spec:
             repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
             revision: {{ .Values.revision }}
             files:
-            - path: {{ .Values.app_cluster_addon_charts_filepath }}
+            - path: {{ .Values.multiplayer_cluster_addon_charts_filepath }}
         - clusters:
             selector:
               matchLabels:
-                app: true
+                multiplayer: true
   template:
     metadata:
       name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
@@ -30,7 +30,7 @@ spec:
         deployment: helm
         tier: platform
       annotations:
-        argocd.argoproj.io/sync-wave: "-50"
+        argocd.argoproj.io/sync-wave: "-30"
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -47,28 +47,6 @@ spec:
             sa_project_id: {{ .Values.sa_project_id }}
             gke_project_id: {{ .Values.gke_project_id }}
             dns_project_id: {{ .Values.dns_project_id }}
-            argocd-image-updater:
-              argocd-image-updater:
-                serviceAccount:
-                  annotations:
-                    iam.gke.io/gcp-service-account: image-updater@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
-              app_iam: 
-                app:
-                  enabled: {{ .Values.app.enabled }}
-                parent_folder_id: {{ .Values.parent_folder_id }}
-                sa_project_id: {{ .Values.sa_project_id }}
-                gke_project_id: {{ .Values.gke_project_id }}
-                app_project_id: {{ .Values.gke_project_id }}
-            backstage:
-              backstage:
-                domain: {{ .Values.domain }}
-              app_iam: 
-                app:
-                  enabled: {{ .Values.app.enabled }}
-                parent_folder_id: {{ .Values.parent_folder_id }}
-                sa_project_id: {{ .Values.sa_project_id }}
-                gke_project_id: {{ .Values.gke_project_id }}
-                app_project_id: {{ .Values.gke_project_id }}
             crossplane:
               crossplane:
                 serviceAccount:
@@ -122,10 +100,11 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: app-cluster-addon-manifests
+  name: multiplater-addon-manifests
   labels:
     deployment: kustomize
     tier: platform
+    tenant: multiplayer
   annotations:
     argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
 spec:
@@ -136,11 +115,11 @@ spec:
             repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
             revision: {{ .Values.revision }}
             files:
-            - path: {{ .Values.app_cluster_addon_manifests_filepath }}
+            - path: {{ .Values.multiplayer_cluster_addon_manifests_filepath }}
         - clusters:
             selector:
               matchLabels:
-                argocd.argoproj.io/secret-type: cluster
+                multiplayer: true
   template:
     metadata:
       name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'

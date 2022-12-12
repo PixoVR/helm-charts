@@ -21,7 +21,7 @@ app_name: sample
 multi_cluster: true
 cpl_cluster_name: "us-central1"
 
-pre_tenant_services_filepath: kustomize/tenants
+pre_tenant_services_filepath: kubernetes/tenants
 post_tenant_services_filepath: services/*
 post_tenant_services_filename: app-config.yaml
 
