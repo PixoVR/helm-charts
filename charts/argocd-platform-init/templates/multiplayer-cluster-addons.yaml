@@ -21,7 +21,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                multiplayer: true
+                multiplayer: "true"
   template:
     metadata:
       name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
@@ -119,7 +119,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                multiplayer: true
+                multiplayer: "true"
   template:
     metadata:
       name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
