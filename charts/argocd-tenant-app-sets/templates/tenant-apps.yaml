@@ -48,6 +48,7 @@ spec:
             db_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-db-project'
             app_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-app-project'
             sa_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-sa-project'
+            cluster_label: '{{ "{{ app.cluster_label }}" }}'
             app:
               ingress:
                 enabled: {{ .Values.apps.ingress.enabled }}

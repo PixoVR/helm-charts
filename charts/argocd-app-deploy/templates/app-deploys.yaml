@@ -19,7 +19,14 @@ spec:
             revision: {{ .Values.revision }}
             files:
             - path: {{ include "services_filepath" $ }}
+      {{- if .Values.cluster_label }}
+        - clusters:
+            selector:
+              matchLabels:
+                {{ .Values.cluster_label -}}: true
+      {{ else }}
         - clusters: {}
+      {{ end }}
   template:
     metadata:
       {{- if .Values.multi_cluster }}
