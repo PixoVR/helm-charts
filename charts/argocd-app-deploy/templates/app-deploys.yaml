@@ -23,7 +23,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                {{ .Values.cluster_label -}}: true
+                {{ .Values.cluster_label -}}: 'true'
       {{ else }}
         - clusters: {}
       {{ end }}
