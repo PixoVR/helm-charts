@@ -72,9 +72,9 @@ target_cpu: 80
 target_mem: 128Mi
 
 email:
-  enabled: true
+  enabled: false
+  mfa: false
   sender: ''
-  mfa: true
 
 aws:
   auth:

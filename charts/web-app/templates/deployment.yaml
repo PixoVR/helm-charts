@@ -208,9 +208,9 @@ spec:
           value: https://{{- include "api_domain" $ }}
 
         {{- if .Values.email.enabled }}
-        {{- if .Values.email.mfa }}
         - name: EMAILER_EMAIL
           value: {{ .Values.email.sender }}
+        {{- if .Values.email.mfa }}
         - name: EMAILER_PASSWORD
           valueFrom:
             secretKeyRef:
