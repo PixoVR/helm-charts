@@ -76,6 +76,8 @@ spec:
           releaseName: '{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}'
           {{- end }}
           ignoreMissingValueFiles: true
+          valueFiles:
+            - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
           values: |
             web-app:
               {{- if .Values.multi_cluster }}
