@@ -71,6 +71,11 @@ max_replicas: 5
 target_cpu: 80
 target_mem: 128Mi
 
+email:
+  enabled: true
+  sender: ''
+  mfa: true
+
 aws:
   auth:
     enabled: false

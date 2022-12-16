@@ -207,6 +207,18 @@ spec:
         - name: API_URL
           value: https://{{- include "api_domain" $ }}
 
+        {{- if .Values.email.enabled }}
+        {{- if .Values.email.mfa }}
+        - name: EMAILER_EMAIL
+          value: {{ .Values.email.sender }}
+        - name: EMAILER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: email-sender-password
+        {{- end }}
+        {{- end }}
+
         {{- if .Values.google.storage.enabled }}
         {{- range .Values.google.storage.bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
