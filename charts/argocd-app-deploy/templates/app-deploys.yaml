@@ -98,9 +98,6 @@ spec:
               infra:
                 sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
               ksa_name: "{{- .Values.app_name -}}-workload"
-              ingress:
-                enabled: {{ .Values.app.ingress.enabled }}
-                https: {{ .Values.app.ingress.https }}
               app_iam: 
                 enabled: false
       destination:
