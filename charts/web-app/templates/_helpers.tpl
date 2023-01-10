@@ -9,7 +9,6 @@
 {{- end }}
 
 
-
 {{- define "extra_domain" -}}
   {{- if eq .Values.lifecycle "prod" }}
     {{- required "REQUIRED: extra_domain" .Values.extra_domain }}
@@ -214,6 +213,10 @@
   {{- include "app_label" . }}
 {{- end -}}
 
+{{- define "cronjob_name" -}}
+  {{- include "app_label" . }}
+{{- end -}}
+
 
 {{- define "service_name" -}}
   {{- include "app_label" . }}
@@ -239,6 +242,9 @@
 
 
 
+{{- define "cron_secret" -}}
+  {{- randAlphaNum 12 | quote }}
+{{- end }}
 
 
 

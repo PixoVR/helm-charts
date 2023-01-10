@@ -178,4 +178,7 @@ sendgrid:
 cilium:
   enabled: false
 
+cronjob:
+  enabled: false
+  schedule: '0 8 * * *'
 

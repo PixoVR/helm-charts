@@ -1,0 +1,46 @@
+{{- if .Values.cronjob.enabled }}
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: '{{ include "cronjob_name" $ }}'
+spec:
+  schedule: "{{- .Values.cronjob.schedule -}}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+          restartPolicy: Never
+          containers:
+          - name: http
+            image: alpine/httpie
+            imagePullPolicy: IfNotPresent
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            args:
+            - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc/{{- .Values.cronjob.endpoint }}
+            - key=$(CRON_KEY)
+            - --ignore-stdin
+
+            envFrom:
+            - secretRef:
+                name: cron-secret
+
+{{- end }}

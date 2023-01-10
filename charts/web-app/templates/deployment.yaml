@@ -176,6 +176,12 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
 
+        {{- if .Values.cronjob.enabled }}
+        envFrom:
+        - secretRef:
+            name: cron-secret
+        {{- end }}
+
         env:
         - name: USE_GCS
           value: "true"
@@ -362,7 +368,6 @@ spec:
           value: "{{ .Values.db.host }}"
         - name: DB_PORT
           value: "{{ .Values.db.port }}"
-
 
         {{- if eq .Values.microservice_name "api" }}
         - name: DB_DATABASE
