@@ -35,7 +35,7 @@ spec:
                 type: RuntimeDefault
 
             args:
-            - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc/{{- .Values.cronjob.endpoint }}
+            - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc:443/{{- .Values.cronjob.endpoint }}
             - key=$(CRON_KEY)
             - --ignore-stdin
 
