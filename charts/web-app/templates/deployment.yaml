@@ -180,6 +180,8 @@ spec:
         envFrom:
         - secretRef:
             name: cron-secret
+        - secretRef:
+            name: cron-auth-secret
         {{- end }}
 
         env:
