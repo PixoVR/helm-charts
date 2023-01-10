@@ -28,7 +28,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               privileged: false
-              procMount: default
+              procMount: Default
               readOnlyRootFilesystem: true
               runAsNonRoot: true
               seccompProfile:
