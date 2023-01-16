@@ -28,7 +28,7 @@ spec:
         args:
           - --destination={{- include "registry" . }}:$COMMIT_SHA
           - --destination={{- include "registry" . }}:latest
-          - --context=.
+          - --context={{- required "REQUIRED: build_context" .Values.build_context }}
           - --cache=true
           - --cache-ttl=240h
 
