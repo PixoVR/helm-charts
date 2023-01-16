@@ -1,5 +1,6 @@
 {{- if and (.Values.enabled) (not .Values.local) }}
 {{- if .Values.deploy_app }}
+{{- if .Values.ingress.enabled }}
 
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
@@ -7,11 +8,13 @@ metadata:
   name: {{ .Release.Name -}}-backendconfig
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.healthCheck.enabled }}
   healthCheck:
     checkIntervalSec: 30
     port: {{ .Values.containerPort }}
     type: HTTP
-    requestPath: {{ .Values.healthCheckPath }}
+    requestPath: {{ .Values.healthCheck.path }}
+  {{- end }}
 
   securityPolicy:
     name: {{ .Values.security_policy }}
@@ -29,5 +32,6 @@ spec:
       includeHost: true
       includeProtocol: true
 
+{{- end }}
 {{- end }}
 {{- end }}

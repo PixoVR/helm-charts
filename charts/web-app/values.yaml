@@ -47,7 +47,11 @@ image:
   tag: latest
 
 containerPort: 80
-healthCheckPath: /
+
+healthCheck:
+  enabled: true
+  path: /
+
 memory:
   request: 8Mi
   limit: 16Mi
