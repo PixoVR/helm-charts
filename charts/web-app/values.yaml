@@ -19,6 +19,7 @@ microservice_name: web
 default_branch: main
 
 repo_name: replaceme
+build_context: '.'
 
 app_iam:
   add_bindings: true
