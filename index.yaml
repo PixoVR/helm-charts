@@ -227,6 +227,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-01-17T06:41:12.706616627Z"
+    description: Deploys ArgoCD tenant apps
+    digest: dbf9b6006bccd255194c9c86c467ce9068eeb48205172beb1ef58e88e339f1b4
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.86/argocd-app-deploy-0.0.86.tgz
+    version: 0.0.86
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-01-17T05:51:08.975472508Z"
     description: Deploys ArgoCD tenant apps
     digest: 17f7aa278bffff102d96b7419b04093727ff6bf599cbc68ceaf574855625af10
@@ -1417,6 +1427,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-01-17T06:41:12.87795935Z"
+    description: Initializes ArgoCD platform
+    digest: ab655a91f22e4d61d75e6f912cd99454d3f743e4af5014578c4b582ae8bf27fd
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.131/argocd-platform-init-0.0.131.tgz
+    version: 0.0.131
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-01-17T05:51:09.118872527Z"
@@ -2698,6 +2718,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-01-17T06:41:13.042357069Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 19fd75a46afe056eb7731499cb4532058cf47ecdf65b264966ea175c03dfdefc
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.101/argocd-tenant-app-sets-0.0.101.tgz
+    version: 0.0.101
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-01-17T05:51:09.249588102Z"
@@ -4835,6 +4865,15 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
     version: 0.0.7
   multiplayer-module:
+  - apiVersion: v2
+    created: "2023-01-17T06:41:13.343209895Z"
+    description: A Helm chart for deploying multiplayer game server modules
+    digest: 144322000c27904324ae08f6a0ce532c4f87dd5e31bf01820e9ae044898d47cc
+    name: multiplayer-module
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-module-0.0.3/multiplayer-module-0.0.3.tgz
+    version: 0.0.3
   - apiVersion: v2
     created: "2023-01-17T06:01:18.139637701Z"
     description: A Helm chart for deploying multiplayer game server modules
