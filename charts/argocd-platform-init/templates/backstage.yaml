@@ -19,6 +19,9 @@ metadata:
 spec:
   project: cluster-addons
   source:
+    helm:
+      valueFiles:
+        - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
     repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
     targetRevision: {{ .Values.revision }}
     path: {{ .Values.backstage.chart_path }}

@@ -42,6 +42,8 @@ spec:
         helm:
           releaseName: '{{ "{{ path.basename }}" }}'
           ignoreMissingValueFiles: true
+          valueFiles:
+            - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
           values: |
             parent_folder_id: {{ .Values.parent_folder_id }}
             sa_project_id: {{ .Values.sa_project_id }}

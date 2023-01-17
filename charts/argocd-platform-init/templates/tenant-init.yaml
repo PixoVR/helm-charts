@@ -17,6 +17,8 @@ spec:
     chart: {{ .Values.tenants.chart.name }}
     helm:
       releaseName: tenants-init
+      valueFiles:
+        - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
       values: |
         parent_folder_id: {{ .Values.parent_folder_id }}
         cpl_cluster_name: {{ .Values.cpl_cluster_name }}
