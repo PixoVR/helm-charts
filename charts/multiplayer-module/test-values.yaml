@@ -5,5 +5,5 @@ db_project_id: db-project
 gke_project_id: gke-project
 domain: example.com
 
-cronjob:
+autoscaler:
   enabled: true

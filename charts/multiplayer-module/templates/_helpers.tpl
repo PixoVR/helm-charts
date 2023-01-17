@@ -88,3 +88,13 @@
   {{- include "app_label" . }}
 {{- end -}}
 
+
+{{- define "app_admin_sa" -}}
+  {{- if $.Values.app_admin_sa }}
+    {{- $.Values.app_admin_sa -}}
+  {{- else }}
+    {{- .Values.infra.sa_name -}}@{{- include "sa_project_id" $ -}}.iam.gserviceaccount.com
+  {{- end }}
+{{- end -}}
+
+

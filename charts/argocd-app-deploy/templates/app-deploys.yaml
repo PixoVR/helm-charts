@@ -115,6 +115,10 @@ spec:
               lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
               app_code: {{ .Values.app_name }}
               microservice_name: '{{ "{{ path.basename }}" }}'
+              infra:
+                sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
+              app_iam: 
+                enabled: false
       destination:
         server: '{{ "{{ server }}" }}'
         namespace: '{{ include "deploy_namespace" $ }}'
