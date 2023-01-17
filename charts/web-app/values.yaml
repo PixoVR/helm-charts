@@ -160,6 +160,7 @@ ingress:
   cert: false
   mci: false
   nginx: false
+  websocket: false
 
 network_policy:
   enabled: false

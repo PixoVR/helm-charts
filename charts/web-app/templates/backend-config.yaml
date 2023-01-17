@@ -8,6 +8,12 @@ metadata:
   name: {{ .Release.Name -}}-backendconfig
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.ingress.websocket }}
+  timeoutSec: 1800
+  connectionDraining:
+    drainingTimeoutSec: 1800
+  {{- end }}
+
   {{- if .Values.healthCheck.enabled }}
   healthCheck:
     checkIntervalSec: 30
