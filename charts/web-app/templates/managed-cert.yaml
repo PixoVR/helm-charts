@@ -3,7 +3,7 @@
 
 {{- if or (.Values.ingress.enabled) (.Values.ingress.cert) }}
 {{- if .Values.ingress.https }}
-{{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+{{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) (.Values.ingress.override) }}
 
 apiVersion: networking.gke.io/v1 
 kind: ManagedCertificate
