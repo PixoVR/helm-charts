@@ -4804,6 +4804,16 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
     version: 0.0.7
+  multiplayer-module:
+  - apiVersion: v2
+    created: "2023-01-17T05:38:15.036583402Z"
+    description: A Helm chart for deploying multiplayer game server modules
+    digest: d3c66dbe1acb511194efe0740e2d7f1e36a096bb9e536c531d4c2da2ff84c8bc
+    name: multiplayer-module
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-module-0.0.1/multiplayer-module-0.0.1.tgz
+    version: 0.0.1
   opa-gatekeeper:
   - apiVersion: v2
     created: "2022-11-15T22:44:03.882522348Z"
