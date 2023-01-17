@@ -2,7 +2,7 @@
 {{- if .Values.deploy_app }}
 
 {{- if and (.Values.ingress.enabled) (not .Values.ingress.mci) }}
-{{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+{{- if or (or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name)) (.Values.ingress.override) }}
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress

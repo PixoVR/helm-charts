@@ -155,6 +155,7 @@ cert_manager:
 
 ingress:
   enabled: true
+  override: false
   bring_ip: false
   https: true
   cert: false
