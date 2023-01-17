@@ -2,5 +2,4 @@ apiVersion: v2
 name: multiplayer-module
 description: A Helm chart for deploying multiplayer game server modules
 type: application
-version: 0.0.1
-
+version: 0.0.2

@@ -24,11 +24,11 @@ image:
 containerPort: 7654
 
 memory:
-  request: 128Mi
-  limit: 256Mi
+  request: 64Mi
+  limit: 128Mi
 cpu:
-  request: .1
-  limit: .25
+  request: 20m
+  limit: 40m
 
 replicas: 1
 buffer_size: 2
