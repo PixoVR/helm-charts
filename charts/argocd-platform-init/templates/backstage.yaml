@@ -20,6 +20,7 @@ spec:
   project: cluster-addons
   source:
     helm:
+      ignoreMissingValueFiles: true
       valueFiles:
         - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
     repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git

@@ -17,6 +17,7 @@ spec:
     chart: {{ .Values.tenants.chart.name }}
     helm:
       releaseName: tenants-init
+      ignoreMissingValueFiles: true
       valueFiles:
         - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
       values: |
