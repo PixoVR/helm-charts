@@ -1,0 +1,9 @@
+
+sa_project_id: sa-project
+app_project_id: app-project
+db_project_id: db-project
+gke_project_id: gke-project
+domain: example.com
+
+cronjob:
+  enabled: true

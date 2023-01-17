@@ -1,0 +1,35 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+
+apiVersion: agones.dev/v1
+kind: Fleet
+metadata:
+  name: '{{ include "fleet_name" $ }}'
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    microservice_name: {{ .Values.microservice_name }}
+    tier: backend
+spec:
+  replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
+  template:
+    spec:
+      ports:
+        - name: default
+          containerPort: {{ .Values.containerPort }}
+      template:
+        spec:
+          containers:
+            - name: {{ .Values.microservice_name }}
+              image: '{{ include "image" . }}'
+              resources:
+                requests:
+                  memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
+                  cpu: {{ required "REQUIRED: cpu.request" .Values.cpu.request }}
+                limits:
+                  memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
+                  cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+
+{{- end }}
+{{- end }}
+

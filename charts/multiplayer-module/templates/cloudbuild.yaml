@@ -1,0 +1,35 @@
+{{- if .Values.create_infra }}
+{{- if .Values.google.create_cloudbuild }}
+
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: {{ include "fleet_name" $ -}}-ci
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+spec:
+  disabled: {{ not .Values.enabled }}
+  github:
+    owner: {{ required "REQUIRED: github_org" .Values.github_org }}
+    name: {{ required "REQUIRED: repo_name" .Values.repo_name }} 
+    push:
+      branch: "^{{- include "branch" . -}}$"
+  build:
+    timeout: 1800s
+    options:
+      machineType: E2_HIGHCPU_8
+
+    step:
+      - id: "Build-Image"
+        name: "gcr.io/kaniko-project/executor:latest"
+        args:
+          - --destination={{- include "registry" . }}:$COMMIT_SHA
+          - --destination={{- include "registry" . }}:latest
+          - --context={{- required "REQUIRED: build_context" .Values.build_context }}
+          - --cache=true
+          - --cache-ttl=240h
+
+{{- end }}
+{{- end }}
