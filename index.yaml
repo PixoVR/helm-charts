@@ -1409,6 +1409,16 @@ entries:
   argocd-platform-init:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-01-17T01:09:09.062248326Z"
+    description: Initializes ArgoCD platform
+    digest: 6c9deaf8bf8eebf87a0a2777b94c1e2203d763af00bb0750b3421dc3c7bbee35
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.129/argocd-platform-init-0.0.129.tgz
+    version: 0.0.129
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-01-17T00:48:55.013161855Z"
     description: Initializes ArgoCD platform
     digest: 64440a65174e1c4682e2464cef48ecaa3bcbc31f2e63a18f1feca66d6a004402
