@@ -58,9 +58,6 @@ spec:
           emptyDir: {}
         - name: var-tmp-dir
           emptyDir: {}
-        - name: app-secrets
-          secret:
-            secretName: app-secrets
 
         {{- if eq .Values.microservice_name "api" }}
         - name: server-logs-dir
@@ -124,8 +121,6 @@ spec:
             cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
 
         volumeMounts:
-          - mountPath: /backend/secrets
-            name: app-secrets
           - mountPath: /backend/var
             name: db-volume
           - mountPath: /tmp
