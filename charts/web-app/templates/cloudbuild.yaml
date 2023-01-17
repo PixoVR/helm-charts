@@ -17,6 +17,8 @@ spec:
     name: {{ required "REQUIRED: repo_name" .Values.repo_name }} 
     push:
       branch: "^{{- include "branch" . -}}$"
+  includedFiles:
+    - "{{ .Values.build_context -}}/**"
   build:
     timeout: 1800s
     options:
@@ -24,7 +26,7 @@ spec:
 
     step:
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:latest"
+        name: "gcr.io/kaniko-project/executor:v1.6.0"
         args:
           - --destination={{- include "registry" . }}:$COMMIT_SHA
           - --destination={{- include "registry" . }}:latest
