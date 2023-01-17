@@ -4866,6 +4866,15 @@ entries:
     version: 0.0.7
   multiplayer-module:
   - apiVersion: v2
+    created: "2023-01-17T07:15:26.165717049Z"
+    description: A Helm chart for deploying multiplayer game server modules
+    digest: fe7ae7e62f300b38376213b5d18d271f534b8c6de7463d964a9f3c55cfcf65d6
+    name: multiplayer-module
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-module-0.0.4/multiplayer-module-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
     created: "2023-01-17T06:41:13.343209895Z"
     description: A Helm chart for deploying multiplayer game server modules
     digest: 144322000c27904324ae08f6a0ce532c4f87dd5e31bf01820e9ae044898d47cc
@@ -4944,6 +4953,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2023-01-17T07:15:26.313990896Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: dae4c14ec0393f4b1384c0f43e1bd61bdea0b39d524d5dd49b53051dda47e542
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.85/web-app-0.0.85.tgz
+    version: 0.0.85
   - apiVersion: v2
     created: "2023-01-17T03:26:04.100265355Z"
     dependencies:
