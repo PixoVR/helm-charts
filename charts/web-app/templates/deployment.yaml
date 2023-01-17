@@ -239,8 +239,9 @@ spec:
           {{- toYaml .Values.env | nindent 8 }}
         {{- end }}
 
-        {{- if .Values.aws.auth.enabled }}
+        {{- if .Values.external_secrets.enabled }}
 
+        {{- if .Values.aws.auth.enabled }}
         {{- if or (eq .Values.microservice_name "web") (eq .Values.microservice_name "goapi") }}
         - name: AWS_ID
         {{- else }}
@@ -363,6 +364,8 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: sendgrid-key
+        {{- end }}
+
         {{- end }}
 
         {{- if .Values.sql.proxy }}
