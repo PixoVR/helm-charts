@@ -20,7 +20,6 @@ default_branch: main
 
 repo_name: replaceme
 build_context: '.'
-build_context_nonroot: false
 
 app_iam:
   add_bindings: true

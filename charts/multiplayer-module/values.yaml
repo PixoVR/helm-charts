@@ -13,7 +13,6 @@ default_branch: main
 
 repo_name: replaceme
 build_context: '.'
-build_context_nonroot: false
 
 primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership

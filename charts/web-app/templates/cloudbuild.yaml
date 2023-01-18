@@ -18,6 +18,11 @@ spec:
     push:
       branch: "^{{- include "branch" . -}}$"
 
+  {{- if ne .Values.build_context "." }}
+  includedFiles:
+    - "{{ .Values.build_context -}}/**"
+  {{- end }}
+
   build:
     timeout: 1800s
     options:
