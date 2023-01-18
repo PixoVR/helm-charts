@@ -4866,6 +4866,15 @@ entries:
     version: 0.0.7
   multiplayer-module:
   - apiVersion: v2
+    created: "2023-01-18T20:06:55.199903287Z"
+    description: A Helm chart for deploying multiplayer game server modules
+    digest: 02d19396297e8289b41779d4b4f6c5ada5e8309495588f5d4e42dfa99b726442
+    name: multiplayer-module
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-module-0.0.6/multiplayer-module-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
     created: "2023-01-18T20:00:39.840304956Z"
     description: A Helm chart for deploying multiplayer game server modules
     digest: dca1997f3039dbe66cbf97a504f9a66adf9507263c609e64b6ed06ded39ba5ef
