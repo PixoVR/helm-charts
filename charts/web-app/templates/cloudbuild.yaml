@@ -18,7 +18,7 @@ spec:
     push:
       branch: "^{{- include "branch" . -}}$"
 
-  {{- if ne .Values.build_context "." }}
+  {{- if .Values.build_context_nonroot }}
   includedFiles:
     - "{{ .Values.build_context -}}/**"
   {{- end }}
