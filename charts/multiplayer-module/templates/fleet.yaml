@@ -19,6 +19,8 @@ spec:
           containerPort: {{ .Values.containerPort }}
       template:
         spec:
+          portPolicy: {{ .Values.port_policy }}
+
           containers:
             - name: {{ .Values.microservice_name }}
               image: '{{ include "image" . }}'
