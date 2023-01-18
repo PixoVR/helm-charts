@@ -184,6 +184,8 @@ spec:
         env:
         - name: USE_GCS
           value: "true"
+        - name: NAMESPACE
+          value: {{ .Release.Name }}
         - name: DOMAIN
           value: '{{ include "full_domain" $ }}'
         - name: PORT
