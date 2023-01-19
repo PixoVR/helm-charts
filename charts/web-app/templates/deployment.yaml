@@ -107,8 +107,9 @@ spec:
         securityContext:
           {{- if .Values.debug.enabled }}
           capabilities:
-            add: SYS_PTRACE
-          {{- end }}
+            add: 
+            - SYS_PTRACE
+          {{- else }}
           allowPrivilegeEscalation: false
           privileged: false
           procMount: Default
@@ -116,6 +117,7 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+          {{- end }}
         {{- end }}
 
         resources:
