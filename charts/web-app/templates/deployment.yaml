@@ -143,8 +143,8 @@ spec:
           - mountPath: /var/tmp
             name: var-tmp-dir
           {{- if .Values.debug.enabled }}
-            name: tmp-dir
           - mountPath: /server/.config
+            name: config-dir
           {{- end }}
 
           {{- if eq .Values.microservice_name "api" }}
