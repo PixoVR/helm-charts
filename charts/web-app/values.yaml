@@ -8,6 +8,10 @@ deploy_app: true
 nginx: false
 node: false
 
+debug:
+  enabled: false
+  containerPort: 40000
+
 add_lifecycle_to_domain: false
 extra_domain: ''
 extra_subdomain: ''
@@ -20,6 +24,7 @@ default_branch: main
 
 repo_name: replaceme
 build_context: '.'
+dockerfile: Dockerfile
 
 app_iam:
   add_bindings: true

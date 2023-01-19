@@ -23,8 +23,10 @@ spec:
     metadata:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- if not .Values.debug.enabled }}
         container.apparmor.security.beta.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
         container.seccomp.security.alpha.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
+        {{- end }}
       labels:
         app: '{{ include "deployment_name" $ }}'
         namespace: {{ .Release.Namespace }}
@@ -399,6 +401,15 @@ spec:
         ports:
         - containerPort: {{ .Values.containerPort }}
           name: api-port
+        {{- if .Values.debug.enabled }}
+        - containerPort: {{ .Values.debug.containerPort }}
+          name: debug
+          protocol: TCP
+      securityContext:
+        capabilities:
+          add:
+            SYS_PTRACE
+        {{- end }}
 
       {{- if .Values.sql.proxy }}
       - name: proxy

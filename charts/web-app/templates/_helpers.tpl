@@ -247,4 +247,13 @@
 {{- end }}
 
 
+{{- define "dockerfile" -}}
+  {{- if .Values.debug.enabled }}
+    {{- .Values.dockerfile }}.debug
+  {{- else }}
+    {{- .Values.dockerfile }}
+  {{- end }}
+{{- end }}
+
+
 
