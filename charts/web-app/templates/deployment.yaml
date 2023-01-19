@@ -105,6 +105,10 @@ spec:
 
         {{- if not .Values.demo.enabled }}
         securityContext:
+          {{- if .Values.debug.enabled }}
+          capabilities:
+            add: SYS_PTRACE
+          {{- end }}
           allowPrivilegeEscalation: false
           privileged: false
           procMount: Default
@@ -405,10 +409,6 @@ spec:
         - containerPort: {{ .Values.debug.containerPort }}
           name: debug
           protocol: TCP
-      securityContext:
-        capabilities:
-          add:
-            SYS_PTRACE
         {{- end }}
 
       {{- if .Values.sql.proxy }}
