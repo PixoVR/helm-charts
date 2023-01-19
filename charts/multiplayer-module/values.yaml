@@ -31,10 +31,10 @@ cpu:
   request: 20m
   limit: 40m
 
-replicas: 1
+replicas: 2
 buffer_size: 2
-min_replicas: 5
-max_replicas: 10
+min_replicas: 2
+max_replicas: 20
 
 google:
   region: us-central1

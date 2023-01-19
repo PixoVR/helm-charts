@@ -52,12 +52,6 @@ healthCheck:
   enabled: true
   path: /
 
-memory:
-  request: 8Mi
-  limit: 16Mi
-cpu:
-  request: .001
-  limit: .025
 sql:
   proxy: false
 use_pd: false
@@ -65,16 +59,17 @@ mount_pd: false
 disk_size: 10Gi
 
 memory:
-  request: 64Mi
+  request: 128Mi
   limit: 256Mi
 cpu:
-  request: .005
-  limit: .5
+  request: .1
+  limit: .25
 
-replicas: 1
-max_replicas: 5
+replicas: 2
+
+max_replicas: 20
 target_cpu: 80
-target_mem: 128Mi
+target_mem: 256Mi
 
 email:
   enabled: false
