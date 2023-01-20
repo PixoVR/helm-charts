@@ -5,5 +5,14 @@ db_project_id: db-project
 gke_project_id: gke-project
 domain: example.com
 
-cronjob:
-  enabled: true
+dynamicHosts:
+  - key: ALLOCATE_HOSTNAME
+    type: remote
+    cluster: multi-central1
+    tenant: multiplayer
+    service: allocator
+    
+  - key: MMF_API_HOST
+    type: local
+    lifecycle: true
+    service: matchmaking-matchfunction
