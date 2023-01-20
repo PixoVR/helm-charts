@@ -223,6 +223,18 @@ spec:
           value: "{{- include "instance_name" $ -}}"
         {{- end }}
 
+        {{- range .Values.dynamicHosts }}
+        - name: {{ .key }}
+        {{- if eq .type "local" }}
+          value: {{ .Release.Namespace -}}-{{- .service -}}.{{- .Release.Namespace -}}.svc
+        {{- else if eq .type "remote" }}
+        {{- if ne .cluster "" }}
+          value: {{ .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" }}
+        {{- else }}
+          value: {{ .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" }}
+        {{- end }}
+        {{- end }}
+
         {{- if or (eq .Values.microservice_name "sftp") (eq .Values.microservice_name "graphql") (eq .Values.microservice_name "web") }}
         - name: APP_ENV
         {{- else }}
