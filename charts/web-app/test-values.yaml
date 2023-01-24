@@ -5,14 +5,54 @@ db_project_id: db-project
 gke_project_id: gke-project
 domain: example.com
 
-dynamicHosts:
-  - key: ALLOCATE_HOSTNAME
-    type: remote
-    cluster: multi-central1
-    tenant: multiplayer
-    service: allocator
-    
-  - key: MMF_API_HOST
-    type: local
-    lifecycle: true
-    service: matchmaking-matchfunction
+# dynamicHosts:
+#   - key: ALLOCATE_HOSTNAME
+#     type: remote
+#     cluster: multi-central1
+#     tenant: multiplayer
+#     service: allocator
+#     
+#   - key: MMF_API_HOST
+#     type: local
+#     lifecycle: true
+#     service: matchmaking-matchfunction
+
+subdomain: api
+instance_name: apex-instance
+
+repo_name: apex-api
+containerPort: 8001
+healthCheck:
+  path: /health/
+sql:
+  proxy: true
+
+email:
+  enabled: true
+  mfa: true
+  sender: 'pixoplatform@pixovr.com'
+
+aws:
+  auth:
+    enabled: true
+  cloudfront:
+    enabled: true
+
+google:
+  config_connector_context: true
+  storage:
+    enabled: true
+    create: false
+  sql:
+    enabled: true
+
+external_secrets:
+  enabled: true
+  secret_store:
+    enabled: true
+  app_secrets:
+    enabled: true
+
+create_sa: true
+
+
