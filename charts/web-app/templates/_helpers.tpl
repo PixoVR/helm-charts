@@ -241,12 +241,6 @@
 {{- end }}
 
 
-
-{{- define "cron_secret" -}}
-  {{- randAlphaNum 12 | quote }}
-{{- end }}
-
-
 {{- define "dockerfile" -}}
   {{- if .Values.debug.enabled }}
     {{- .Values.dockerfile }}.debug

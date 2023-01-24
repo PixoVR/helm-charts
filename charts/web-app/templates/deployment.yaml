@@ -193,8 +193,6 @@ spec:
         {{- if .Values.cronjob.enabled }}
         envFrom:
         - secretRef:
-            name: cron-secret
-        - secretRef:
             name: cron-auth-secret
         {{- end }}
 

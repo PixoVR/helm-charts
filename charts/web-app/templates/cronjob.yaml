@@ -36,14 +36,14 @@ spec:
 
             args:
             - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc:443/{{- .Values.cronjob.endpoint }}
-            - key=$(CRON_KEY)
+            - key=$(SECRET_KEY)
             - --ignore-stdin
 
             env:
-            - name: CRON_KEY
+            - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: cron-secret
-                  key: CRON_KEY
+                  name: app-secrets
+                  key: auth-key
 
 {{- end }}
