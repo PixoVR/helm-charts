@@ -70,7 +70,7 @@ cpu:
   request: .1
   limit: .25
 
-replicas: 2
+replicas: 1
 
 max_replicas: 20
 target_cpu: 80

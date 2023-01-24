@@ -39,8 +39,11 @@ spec:
             - key=$(CRON_KEY)
             - --ignore-stdin
 
-            envFrom:
-            - secretRef:
-                name: cron-secret
+            env:
+            - name: CRON_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cron-secret
+                  key: CRON_KEY
 
 {{- end }}
