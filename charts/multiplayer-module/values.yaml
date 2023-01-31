@@ -24,6 +24,10 @@ image:
 containerPort: 7654
 port_policy: Static
 
+healthCheck:
+  initialDelaySeconds: 30
+  periodSeconds: 60
+
 memory:
   request: 64Mi
   limit: 128Mi

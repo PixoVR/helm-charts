@@ -18,6 +18,9 @@ spec:
         - name: default
           containerPort: {{ .Values.containerPort }}
           portPolicy: {{ .Values.port_policy }}
+      health:
+        initialDelaySeconds: {{ .Values.healthCheck.initialDelaySeconds }}
+        periodSeconds: {{ .Values.healthCheck.periodSeconds }}
       template:
         spec:
           containers:
