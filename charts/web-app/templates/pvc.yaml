@@ -1,5 +1,6 @@
 {{- if and (.Values.enabled) (.Values.use_pd) }}
 {{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -16,5 +17,6 @@ spec:
     requests:
       storage: {{ required "REQUIRED: disk_size" .Values.disk_size }}
 
+{{- end }}
 {{- end }}
 {{- end }}

@@ -1,6 +1,7 @@
 {{- if and (.Values.enabled) (not .Values.local) }}
 {{- if .Values.autoscaler.enabled }}
 {{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
 
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
@@ -60,6 +61,7 @@ spec:
         type: Utilization
         averageUtilization: {{ .Values.nginx.target_cpu }}
 
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

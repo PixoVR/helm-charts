@@ -1,5 +1,6 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
 
 apiVersion: v1
 kind: Service
@@ -31,5 +32,6 @@ spec:
     protocol: TCP
     targetPort: {{ .Values.containerPort }}
 
+{{- end }}
 {{- end }}
 {{- end }}
