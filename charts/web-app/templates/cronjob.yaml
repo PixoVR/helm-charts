@@ -22,7 +22,7 @@ spec:
           restartPolicy: Never
           containers:
           - name: http
-            image: alpine/httpie
+            image: '{{ include "cron_image" $ }}'
             imagePullPolicy: IfNotPresent
 
             securityContext:
@@ -34,10 +34,12 @@ spec:
               seccompProfile:
                 type: RuntimeDefault
 
+            {{- if .Values.deployment.enabled }}
             args:
             - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc:443/{{- .Values.cronjob.endpoint }}
             - key=$(SECRET_KEY)
             - --ignore-stdin
+            {{- end }}
 
             env:
             - name: SECRET_KEY
@@ -45,5 +47,18 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: auth-key
+
+            {{- if .Values.email.enabled }}
+            - name: EMAILER_EMAIL
+              value: {{ .Values.email.sender }}
+            {{- if .Values.email.mfa }}
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+            {{- end }}
+            {{- end }}
+
 
 {{- end }}

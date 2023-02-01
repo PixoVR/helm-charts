@@ -165,6 +165,15 @@
   {{- include "registry" . -}}:{{- .Values.image.tag }}
 {{- end -}}
 
+{{- define "cron_image" -}}
+  {{- if .Values.deployment.enabled }}
+    {{- .Values.cronjob.image.name }}:{{ .Values.cronjob.image.tag }}
+  {{- else }}
+    {{- include "image" . }}
+  {{- end }}
+{{- end -}}
+
+
 
 {{- define "db_name" -}}
   {{- if $.Values.db_name }}

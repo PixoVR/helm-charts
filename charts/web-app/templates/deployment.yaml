@@ -1,5 +1,6 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -459,6 +460,7 @@ spec:
             type: RuntimeDefault
       {{- end }}
 
+{{- end }}
 {{- end }}
 {{- end }}
 

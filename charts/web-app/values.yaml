@@ -153,6 +153,9 @@ secrets:
 cert_manager:
   enabled: false
 
+deployment:
+  enabled: true
+
 ingress:
   enabled: true
   override: false
@@ -187,5 +190,8 @@ cilium:
 
 cronjob:
   enabled: false
+  image:
+    name: alpine/httpie
+    tag: latest
   schedule: '0 8 * * *'
 
