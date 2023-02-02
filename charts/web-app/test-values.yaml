@@ -24,8 +24,16 @@ repo_name: apex-api
 containerPort: 8001
 healthCheck:
   path: /health/
+
 sql:
   proxy: true
+
+cronjob:
+  enabled: true
+
+env:
+  - name: EMAILER_TO
+    value: walker.obrien@pixovr.com
 
 email:
   enabled: true
