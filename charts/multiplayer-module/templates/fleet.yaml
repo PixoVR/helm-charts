@@ -33,6 +33,14 @@ spec:
                 limits:
                   memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
                   cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+              securityContext:
+                allowPrivilegeEscalation: false
+                privileged: false
+                procMount: Default
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
 
 {{- end }}
 {{- end }}
