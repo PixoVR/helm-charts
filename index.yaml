@@ -1057,6 +1057,23 @@ entries:
     version: 0.0.1
   argocd-image-updater:
   - apiVersion: v2
+    created: "2023-02-08T21:46:25.919900041Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.8.0
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for Kubernetes
+    digest: 34dda35b1b68f3dff19da5df2ded8e9dd32524da46f08f01dfc376498f12891e
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.30/argocd-image-updater-0.0.30.tgz
+    version: 0.0.30
+  - apiVersion: v2
     created: "2022-11-22T19:37:11.183713994Z"
     dependencies:
     - name: argocd-image-updater
@@ -4865,6 +4882,15 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/gatekeeper-policies-0.0.7/gatekeeper-policies-0.0.7.tgz
     version: 0.0.7
   multiplayer-module:
+  - apiVersion: v2
+    created: "2023-02-08T21:46:26.092740776Z"
+    description: A Helm chart for deploying multiplayer game server modules
+    digest: d5838539242303875a64d8c093183c725e0f1dbd01d667ffb93ff82e714113d4
+    name: multiplayer-module
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-module-0.0.12/multiplayer-module-0.0.12.tgz
+    version: 0.0.12
   - apiVersion: v2
     created: "2023-02-03T22:38:52.94061808Z"
     description: A Helm chart for deploying multiplayer game server modules
