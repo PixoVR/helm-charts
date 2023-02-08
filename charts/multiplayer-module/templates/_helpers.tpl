@@ -71,8 +71,8 @@
 
 
 {{- define "registry" -}}
-  {{- if .Values.web-app.image.name }}
-    {{- .Values.web-app.image.name -}}
+  {{- if .Values.image.name }}
+    {{- .Values.image.name -}}
   {{- else -}}
     {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project_id" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}
   {{- end -}}
@@ -80,7 +80,7 @@
 
 
 {{- define "image" -}}
-  {{- include "registry" . -}}:{{- .Values.web-app.image.tag }}
+  {{- include "registry" . -}}:{{- .Values.image.tag }}
 {{- end -}}
 
 
