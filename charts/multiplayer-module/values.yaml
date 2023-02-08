@@ -1,4 +1,10 @@
 
+# Uses alias of web-app so argocd image updater can automatically update after CI
+web-app:
+  image:
+    name: ""
+    tag: latest
+
 enabled: true
 local: false
 non_preemptible: false
@@ -17,9 +23,6 @@ build_context: '.'
 primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
-image:
-  name: ""
-  tag: latest
 
 containerPort: 7654
 port_policy: Static
