@@ -7,3 +7,9 @@ domain: example.com
 
 autoscaler:
   enabled: true
+
+fleet:
+  labels:
+    OrgId: "1"
+    ModuleId: "1"
+    SessionId: "2341234123234324234"
