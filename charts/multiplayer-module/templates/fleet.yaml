@@ -10,10 +10,12 @@ metadata:
     namespace: {{ .Release.Namespace }}
     microservice_name: {{ .Values.microservice_name }}
     tier: backend
-    {{- toYaml .Values.fleet.labels | nindent 4 }}
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
   template:
+    metadata:
+      labels:
+      {{- toYaml .Values.fleet.labels | nindent 8 }}
     spec:
       ports:
         - name: default
