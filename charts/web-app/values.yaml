@@ -99,6 +99,8 @@ google:
   create_monitoring_suite: false
   notification_channel: ""
   registry: gcr.io
+  pubsub:
+    enabled: false
   sql:
     enabled: false
     use_iam: true
