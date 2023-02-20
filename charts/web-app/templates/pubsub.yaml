@@ -5,11 +5,23 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   name: {{ include "app_label" $ -}}-topic
-  annotations: 
-    cnrm.cloud.google.com/project-id: {{ include "app_label" $ }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
   schemaSettings:
     encoding: JSON
+
+---
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSchema
+metadata:
+  name: {{ include "app_label" $ -}}-schema
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
+spec:
+  projectRef:
+    external: {{ include "app_project_id" $ }}
 
 {{- end }}
 {{- end }}
