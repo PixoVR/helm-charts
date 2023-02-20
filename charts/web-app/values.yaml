@@ -101,6 +101,7 @@ google:
   registry: gcr.io
   pubsub:
     enabled: false
+    encoding: ENCODING_UNSPECIFIED
     schema:
       type: TYPE_UNSPECIFIED
   sql:
