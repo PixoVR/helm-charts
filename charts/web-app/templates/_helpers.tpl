@@ -96,6 +96,11 @@
 {{- end -}}
 
 
+{{- define "pubsub_topic_name" -}}
+  {{ include "app_label" $ -}}-topic
+{{- end -}}
+
+
 {{- define "primary_cluster_name" -}}
   {{- required "REQUIRED: primary_cluster_name" .Values.primary_cluster_name }}
 {{- end -}}

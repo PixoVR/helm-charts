@@ -212,6 +212,11 @@ spec:
         - name: PORT
           value: "{{ .Values.containerPort }}"
 
+        {{- if .Values.google.pubsub.enabled }}
+        - name: PUBSUB_TOPIC
+          value: {{ include "pubsub_topic_name" $ }}
+        {{- end }}
+
         - name: TMP_PATH
           value: "/var/tmp"
 

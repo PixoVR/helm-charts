@@ -101,6 +101,8 @@ google:
   registry: gcr.io
   pubsub:
     enabled: false
+    schema:
+      type: TYPE_UNSPECIFIED
   sql:
     enabled: false
     use_iam: true

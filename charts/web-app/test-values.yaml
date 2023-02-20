@@ -53,6 +53,8 @@ google:
     create: false
   sql:
     enabled: true
+  pubsub:
+    enabled: true
 
 external_secrets:
   enabled: true

@@ -4,7 +4,7 @@
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: {{ include "app_label" $ -}}-topic
+  name: {{ include "pubsub_topic_name" $ }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
@@ -22,7 +22,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
-  type: TYPE_UNSPECIFIED
+  type: {{ .Values.google.pubsub.schema.type }}
   projectRef:
     external: {{ include "app_project_id" $ }}
 
