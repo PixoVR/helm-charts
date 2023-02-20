@@ -10,6 +10,8 @@ metadata:
 spec:
   schemaSettings:
     encoding: JSON
+    schemaRef:
+      name: {{ include "app_label" $ -}}-schema
 
 ---
 
