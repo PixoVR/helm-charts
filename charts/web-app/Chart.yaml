@@ -6,6 +6,6 @@ version: 0.0.118
 
 dependencies:
 - name: app-iam
-  version: 0.0.30
+  version: 0.0.29
   repository: "https://pixovr.github.io/helm-charts"
   alias: app_iam
