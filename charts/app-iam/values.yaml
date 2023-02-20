@@ -52,6 +52,7 @@ app:
     - secretmanager.admin
     - storage.admin
     - run.admin
+    - pubsub.admin
   app_roles:
     - errorreporting.writer
     - logging.logWriter

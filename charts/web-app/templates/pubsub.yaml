@@ -9,9 +9,9 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
   schemaSettings:
-    encoding: JSON
     schemaRef:
       name: {{ include "app_label" $ -}}-schema
+    encoding: JSON
 
 ---
 
