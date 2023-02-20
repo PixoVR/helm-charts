@@ -7,6 +7,8 @@ metadata:
   name: {{ include "pubsub_topic_name" $ }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
+
+{{- if .Values.google.pubsub.schema.enabled }}
 spec:
   schemaSettings:
     schemaRef:
@@ -25,6 +27,8 @@ spec:
   type: {{ .Values.google.pubsub.schema.type }}
   projectRef:
     external: {{ include "app_project_id" $ }}
+
+{{- end }}
 
 {{- end }}
 {{- end }}

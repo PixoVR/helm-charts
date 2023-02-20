@@ -101,9 +101,10 @@ google:
   registry: gcr.io
   pubsub:
     enabled: false
-    encoding: ENCODING_UNSPECIFIED
+    encoding: JSON
     schema:
-      type: TYPE_UNSPECIFIED
+      enabled: false
+      type: PROTOCOL_BUFFER
   sql:
     enabled: false
     use_iam: true
