@@ -22,6 +22,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
+  type: TYPE_UNSPECIFIED
   projectRef:
     external: {{ include "app_project_id" $ }}
 
