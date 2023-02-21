@@ -36,7 +36,7 @@ spec:
           - --destination={{- include "registry" . }}:latest
           - --context={{- required "REQUIRED: build_context" .Values.build_context }}
           - --dockerfile={{- include "dockerfile" $ }}
-          - --cache=true
+          - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
 
 {{- end }}

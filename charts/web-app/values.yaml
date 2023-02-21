@@ -24,6 +24,7 @@ default_branch: main
 
 repo_name: replaceme
 build_context: '.'
+build_cache: 'true'
 dockerfile: Dockerfile
 
 app_iam:
