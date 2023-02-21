@@ -57,6 +57,7 @@ app:
     - errorreporting.writer
     - logging.logWriter
     - monitoring.metricWriter
+    - pubsub.publisher
     - secretmanager.secretAccessor
     - storage.objectAdmin
 

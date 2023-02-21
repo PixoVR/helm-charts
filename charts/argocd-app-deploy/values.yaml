@@ -8,7 +8,7 @@ deploy_chart_name: web-app
 helm_image_alias: web-app.image.tag
 
 iam_chart: app-iam
-iam_chart_version: 0.0.31
+iam_chart_version: 0.0.32
 
 add_bindings: true
 
