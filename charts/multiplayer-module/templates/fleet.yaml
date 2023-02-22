@@ -1,5 +1,6 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
+---
 
 apiVersion: agones.dev/v1
 kind: Fleet
@@ -13,9 +14,11 @@ metadata:
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
   template:
+    {{- if .Values.fleet.labels }}
     metadata:
       labels:
       {{- toYaml .Values.fleet.labels | nindent 8 }}
+    {{- end }}
     spec:
       ports:
         - name: default

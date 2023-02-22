@@ -30,6 +30,9 @@ healthCheck:
   initialDelaySeconds: 30
   periodSeconds: 60
 
+fleet:
+  labels:
+
 memory:
   request: 64Mi
   limit: 128Mi
