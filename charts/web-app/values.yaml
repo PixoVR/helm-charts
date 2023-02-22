@@ -102,6 +102,10 @@ google:
   registry: gcr.io
   pubsub:
     enabled: false
+    subscription:
+      ackDeadlineSeconds: 15
+      messageRetentionDuration: '86400s'
+      retainAckedMessages: false
     encoding: JSON
     schema:
       enabled: false
