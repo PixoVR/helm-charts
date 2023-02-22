@@ -215,6 +215,8 @@ spec:
         {{- if .Values.google.pubsub.enabled }}
         - name: PUBSUB_TOPIC
           value: {{ include "pubsub_topic_name" $ }}
+        - name: PUBSUB_SUBSCRIPTION
+          value: {{ include "pubsub_subscription_name" $ }}
         {{- end }}
 
         - name: TMP_PATH

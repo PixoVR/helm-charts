@@ -101,6 +101,11 @@
 {{- end -}}
 
 
+{{- define "pubsub_subscription_name" -}}
+  {{ include "pubsub_topic_name" $ -}}-sub
+{{- end -}}
+
+
 {{- define "primary_cluster_name" -}}
   {{- required "REQUIRED: primary_cluster_name" .Values.primary_cluster_name }}
 {{- end -}}
