@@ -24,6 +24,8 @@ image:
 containerPort: 7654
 port_policy: Static
 
+toleration: gameserver
+
 healthCheck:
   initialDelaySeconds: 30
   periodSeconds: 60

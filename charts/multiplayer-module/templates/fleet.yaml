@@ -26,6 +26,11 @@ spec:
         periodSeconds: {{ .Values.healthCheck.periodSeconds }}
       template:
         spec:
+          tolerations:
+          - key: {{ .Values.toleration }}
+            operator: Equal
+            value: "true"
+            effect: NoExecute
           containers:
             - name: {{ .Values.microservice_name }}
               image: '{{ include "image" . }}'
