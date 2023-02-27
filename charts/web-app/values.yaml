@@ -102,6 +102,8 @@ google:
   registry: gcr.io
   pubsub:
     enabled: false
+    create: false
+    add_label: false
     subscription:
       ackDeadlineSeconds: 15
       messageRetentionDuration: '86400s'

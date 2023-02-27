@@ -13,10 +13,8 @@ metadata:
     tier: backend
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
-  {{- if or (not .Values.use_pd) (not .Values.mount_pd) }}
   strategy:
     type: RollingUpdate
-  {{- end }}
   selector:
     matchLabels:
       app: '{{ include "deployment_name" $ }}'
@@ -217,9 +215,8 @@ spec:
           value: {{ include "pubsub_topic_name" $ }}
         - name: PUBSUB_SUBSCRIPTION
           value: {{ include "pubsub_subscription_name" $ }}
-        {{- else }}
         - name: USE_PUBSUB
-          value: "false"
+          value: "true"
         {{- end }}
 
         - name: TMP_PATH
@@ -432,7 +429,7 @@ spec:
         {{- if not .Values.google.sql.use_password }}
           value: {{ include "app_sa" . }}
         {{- else }}
-          value: {{ include "app_label" $ }}-basic
+          value: {{ include "microservice_label" $ }}-basic
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:

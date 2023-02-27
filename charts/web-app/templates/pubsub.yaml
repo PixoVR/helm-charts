@@ -28,7 +28,7 @@ metadata:
 spec:
   schemaSettings:
     schemaRef:
-      name: {{ include "app_label" $ -}}-schema
+      name: {{ include "pubsub_topic_name" $ -}}-schema
     encoding: {{ .Values.google.pubsub.encoding }}
 
 ---
@@ -36,7 +36,7 @@ spec:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSchema
 metadata:
-  name: {{ include "app_label" $ -}}-schema
+  name: {{ include "pubsub_topic_name" $ -}}-schema
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:

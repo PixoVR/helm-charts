@@ -82,6 +82,11 @@
 
 
 {{- define "app_label" -}}
+  {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code }}
+{{- end }}
+
+
+{{- define "microservice_label" -}}
   {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
 {{- end }}
 
@@ -97,12 +102,16 @@
 
 
 {{- define "pubsub_topic_name" -}}
-  {{ include "app_label" $ -}}-topic
+  {{- if .Values.google.pubsub.add_label }}
+    {{- include "microservice_label" $ -}}-topic
+  {{- else }}
+    {{- include "app_label" $ -}}-topic
+  {{- end -}}
 {{- end -}}
 
 
 {{- define "pubsub_subscription_name" -}}
-  {{ include "pubsub_topic_name" $ -}}-sub
+  {{- include "pubsub_topic_name" $ -}}-sub
 {{- end -}}
 
 
@@ -229,16 +238,16 @@
 
 
 {{- define "deployment_name" -}}
-  {{- include "app_label" . }}
+  {{- include "microservice_label" . }}
 {{- end -}}
 
 {{- define "cronjob_name" -}}
-  {{- include "app_label" . }}
+  {{- include "microservice_label" . }}
 {{- end -}}
 
 
 {{- define "service_name" -}}
-  {{- include "app_label" . }}
+  {{- include "microservice_label" . }}
 {{- end -}}
 
 
@@ -246,7 +255,7 @@
   {{- if .Values.ip_name }}
     {{- .Values.ip_name }}
   {{- else }}
-    {{- include "app_label" $ -}}-ip
+    {{- include "microservice_label" $ -}}-ip
   {{- end }}
 {{- end -}}
 
