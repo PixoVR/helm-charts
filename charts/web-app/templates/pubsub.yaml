@@ -1,5 +1,6 @@
 {{- if .Values.create_infra }}
 {{- if .Values.google.pubsub.enabled }}
+{{- if .Values.google.pubsub.create }}
 ---
 
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -47,5 +48,6 @@ spec:
 
 {{- end }}
 
+{{- end }}
 {{- end }}
 {{- end }}
