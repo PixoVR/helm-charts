@@ -217,6 +217,9 @@ spec:
           value: {{ include "pubsub_topic_name" $ }}
         - name: PUBSUB_SUBSCRIPTION
           value: {{ include "pubsub_subscription_name" $ }}
+        {{- else }}
+        - name: USE_PUBSUB
+          value: "false"
         {{- end }}
 
         - name: TMP_PATH
