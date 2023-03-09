@@ -336,13 +336,11 @@ spec:
               name: app-secrets
               key: auth-key
 
-        {{- if eq .Values.microservice_name "api" }}
         - name: EXTERNAL_SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: external-auth-key
-        {{- end }}
 
         {{ if .Values.oauth.google.enabled }}
         - name: GOOGLE_OAUTH_ID
