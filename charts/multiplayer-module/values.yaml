@@ -32,6 +32,8 @@ healthCheck:
   initialDelaySeconds: 30
   periodSeconds: 60
 
+logs_destination: /server/src/gameserver/Saved
+
 fleet:
   labels:
 

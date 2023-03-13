@@ -40,6 +40,7 @@ spec:
           containers:
             - name: gameserver
               image: '{{ include "image" . }}'
+              imagePullPolicy: Always
               resources:
                 requests:
                   memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
@@ -56,7 +57,7 @@ spec:
                 seccompProfile:
                   type: RuntimeDefault
               volumeMounts:
-              - mountPath: /server/src/gameserver/Saved
+              - mountPath: {{ .Values.logs_destination }}
                 name: gameserver-logs
 
 {{- end }}
