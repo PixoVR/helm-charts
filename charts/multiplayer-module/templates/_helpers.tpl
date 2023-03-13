@@ -19,9 +19,9 @@
 
 {{- define "app_label" -}}
   {{- if .Values.use_app_code }}
-    {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
+    {{- required "REQUIRED: app_code" .Values.app_code -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
   {{- else }}
-    {{- include "lifecycle" $ -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
+    {{- required "REQUIRED: microservice_name" .Values.microservice_name }}
   {{- end }}
 {{- end }}
 
