@@ -29,6 +29,9 @@ spec:
         periodSeconds: {{ .Values.healthCheck.periodSeconds }}
       template:
         spec:
+          volumes:
+          - name: gameserver-logs
+            emptyDir: {}
           tolerations:
           - key: {{ .Values.toleration }}
             operator: Equal
@@ -52,6 +55,9 @@ spec:
                 runAsNonRoot: true
                 seccompProfile:
                   type: RuntimeDefault
+              volumeMounts:
+              - mountPath: /server/src/gameserver/Saved
+                name: gameserver-logs
 
 {{- end }}
 {{- end }}
