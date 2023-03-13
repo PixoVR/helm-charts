@@ -35,7 +35,7 @@ spec:
             value: "true"
             effect: NoExecute
           containers:
-            - name: {{ .Values.microservice_name }}
+            - name: gameserver
               image: '{{ include "image" . }}'
               resources:
                 requests:
