@@ -255,8 +255,12 @@ spec:
         - name: NODE_ENV
         {{- end }}
           value: {{ upper .Values.lifecycle }}
+        - name: APP_DOMAIN
+          value: '{{- include "app_domain" $ -}}'
         - name: APP_URL
           value: https://{{- include "app_domain" $ }}
+        - name: API_DOMAIN
+          value: '{{- include "api_domain" $ -}}'
         - name: API_URL
           value: https://{{- include "api_domain" $ }}
 
