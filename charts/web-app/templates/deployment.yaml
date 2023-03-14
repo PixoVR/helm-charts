@@ -53,9 +53,11 @@ spec:
       {{- end }}
 
       volumes:
+        {{- if .Values.external_secrets.enabled }}
         - name: app-secrets
           secret:
             secretName: app-secrets
+        {{- end }}
         - name: tmp-dir
           emptyDir: {}
         - name: usr-tmp-dir
@@ -136,8 +138,10 @@ spec:
             cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
 
         volumeMounts:
+          {{- if .Values.external_secrets.enabled }}
           - mountPath: /backend/secrets
             name: app-secrets
+          {{- end }}
           - mountPath: /backend/var
             name: db-volume
           - mountPath: /tmp
