@@ -54,9 +54,11 @@ spec:
 
       volumes:
         {{- if .Values.external_secrets.enabled }}
+        {{- if .Values.external_secrets.app_secrets.enabled }}
         - name: app-secrets
           secret:
             secretName: app-secrets
+        {{- end }}
         {{- end }}
         - name: tmp-dir
           emptyDir: {}
@@ -139,8 +141,10 @@ spec:
 
         volumeMounts:
           {{- if .Values.external_secrets.enabled }}
+          {{- if .Values.external_secrets.app_secrets.enabled }}
           - mountPath: /backend/secrets
             name: app-secrets
+          {{- end }}
           {{- end }}
           - mountPath: /backend/var
             name: db-volume
