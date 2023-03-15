@@ -338,6 +338,7 @@ spec:
               key: aws-cf-domain
         {{- end }}
 
+        {{- if .Values.external_secrets.app_secrets.enabled }}
         {{- if eq .Values.microservice_name "web" }}
         - name: JWT_SECRET
         {{- else }}
@@ -447,6 +448,7 @@ spec:
               key: db-password
         {{- end }}
 
+        {{- end }}
         {{- end }}
 
         ports:
