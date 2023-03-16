@@ -68,6 +68,7 @@ external_secrets:
     enabled: true
   app_secrets:
     enabled: true
+    create: true
 
 create_sa: true
 

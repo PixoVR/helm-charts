@@ -164,6 +164,7 @@ external_secrets:
     name: pixo-secret-store
   app_secrets:
     enabled: false
+    create: false
   refresh_interval: 0
 
 secrets:
