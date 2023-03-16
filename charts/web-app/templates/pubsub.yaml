@@ -1,6 +1,7 @@
 {{- if .Values.create_infra }}
 {{- if .Values.google.pubsub.enabled }}
-{{- if .Values.google.pubsub.create }}
+
+{{- if .Values.google.pubsub.subscription.create }}
 ---
 
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -21,7 +22,9 @@ spec:
   {{- end }}
 
 ---
+{{- end }}
 
+{{- if .Values.google.pubsub.topic.create }}
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
@@ -29,12 +32,12 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 
-{{- if .Values.google.pubsub.schema.enabled }}
+{{- if .Values.google.pubsub.topic.schema.enabled }}
 spec:
   schemaSettings:
     schemaRef:
       name: {{ include "pubsub_topic_name" $ -}}-schema
-    encoding: {{ .Values.google.pubsub.encoding }}
+    encoding: {{ .Values.google.pubsub.topic.encoding }}
 
 ---
 
@@ -45,13 +48,13 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
-  type: {{ .Values.google.pubsub.schema.type }}
+  type: {{ .Values.google.pubsub.topic.schema.type }}
   projectRef:
     external: {{ include "app_project_id" $ }}
 
 
 {{- end }}
-
 {{- end }}
+
 {{- end }}
 {{- end }}

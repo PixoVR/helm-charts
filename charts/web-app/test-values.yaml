@@ -55,7 +55,10 @@ google:
     enabled: true
   pubsub:
     enabled: true
+    topic:
+      create: true
     subscription:
+      create: true
       push:
         enabled: true
 
