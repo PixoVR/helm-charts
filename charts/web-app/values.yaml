@@ -109,6 +109,9 @@ google:
       ackDeadlineSeconds: 15
       messageRetentionDuration: '86400s'
       retainAckedMessages: false
+      push:
+        enabled: false
+        endpoint: '/pubsub'
     encoding: JSON
     schema:
       enabled: false

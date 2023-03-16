@@ -15,6 +15,10 @@ spec:
   retainAckedMessages: {{ .Values.google.pubsub.subscription.retainAckedMessages }}
   topicRef:
     name: {{ include "pubsub_topic_name" $ }}
+  {{- if .Values.google.pubsub.subscription.push.enabled }}
+  pushConfig:
+    pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .Values.google.pubsub.subscription.push.endpoint }}'
+  {{- end }}
 
 ---
 

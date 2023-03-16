@@ -55,6 +55,9 @@ google:
     enabled: true
   pubsub:
     enabled: true
+    subscription:
+      push:
+        enabled: true
 
 external_secrets:
   enabled: true
