@@ -4,9 +4,9 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: app-workload
-  namespace: dev-apex
+  namespace: prod-apex
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
   annotations:
     iam.gke.io/gcp-service-account: sample-api@sa-project.iam.gserviceaccount.com
 ---
@@ -15,9 +15,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dev-sample-web
-  namespace: dev-apex
+  namespace: prod-apex
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     tier: backend
     backstage.io/kubernetes-id: sample
   annotations:
@@ -39,9 +39,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: 'dev-sample-web'
-  namespace: dev-apex
+  namespace: prod-apex
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     microservice_name: web
     tier: backend
 spec:
@@ -59,7 +59,7 @@ spec:
         container.seccomp.security.alpha.kubernetes.io/web: runtime/default
       labels:
         app: 'dev-sample-web'
-        namespace: dev-apex
+        namespace: prod-apex
         microservice_name: web
         tier: backend
     spec:
@@ -143,7 +143,7 @@ spec:
         - name: USE_GCS
           value: "true"
         - name: NAMESPACE
-          value: dev-apex
+          value: prod-apex
         - name: DOMAIN
           value: 'api.sample.example.com'
         - name: PORT
@@ -185,7 +185,7 @@ spec:
               name: app-secrets
               key: email-sender-password
         - name: GOOGLE_STORAGE_MODULES
-          value: sample-api-modules
+          value: dev-sample-web-modules
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
         - name: AWS_ID
@@ -289,7 +289,7 @@ spec:
               seccompProfile:
                 type: RuntimeDefault
             args:
-            - dev-sample-web.dev-apex.svc:443/
+            - dev-sample-web.prod-apex.svc:443/
             - key=$(SECRET_KEY)
             - --ignore-stdin
 
@@ -317,9 +317,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: test
-  namespace: dev-apex
+  namespace: prod-apex
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     backstage.io/kubernetes-id: sample
   annotations:
     networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
@@ -344,7 +344,7 @@ apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
   name: test-backendconfig
-  namespace: dev-apex
+  namespace: prod-apex
 spec:
   healthCheck:
     checkIntervalSec: 30
@@ -369,7 +369,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: app-project
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
 spec:
   disabled: false
   github:
@@ -407,7 +407,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: cron-auth-secret
-  namespace: dev-apex
+  namespace: prod-apex
 spec:
   secretStoreRef:
     kind: SecretStore
@@ -428,7 +428,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: app-secrets
-  namespace: dev-apex
+  namespace: prod-apex
 spec:
   secretStoreRef:
     kind: SecretStore
@@ -471,7 +471,7 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: test-gke-frontendconfig
-  namespace: dev-apex
+  namespace: prod-apex
   annotations:
     configsync.gke.io/cluster-name-selector: central-cluster-membership
 spec:
@@ -646,9 +646,9 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: test-google-cert
-  namespace: dev-apex
+  namespace: prod-apex
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     backstage.io/kubernetes-id: sample
   annotations:
     configsync.gke.io/cluster-name-selector: central-cluster-membership
@@ -688,7 +688,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: db-project
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
@@ -702,7 +702,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: db-project
   labels:
-    namespace: dev-apex
+    namespace: prod-apex
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
@@ -715,7 +715,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
   name: pixo-secret-store
-  namespace: dev-apex
+  namespace: prod-apex
 spec:
   provider:
     gcpsm:

@@ -287,7 +287,7 @@ spec:
         {{- if .Values.google.storage.enabled }}
         {{- range .Values.google.storage.bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
-          value: {{ include "sa_app_label" $ -}}-{{- .name }}
+          value: {{ include "microservice_label" $ -}}-{{- .name }}
         {{- end }}
         {{- end }}
 
