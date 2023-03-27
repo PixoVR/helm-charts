@@ -1,0 +1,57 @@
+{{- if .Values.create_infra }}
+{{- if .Values.google.storage.enabled }}
+{{- if .Values.google.storage.create }}
+{{- if .Values.google.storage.notifications }}
+
+{{- range .Values.google.storage.bucket_list }}
+{{- if .notifications.enabled }}
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: {{ include "pubsub_topic_name" $ -}}-{{- .name }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
+
+---
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: {{ include "pubsub_subscription_name" $ -}}-{{- .name }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
+spec:
+  ackDeadlineSeconds: {{ $.Values.google.pubsub.subscription.ackDeadlineSeconds }}
+  messageRetentionDuration: {{ $.Values.google.pubsub.subscription.messageRetentionDuration }}
+  retainAckedMessages: {{ $.Values.google.pubsub.subscription.retainAckedMessages }}
+  topicRef:
+    name: {{ include "pubsub_topic_name" $ }}
+  {{- if ne .type "pull" }}
+  pushConfig:
+    pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .endpoint }}'
+  {{- end }}
+---
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageNotification
+metadata:
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-notification
+spec:
+  bucketRef:
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+  payloadFormat: JSON_API_V1
+  topicRef:
+    name: {{ include "pubsub_topic_name" $ -}}-{{- .name }}
+  eventTypes:
+    - "OBJECT_FINALIZE"
+
+---
+
+{{- end }}
+{{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

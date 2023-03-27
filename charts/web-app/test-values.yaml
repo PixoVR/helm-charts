@@ -50,7 +50,13 @@ google:
   config_connector_context: true
   storage:
     enabled: true
-    create: false
+    create: true
+    notifications: true
+    bucket_list:
+    - name: builds
+      key: BUILDS
+      notifications:
+        enabled: true
   sql:
     enabled: true
   pubsub:

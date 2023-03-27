@@ -123,6 +123,7 @@ google:
   storage:
     enabled: false
     create: false
+    notifications: false
     bucket_list:
       - name: modules
         key: MODULES

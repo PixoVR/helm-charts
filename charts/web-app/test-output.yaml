@@ -184,8 +184,8 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: email-sender-password
-        - name: GOOGLE_STORAGE_MODULES
-          value: dev-sample-web-modules
+        - name: GOOGLE_STORAGE_BUILDS
+          value: dev-sample-web-builds
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
         - name: AWS_ID
@@ -678,11 +678,35 @@ spec:
   pushConfig:
     pushEndpoint: 'https://api.sample.example.com/pubsub'
 ---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: dev-sample-topic-sub-builds
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: dev-sample-topic
+  pushConfig:
+    pushEndpoint: 'https://api.sample.example.com/'
+---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   name: dev-sample-topic
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: dev-sample-topic-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
 ---
@@ -726,3 +750,36 @@ spec:
   provider:
     gcpsm:
       projectID: app-project
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: dev-sample-web-builds
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: dev-multiplayer
+spec:
+  location: us-central1
+  # cors:
+  #   - origin: ["https://api.sample.example.com"]
+  #     responseHeader: ["Content-Type"]
+  #     method: ["*"]
+  #     maxAgeSeconds: 3600
+  uniformBucketLevelAccess: true
+---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageNotification
+metadata:
+  name: dev-sample-web-builds-notification
+spec:
+  bucketRef:
+    name: dev-sample-web-builds
+  payloadFormat: JSON_API_V1
+  topicRef:
+    name: dev-sample-topic-builds
+  eventTypes:
+    - "OBJECT_FINALIZE"
