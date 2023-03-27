@@ -92,7 +92,11 @@
 
 
 {{- define "sa_app_label" -}}
-  {{- required "REQUIRED: app_code" .Values.app_code -}}-{{- .Values.sa_microservice_name }}
+  {{- if .Values.sa_microservice_name }}
+    {{- required "REQUIRED: app_code" .Values.app_code -}}-{{- .Values.sa_microservice_name }}
+  {{- else }}
+    {{- required "REQUIRED: app_code" .Values.app_code }}
+  {{- end }}
 {{- end }}
 
 

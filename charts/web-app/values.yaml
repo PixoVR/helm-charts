@@ -43,7 +43,6 @@ primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
 create_sa: true
-sa_microservice_name: api
 
 demo:
   enabled: false
@@ -214,4 +213,6 @@ cronjob:
     name: alpine/httpie
     tag: latest
   schedule: '0 8 * * *'
+
+sa_name: workload
 

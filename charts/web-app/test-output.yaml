@@ -4,20 +4,20 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: app-workload
-  namespace: prod-apex
+  namespace: dev-multiplayer
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
   annotations:
-    iam.gke.io/gcp-service-account: sample-api@sa-project.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
 ---
 # Source: web-app/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: dev-sample-web
-  namespace: prod-apex
+  namespace: dev-multiplayer
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     tier: backend
     backstage.io/kubernetes-id: sample
   annotations:
@@ -39,9 +39,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: 'dev-sample-web'
-  namespace: prod-apex
+  namespace: dev-multiplayer
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     microservice_name: web
     tier: backend
 spec:
@@ -59,7 +59,7 @@ spec:
         container.seccomp.security.alpha.kubernetes.io/web: runtime/default
       labels:
         app: 'dev-sample-web'
-        namespace: prod-apex
+        namespace: dev-multiplayer
         microservice_name: web
         tier: backend
     spec:
@@ -143,7 +143,7 @@ spec:
         - name: USE_GCS
           value: "true"
         - name: NAMESPACE
-          value: prod-apex
+          value: dev-multiplayer
         - name: DOMAIN
           value: 'api.sample.example.com'
         - name: PORT
@@ -232,7 +232,7 @@ spec:
         - name: DB_NAME
           value: dev-db
         - name: DB_USER
-          value: sample-api@sa-project.iam
+          value: workload@sa-project.iam
 
         ports:
         - containerPort: 8001
@@ -289,7 +289,7 @@ spec:
               seccompProfile:
                 type: RuntimeDefault
             args:
-            - dev-sample-web.prod-apex.svc:443/
+            - dev-sample-web.dev-multiplayer.svc:443/
             - key=$(SECRET_KEY)
             - --ignore-stdin
 
@@ -317,9 +317,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: test
-  namespace: prod-apex
+  namespace: dev-multiplayer
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     backstage.io/kubernetes-id: sample
   annotations:
     networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
@@ -344,7 +344,7 @@ apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
   name: test-backendconfig
-  namespace: prod-apex
+  namespace: dev-multiplayer
 spec:
   healthCheck:
     checkIntervalSec: 30
@@ -369,7 +369,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: app-project
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
 spec:
   disabled: false
   github:
@@ -407,7 +407,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: cron-auth-secret
-  namespace: prod-apex
+  namespace: dev-multiplayer
 spec:
   secretStoreRef:
     kind: SecretStore
@@ -428,7 +428,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: app-secrets
-  namespace: prod-apex
+  namespace: dev-multiplayer
 spec:
   secretStoreRef:
     kind: SecretStore
@@ -471,7 +471,7 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: test-gke-frontendconfig
-  namespace: prod-apex
+  namespace: dev-multiplayer
   annotations:
     configsync.gke.io/cluster-name-selector: central-cluster-membership
 spec:
@@ -570,13 +570,19 @@ spec:
           serviceAccountRef:
             name: 'workload-sa'
             namespace: infra-admin
+    - role: roles/pubsub.subscriber
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
     - role: roles/secretmanager.secretAccessor
       members:
       - memberFrom:
           serviceAccountRef:
             name: 'workload-sa'
             namespace: infra-admin
-    - role: roles/storage.objectAdmin
+    - role: roles/storage.admin
       members:
       - memberFrom:
           serviceAccountRef:
@@ -646,9 +652,9 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: test-google-cert
-  namespace: prod-apex
+  namespace: dev-multiplayer
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     backstage.io/kubernetes-id: sample
   annotations:
     configsync.gke.io/cluster-name-selector: central-cluster-membership
@@ -688,7 +694,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: db-project
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
@@ -702,12 +708,12 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: db-project
   labels:
-    namespace: prod-apex
+    namespace: dev-multiplayer
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
     external: apex-instance
-  resourceID: sample-api@sa-project.iam
+  resourceID: workload@sa-project.iam
   type: CLOUD_IAM_SERVICE_ACCOUNT
 ---
 # Source: web-app/templates/external-secrets.yaml
@@ -715,7 +721,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
   name: pixo-secret-store
-  namespace: prod-apex
+  namespace: dev-multiplayer
 spec:
   provider:
     gcpsm:
