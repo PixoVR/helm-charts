@@ -60,5 +60,5 @@ app:
     - pubsub.publisher
     - pubsub.subscriber
     - secretmanager.secretAccessor
-    - storage.objectAdmin
+    - storage.admin
 
