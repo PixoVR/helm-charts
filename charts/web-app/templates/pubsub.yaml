@@ -18,7 +18,11 @@ spec:
     name: {{ include "pubsub_topic_name" $ }}
   {{- if .Values.google.pubsub.subscription.push.enabled }}
   pushConfig:
+    {{- if .Values.google.pubsub.subscription.push.custom_endpoint.enabled }}
+    pushEndpoint: 'https://{{- include "custom_pubsub_push_domain" $ -}}/{{- .Values.google.pubsub.subscription.push.endpoint }}'
+    {{- else }}
     pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .Values.google.pubsub.subscription.push.endpoint }}'
+    {{- end }}
   {{- end }}
 
 ---

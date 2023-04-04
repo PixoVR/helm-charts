@@ -690,7 +690,7 @@ spec:
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: dev-sample-topic
+    name: dev-sample-topic-builds
   pushConfig:
     pushEndpoint: 'https://api.sample.example.com/'
 ---

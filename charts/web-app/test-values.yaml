@@ -67,6 +67,10 @@ google:
       create: true
       push:
         enabled: true
+        custom_endpoint:
+          enabled: false
+          prefix: external.service
+
 
 external_secrets:
   enabled: true

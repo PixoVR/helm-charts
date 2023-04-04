@@ -117,6 +117,8 @@ google:
       push:
         enabled: false
         endpoint: pubsub
+        custom_endpoint:
+          enabled: false
   sql:
     enabled: false
     use_iam: true

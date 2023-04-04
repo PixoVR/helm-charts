@@ -282,4 +282,11 @@
 {{- end }}
 
 
+{{- define "custom_pubsub_push_domain" -}}
+  {{- if .Values.google.storage.notification_endpoint }}
+    {{- .Values.google.storage.notification_endpoint }}
+  {{- else }}
+    {{- .Values.google.pubsub.subscription.push.custom_endpoint.prefix -}}.{{- include "lifecycle_domain" $ }}
+  {{- end }}
+{{- end }}
 
