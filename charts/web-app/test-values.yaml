@@ -55,8 +55,7 @@ google:
     bucket_list:
     - name: builds
       key: BUILDS
-      notifications:
-        enabled: true
+      notifications: true
       custom_endpoint:
         enabled: true
         prefix: external.service
