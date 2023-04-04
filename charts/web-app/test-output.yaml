@@ -770,6 +770,17 @@ spec:
   #     maxAgeSeconds: 3600
   uniformBucketLevelAccess: true
 ---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  name: dev-sample-web-builds-access
+spec:
+  bucketRef:
+    name: dev-sample-web-builds
+  entity: multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
+  role: READER
+---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageNotification
