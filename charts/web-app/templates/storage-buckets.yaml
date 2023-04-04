@@ -20,7 +20,7 @@ spec:
   #     responseHeader: ["Content-Type"]
   #     method: ["*"]
   #     maxAgeSeconds: 3600
-  uniformBucketLevelAccess: true
+  uniformBucketLevelAccess: false
 
 ---
 
