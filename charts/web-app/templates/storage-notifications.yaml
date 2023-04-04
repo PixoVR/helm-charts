@@ -1,6 +1,5 @@
 {{- if .Values.create_infra }}
 {{- if .Values.google.storage.enabled }}
-{{- if .Values.google.storage.create }}
 {{- if .Values.google.storage.notifications }}
 
 {{- range .Values.google.storage.bucket_list }}
@@ -56,7 +55,6 @@ spec:
 {{- end }}
 {{- end }}
 
-{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
