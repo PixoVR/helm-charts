@@ -33,7 +33,7 @@ metadata:
 spec:
   bucketRef:
     name: {{ include "microservice_label" $ -}}-{{- .name }}
-  entity: {{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
+  entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
   role: READER
 
 ---
