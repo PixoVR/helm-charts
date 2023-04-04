@@ -57,6 +57,9 @@ google:
       key: BUILDS
       notifications:
         enabled: true
+      custom_endpoint:
+        enabled: true
+        prefix: external.service
   sql:
     enabled: true
   pubsub:
