@@ -68,7 +68,7 @@ google:
       push:
         enabled: true
         custom_endpoint:
-          enabled: false
+          enabled: true
           prefix: external.service
 
 

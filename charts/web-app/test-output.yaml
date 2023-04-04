@@ -676,7 +676,7 @@ spec:
   topicRef:
     name: dev-sample-topic
   pushConfig:
-    pushEndpoint: 'https://api.sample.example.com/pubsub'
+    pushEndpoint: 'https://external.service.example.com/pubsub'
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -692,7 +692,7 @@ spec:
   topicRef:
     name: dev-sample-topic-builds
   pushConfig:
-    pushEndpoint: 'https://api.sample.example.com/'
+    pushEndpoint: 'https://external.service.example.com/'
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1

@@ -29,7 +29,11 @@ spec:
     name: {{ include "pubsub_topic_name" $ -}}-{{- .name }}
   {{- if ne .type "pull" }}
   pushConfig:
+    {{- if $.Values.google.pubsub.subscription.push.custom_endpoint.enabled }}
+    pushEndpoint: 'https://{{- include "custom_pubsub_push_domain" $ -}}/{{- .endpoint }}'
+    {{- else }}
     pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .endpoint }}'
+    {{- end }}
   {{- end }}
 
 ---
