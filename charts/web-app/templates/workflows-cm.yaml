@@ -11,7 +11,7 @@ data:
     gcs:
       bucket: {{ include "workflows_artifact_bucket" $ }}
       {{- if .Values.workflows.artifacts.path }}
-      path {{ .Values.workflows.artifacts.path }}
+      path: {{ .Values.workflows.artifacts.path }}
       {{- end }}
 
 {{- end }}
