@@ -293,7 +293,11 @@
 
 
 {{- define "workflows_artifact_bucket" -}}
-  {{ .Values.lifecycle -}}-{{- .Values.workflows.artifacts.bucket_name }}
+  {{- if .Values.workflows.artifacts.bucket_prefix }}
+    {{- .Values.lifecycle -}}-{{- .Values.workflows.artifacts.bucket_prefix -}}-{{- .Values.workflows.artifacts.bucket_name }}
+  {{- else }}
+    {{- include "microservice_label" $ -}}-{{- .Values.workflows.artifacts.bucket_name }}
+  {{- end }}
 {{- end }}
 
 
