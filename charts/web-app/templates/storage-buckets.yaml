@@ -34,7 +34,11 @@ spec:
   bucketRef:
     name: {{ include "microservice_label" $ -}}-{{- .name }}
   entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
+  {{- if .viewing_role }}
+  role: {{ .viewing_role }}
+  {{- else }}
   role: READER
+  {{- end }}
 
 ---
 {{- end }}
