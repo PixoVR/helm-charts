@@ -9,6 +9,6 @@ metadata:
 data:
   gcs-artifact-repository: |
     gcs:
-      bucket: {{ include "workflows_artifact_bucket"}}
+      bucket: {{ include "workflows_artifact_bucket" $ }}
 
 {{- end }}
