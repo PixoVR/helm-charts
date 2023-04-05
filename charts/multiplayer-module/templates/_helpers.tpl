@@ -78,7 +78,11 @@
   {{- if .Values.image.name }}
     {{- .Values.image.name -}}
   {{- else -}}
-    {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project_id" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}
+    {{- if .Values.image.version }}
+      {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project_id" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}/version-{{- .Values.image.version }}
+    {{- else -}}
+      {{- required "REQUIRED: google.registry" .Values.google.registry -}}/{{- include "app_project_id" . -}}/{{- .Values.app_code -}}/{{- include "registry_name" . -}}/{{- .Values.microservice_name }}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
