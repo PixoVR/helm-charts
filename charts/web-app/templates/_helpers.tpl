@@ -290,3 +290,11 @@
   {{- end }}
 {{- end }}
 
+
+
+{{- define "workflows_artifact_bucket" -}}
+  {{ .Values.lifecycle -}}-{{- .Values.workflows.artifacts.bucket_name }}
+{{- end }}
+
+
+

@@ -1,0 +1,14 @@
+{{- if .Values.workflows.artifacts.enabled }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-repositories
+  annotations:
+    workflows.argoproj.io/default-artifact-repository: gcs-artifact-repository
+data:
+  gcs-artifact-repository: |
+    gcs:
+      bucket: {{ include "workflows_artifact_bucket"}}
+
+{{- end }}
