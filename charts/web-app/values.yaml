@@ -77,6 +77,10 @@ max_replicas: 20
 target_cpu: 80
 target_mem: 256Mi
 
+workflows:
+  artifacts:
+    enabled: false
+
 email:
   enabled: false
   mfa: false
