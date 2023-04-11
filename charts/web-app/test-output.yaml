@@ -346,7 +346,7 @@ spec:
             name: dev-sample-api
             port:
               number: 443
-      - path: /goapi
+      - path: /modules
 
         pathType: Prefix
         backend:

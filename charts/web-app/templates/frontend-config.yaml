@@ -1,6 +1,6 @@
 {{- if and (.Values.enabled) (not .Values.local) }}
 {{- if .Values.ingress.enabled }}
-{{- if eq .Values.ingress.ingress_microservice nil }}
+{{- if not .Values.ingress.is_secondary }}
 {{- if .Values.ingress.https }}
 {{- if .Values.deploy_app }}
 

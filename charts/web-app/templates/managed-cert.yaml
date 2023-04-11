@@ -2,7 +2,7 @@
 {{- if .Values.deploy_app }}
 
 {{- if or (.Values.ingress.enabled) (.Values.ingress.cert) }}
-{{- if eq .Values.ingress.ingress_microservice nil }}
+{{- if not .Values.ingress.is_secondary }}
 {{- if .Values.ingress.https }}
 {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) (.Values.ingress.override) }}
 

@@ -22,10 +22,12 @@ instance_name: apex-instance
 
 
 ingress:
+  # is_secondary: true
   is_primary_ingress: true
   secondary_list:
     - name: api
     - name: goapi
+      path: modules
 
 repo_name: apex-api
 containerPort: 8001
