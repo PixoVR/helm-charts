@@ -20,6 +20,13 @@ domain: example.com
 subdomain: api
 instance_name: apex-instance
 
+
+ingress:
+  is_primary_ingress: true
+  secondary_list:
+    - name: api
+    - name: goapi
+
 repo_name: apex-api
 containerPort: 8001
 healthCheck:

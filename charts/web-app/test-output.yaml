@@ -338,6 +338,22 @@ spec:
             name: dev-sample-web
             port:
               number: 443
+      - path: /api
+
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-api
+            port:
+              number: 443
+      - path: /goapi
+
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-goapi
+            port:
+              number: 443
 ---
 # Source: web-app/templates/backend-config.yaml
 apiVersion: cloud.google.com/v1
