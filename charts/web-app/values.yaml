@@ -60,8 +60,8 @@ healthCheck:
 
 sql:
   proxy: false
+
 use_pd: false
-mount_pd: false
 disk_size: 10Gi
 
 memory:

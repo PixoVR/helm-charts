@@ -100,7 +100,7 @@ spec:
         {{- end }}
 
         - name: db-volume
-        {{- if and (.Values.use_pd) (.Values.mount_pd) }}
+        {{- if .Values.use_pd }}
           persistentVolumeClaim:
             claimName: gce-pvc
         {{- else }}
