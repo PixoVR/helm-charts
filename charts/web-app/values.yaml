@@ -227,3 +227,5 @@ cronjob:
 
 sa_name: workload
 
+kaniko_version_tag: latest
+

@@ -422,7 +422,7 @@ spec:
           path: /root/.ssh
 
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:v1.6.0"
+        name: "gcr.io/kaniko-project/executor:latest"
         args:
           - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
           - --destination=gcr.io/app-project/sample/dev/web:latest
@@ -434,7 +434,7 @@ spec:
       secretManager:
       - env: 'SSH_KEY'
         versionRef:
-          external: projects/app-project/secrets/sample-submodule-reader-key/versions/latest
+          external: projects/app-project/secrets/web-submodule-reader-key/versions/latest
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1

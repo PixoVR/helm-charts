@@ -53,7 +53,7 @@ spec:
       {{- end }}
 
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:v1.6.0"
+        name: "gcr.io/kaniko-project/executor:{{- .Values.kaniko_version_tag -}}"
         args:
           - --destination={{- include "registry" . }}:$COMMIT_SHA
           - --destination={{- include "registry" . }}:latest
