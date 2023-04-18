@@ -58,6 +58,9 @@ healthCheck:
   enabled: true
   path: /
 
+submodules:
+  enabled: false
+
 sql:
   proxy: false
 

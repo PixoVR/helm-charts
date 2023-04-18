@@ -400,6 +400,7 @@ spec:
       machineType: E2_HIGHCPU_8
 
     step:
+
       - id: "Build-Image"
         name: "gcr.io/kaniko-project/executor:v1.6.0"
         args:

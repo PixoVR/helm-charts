@@ -29,6 +29,11 @@ spec:
       machineType: E2_HIGHCPU_8
 
     step:
+      {{- if .Values.submodules.enabled }}
+      - name: gcr.io/cloud-builders/git
+        args: ['submodule', 'update', '--init', '--recursive']
+      {{- end }}
+
       - id: "Build-Image"
         name: "gcr.io/kaniko-project/executor:v1.6.0"
         args:
