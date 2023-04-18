@@ -434,7 +434,7 @@ spec:
       secretManager:
       - env: 'SSH_KEY'
         versionRef:
-          name: submodule-reader-key-version
+          name: dev-sample-web-git-pk-v
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
@@ -786,7 +786,7 @@ spec:
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
-  name: submodule-reader-key
+  name: dev-sample-web-git-pk
 spec:
   replication:
     userManaged:
@@ -798,13 +798,13 @@ spec:
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
-  name: submodule-reader-key-version
+  name: dev-sample-web-git-pk-v
 spec:
   enabled: true
   secretData:
     value: c2VjcmV0MQ==
   secretRef:
-    name: submodule-reader-key
+    name: dev-sample-web-git-pk
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1 

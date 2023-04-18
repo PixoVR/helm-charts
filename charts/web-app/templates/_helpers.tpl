@@ -301,4 +301,14 @@
 {{- end }}
 
 
+{{- define "submodule_secret_name" -}}
+  {{- include "microservice_label" $ -}}-git-pk
+{{- end }}
+
+
+{{- define "submodule_secret_version_name" -}}
+  {{- include "microservice_label" $ -}}-git-pk-v
+{{- end }}
+
+
 

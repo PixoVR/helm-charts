@@ -67,14 +67,14 @@ spec:
       secretManager:
       - env: 'SSH_KEY'
         versionRef:
-          name: submodule-reader-key-version
+          name: {{ include "submodule_secret_version_name" $ }}
 
 ---
 
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
-  name: submodule-reader-key
+  name: {{ include "submodule_secret_name" $ }}
 spec:
   replication:
     userManaged:
@@ -86,13 +86,13 @@ spec:
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
-  name: submodule-reader-key-version
+  name: {{ include "submodule_secret_version_name" $ }}
 spec:
   enabled: true
   secretData:
     value: c2VjcmV0MQ==
   secretRef:
-    name: submodule-reader-key
+    name: {{ include "submodule_secret_name" $ }}
 
 {{- end }}
 
