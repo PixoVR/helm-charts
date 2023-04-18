@@ -228,4 +228,5 @@ cronjob:
 sa_name: workload
 
 kaniko_version_tag: latest
+ci_machine_type: E2_HIGHCPU_8
 
