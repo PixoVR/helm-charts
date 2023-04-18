@@ -302,7 +302,7 @@
 
 
 {{- define "external_submodule_secret_name" -}}
-  {{- .Values.app_code -}}-submodule-reader-key
+  {{- .Values.microservice_name -}}-submodule-reader-key
 {{- end }}
 
 
