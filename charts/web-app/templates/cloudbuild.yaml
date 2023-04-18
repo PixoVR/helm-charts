@@ -62,12 +62,12 @@ spec:
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
 
-  {{- if .Values.submodules.enabled }}
-  availableSecrets:
-    secretManager:
-    - versionName: projects/{{- include "app_project_id" $ -}}/secrets/{{- .Values.submodules.secret_name }}/versions/latest
-      env: 'SSH_KEY'
-  {{- end }}
+    {{- if .Values.submodules.enabled }}
+    availableSecrets:
+      secretManager:
+      - versionName: projects/{{- include "app_project_id" $ -}}/secrets/{{- .Values.submodules.secret_name }}/versions/latest
+        env: 'SSH_KEY'
+    {{- end }}
 
 {{- end }}
 {{- end }}
