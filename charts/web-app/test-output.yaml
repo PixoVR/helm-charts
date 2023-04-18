@@ -787,6 +787,10 @@ apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
   name: dev-sample-web-git-pk
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+  labels:
+    namespace: dev-multiplayer
 spec:
   replication:
     userManaged:
@@ -799,10 +803,13 @@ apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
   name: dev-sample-web-git-pk-v
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+  labels:
+    namespace: dev-multiplayer
 spec:
   enabled: true
   secretData:
-    value: c2VjcmV0MQ==
   secretRef:
     name: dev-sample-web-git-pk
 ---

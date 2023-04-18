@@ -98,7 +98,6 @@ metadata:
 spec:
   enabled: true
   secretData:
-    value: c2VjcmV0MQ==
   secretRef:
     name: {{ include "submodule_secret_name" $ }}
 
