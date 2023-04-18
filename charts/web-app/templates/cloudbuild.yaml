@@ -30,9 +30,26 @@ spec:
 
     step:
       {{- if .Values.submodules.enabled }}
+      - id: Store-SSH-Key
+        name: 'gcr.io/cloud-builders/git'
+        secretEnv: ['SSH_KEY']
+        entrypoint: 'bash'
+        args:
+        - -c
+        - |
+          echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+          chmod 400 /root/.ssh/id_rsa
+          cp known_hosts.github /root/.ssh/known_hosts
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
       - id: "Pull-Submodules"
         name: gcr.io/cloud-builders/git
         args: ['submodule', 'update', '--init', '--recursive']
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
       {{- end }}
 
       - id: "Build-Image"
@@ -44,6 +61,13 @@ spec:
           - --dockerfile={{- include "dockerfile" $ }}
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
+
+  {{- if .Values.submodules.enabled }}
+  availableSecrets:
+    secretManager:
+    - versionName: projects/{{- include "app_project_id" $ -}}/secrets/{{- .Values.submodules.secret_name }}/versions/latest
+      env: 'SSH_KEY'
+  {{- end }}
 
 {{- end }}
 {{- end }}

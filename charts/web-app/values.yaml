@@ -60,6 +60,7 @@ healthCheck:
 
 submodules:
   enabled: false
+  secret_name: api-submodule-reader-private-key
 
 sql:
   proxy: false
