@@ -400,6 +400,26 @@ spec:
       machineType: E2_HIGHCPU_8
 
     step:
+      - id: Store-SSH-Key
+        name: 'gcr.io/cloud-builders/git'
+        secretEnv: ['SSH_KEY']
+        entrypoint: 'bash'
+        args:
+        - -c
+        - |
+          echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+          chmod 400 /root/.ssh/id_rsa
+          cp known_hosts.github /root/.ssh/known_hosts
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
+      - id: "Pull-Submodules"
+        name: gcr.io/cloud-builders/git
+        args: ['submodule', 'update', '--init', '--recursive']
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
 
       - id: "Build-Image"
         name: "gcr.io/kaniko-project/executor:v1.6.0"
@@ -410,6 +430,11 @@ spec:
           - --dockerfile=Dockerfile
           - --cache=true
           - --cache-ttl=240h
+    availableSecrets:
+      secretManager:
+      - env: 'SSH_KEY'
+        versionRef:
+          name: submodule-reader-key-version
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
@@ -756,6 +781,30 @@ spec:
     external: apex-instance
   resourceID: workload@sa-project.iam
   type: CLOUD_IAM_SERVICE_ACCOUNT
+---
+# Source: web-app/templates/cloudbuild.yaml
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: submodule-reader-key
+spec:
+  replication:
+    userManaged:
+      replicas:
+      - location: us-central1
+      - location: us-east4
+---
+# Source: web-app/templates/cloudbuild.yaml
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: submodule-reader-key-version
+spec:
+  enabled: true
+  secretData:
+    value: c2VjcmV0MQ==
+  secretRef:
+    name: submodule-reader-key
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1 

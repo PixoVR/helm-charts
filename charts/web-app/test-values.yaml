@@ -97,3 +97,6 @@ create_sa: true
 
 
 external_auth: true
+
+submodules:
+  enabled: true

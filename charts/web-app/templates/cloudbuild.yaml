@@ -62,12 +62,39 @@ spec:
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
 
-    {{- if .Values.submodules.enabled }}
+{{- if .Values.submodules.enabled }}
     availableSecrets:
       secretManager:
-      - versionName: projects/{{- include "app_project_id" $ -}}/secrets/{{- .Values.submodules.secret_name }}/versions/latest
-        env: 'SSH_KEY'
-    {{- end }}
+      - env: 'SSH_KEY'
+        versionRef:
+          name: submodule-reader-key-version
+
+---
+
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: submodule-reader-key
+spec:
+  replication:
+    userManaged:
+      replicas:
+      - location: us-central1
+      - location: us-east4
+---
+
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: submodule-reader-key-version
+spec:
+  enabled: true
+  secretData:
+    value: c2VjcmV0MQ==
+  secretRef:
+    name: submodule-reader-key
+
+{{- end }}
 
 {{- end }}
 {{- end }}
