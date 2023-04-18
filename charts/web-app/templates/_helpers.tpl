@@ -301,6 +301,11 @@
 {{- end }}
 
 
+{{- define "external_submodule_secret_name" -}}
+  {{- .Values.app_code -}}-submodule-reader-key
+{{- end }}
+
+
 {{- define "submodule_secret_name" -}}
   {{- include "microservice_label" $ -}}-git-pk
 {{- end }}

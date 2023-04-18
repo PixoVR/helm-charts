@@ -62,14 +62,17 @@ spec:
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
 
-{{- if .Values.submodules.enabled }}
+    {{- if .Values.submodules.enabled }}
     availableSecrets:
       secretManager:
       - env: 'SSH_KEY'
         versionRef:
-          name: {{ include "submodule_secret_version_name" $ }}
+          external: projects/{{- include "app_project_id" $ -}}/secrets/{{- include "external_submodule_secret_name" $ -}}/versions/latest
+    {{- end }}
 
 ---
+
+{{- if false }}
 
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
@@ -98,6 +101,10 @@ metadata:
 spec:
   enabled: true
   secretData:
+    valueFrom:
+      secretKeyRef:
+        key: app-secrets
+        name: {{ include "submodule_secret_name" $ }}
   secretRef:
     name: {{ include "submodule_secret_name" $ }}
 

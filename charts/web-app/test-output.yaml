@@ -434,7 +434,7 @@ spec:
       secretManager:
       - env: 'SSH_KEY'
         versionRef:
-          name: dev-sample-web-git-pk-v
+          external: projects/app-project/secrets/sample-submodule-reader-key/versions/latest
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
@@ -781,37 +781,6 @@ spec:
     external: apex-instance
   resourceID: workload@sa-project.iam
   type: CLOUD_IAM_SERVICE_ACCOUNT
----
-# Source: web-app/templates/cloudbuild.yaml
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecret
-metadata:
-  name: dev-sample-web-git-pk
-  annotations:
-    cnrm.cloud.google.com/project-id: app-project
-  labels:
-    namespace: dev-multiplayer
-spec:
-  replication:
-    userManaged:
-      replicas:
-      - location: us-central1
-      - location: us-east4
----
-# Source: web-app/templates/cloudbuild.yaml
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecretVersion
-metadata:
-  name: dev-sample-web-git-pk-v
-  annotations:
-    cnrm.cloud.google.com/project-id: app-project
-  labels:
-    namespace: dev-multiplayer
-spec:
-  enabled: true
-  secretData:
-  secretRef:
-    name: dev-sample-web-git-pk
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1 
