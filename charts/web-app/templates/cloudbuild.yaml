@@ -30,7 +30,8 @@ spec:
 
     step:
       {{- if .Values.submodules.enabled }}
-      - name: gcr.io/cloud-builders/git
+      - id: "Pull-Submodules"
+        name: gcr.io/cloud-builders/git
         args: ['submodule', 'update', '--init', '--recursive']
       {{- end }}
 
