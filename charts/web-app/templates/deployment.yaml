@@ -522,6 +522,20 @@ spec:
           seccompProfile:
             type: RuntimeDefault
 
+      initContainers:
+      - name: init-chown
+        image: busybox:1.33
+        command: ["sh", "-c", "chown -R 101:101 /var/lib/clamav"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /var/lib/clamav
+          name: clamav-var-lib
       {{- end }}
 
 {{- end }}
