@@ -481,6 +481,13 @@ spec:
             type: RuntimeDefault
       {{- end }}
 
+      {{- if .Values.clamav.enabled }}
+      - name: clamav
+        image: clamav/clamav
+        ports:
+        - containerPort: 3310
+      {{- end }}
+
 {{- end }}
 {{- end }}
 {{- end }}
