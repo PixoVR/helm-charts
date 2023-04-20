@@ -517,7 +517,7 @@ spec:
           allowPrivilegeEscalation: false
           privileged: false
           procMount: Default
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
           runAsNonRoot: true
           runAsUser: 101
           runAsGroup: 101
