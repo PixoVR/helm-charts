@@ -22,10 +22,23 @@ spec:
     metadata:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+
         {{- if not .Values.debug.enabled }}
         container.apparmor.security.beta.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
         container.seccomp.security.alpha.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
+
+        {{- if .Values.sql.proxy }}
+        container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
         {{- end }}
+
+        {{- if .Values.clamav.enabled }}
+        container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/clamav: runtime/default
+        {{- end }}
+
+        {{- end }}
+
       labels:
         app: '{{ include "deployment_name" $ }}'
         namespace: {{ .Release.Namespace }}
@@ -104,6 +117,11 @@ spec:
           persistentVolumeClaim:
             claimName: gce-pvc
         {{- else }}
+          emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.clamav.enabled }}
+        - name: clamav-run
           emptyDir: {}
         {{- end }}
 
@@ -486,6 +504,17 @@ spec:
         image: clamav/clamav
         ports:
         - containerPort: 3310
+        volumeMounts:
+        - name: clamav-run
+          mountPath: /run
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       {{- end }}
 
 {{- end }}
