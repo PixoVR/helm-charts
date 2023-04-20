@@ -58,9 +58,9 @@ spec:
       hostPID: false
       {{- if not .Values.demo.enabled }}
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 115
+        runAsGroup: 125
+        fsGroup: 190
         supplementalGroups:
           - 150
       {{- end }}
@@ -519,8 +519,8 @@ spec:
           procMount: Default
           readOnlyRootFilesystem: true
           runAsNonRoot: true
-          runAsUser: 1000
-          runAsGroup: 1000
+          runAsUser: 101
+          runAsGroup: 101
           seccompProfile:
             type: RuntimeDefault
       {{- end }}
