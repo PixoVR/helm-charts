@@ -123,6 +123,8 @@ spec:
         {{- if .Values.clamav.enabled }}
         - name: clamav-run
           emptyDir: {}
+        - name: clamav-var-lib
+          emptyDir: {}
         {{- end }}
 
       serviceAccountName: '{{ include "ksa_name" . }}'
@@ -504,9 +506,13 @@ spec:
         image: clamav/clamav
         ports:
         - containerPort: 3310
+
         volumeMounts:
         - name: clamav-run
           mountPath: /run
+        - name: clamav-var-lib
+          mountPath: /var/lib/clamav
+
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
