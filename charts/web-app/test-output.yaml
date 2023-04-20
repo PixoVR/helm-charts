@@ -57,6 +57,11 @@ spec:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         container.apparmor.security.beta.kubernetes.io/web: runtime/default
         container.seccomp.security.alpha.kubernetes.io/web: runtime/default
+        container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
+        container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/clamav: runtime/default
+
       labels:
         app: 'dev-sample-web'
         namespace: test
@@ -86,6 +91,10 @@ spec:
           emptyDir: {}
 
         - name: db-volume
+          emptyDir: {}
+        - name: clamav-run
+          emptyDir: {}
+        - name: clamav-var-lib
           emptyDir: {}
 
       serviceAccountName: 'app-workload'
@@ -257,6 +266,24 @@ spec:
         image: clamav/clamav
         ports:
         - containerPort: 3310
+
+        volumeMounts:
+        - name: clamav-run
+          mountPath: /run
+        - name: clamav-var-lib
+          mountPath: /var/lib/clamav
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+          seccompProfile:
+            type: RuntimeDefault
 ---
 # Source: web-app/templates/cronjob.yaml
 apiVersion: batch/v1
