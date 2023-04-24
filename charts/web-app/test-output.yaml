@@ -73,9 +73,9 @@ spec:
       hostNetwork: false
       hostPID: false
       securityContext:
-        runAsUser: 115
-        runAsGroup: 125
-        fsGroup: 190
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
         supplementalGroups:
           - 150
 
@@ -277,26 +277,11 @@ spec:
           allowPrivilegeEscalation: false
           privileged: false
           procMount: Default
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 101
-          runAsGroup: 101
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
           seccompProfile:
             type: RuntimeDefault
-
-      initContainers:
-      - name: init-chown
-        image: busybox:1.33
-        command: ["sh", "-c", "chown -R 115:125 /var/lib/clamav"]
-        securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          procMount: Default
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-        volumeMounts:
-        - mountPath: /var/lib/clamav
-          name: clamav-var-lib
 ---
 # Source: web-app/templates/cronjob.yaml
 apiVersion: batch/v1
