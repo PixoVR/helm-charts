@@ -27,6 +27,22 @@ spec:
 {{- if .viewing_tenant }}
 
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-bucket-access
+spec:
+  bucketRef:
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+  entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
+  {{- if .viewing_role }}
+  role: {{ .viewing_role }}
+  {{- else }}
+  role: READER
+  {{- end }}
+
+---
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageDefaultObjectAccessControl
 metadata:
   name: {{ include "microservice_label" $ -}}-{{- .name -}}-access

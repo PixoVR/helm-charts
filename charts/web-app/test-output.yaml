@@ -843,6 +843,17 @@ spec:
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  name: dev-sample-web-builds-bucket-access
+spec:
+  bucketRef:
+    name: dev-sample-web-builds
+  entity: user-multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
+  role: READER
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageDefaultObjectAccessControl
 metadata:
   name: dev-sample-web-builds-access
