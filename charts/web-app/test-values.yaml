@@ -70,6 +70,10 @@ google:
       custom_endpoint:
         enabled: true
         prefix: external.service
+    external_bucket_list:
+    - name: ext
+      key: EXT
+      external_service: ext-api
   sql:
     enabled: true
   pubsub:

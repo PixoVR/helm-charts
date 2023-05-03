@@ -195,6 +195,8 @@ spec:
               key: email-sender-password
         - name: GOOGLE_STORAGE_BUILDS
           value: dev-sample-web-builds
+        - name: GOOGLE_STORAGE_EXT
+          value: dev-sample-ext-api-ext
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
         - name: AWS_ID
