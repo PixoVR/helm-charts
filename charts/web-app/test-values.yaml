@@ -108,3 +108,7 @@ submodules:
 clamav:
   enabled: true
 
+extraPorts:
+  - containerPort: 2022
+    name: sftpgo
+

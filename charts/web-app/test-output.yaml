@@ -248,6 +248,8 @@ spec:
         ports:
         - containerPort: 8001
           name: api-port
+        - containerPort: 2022
+          name: sftpgo
       - name: proxy
         image: "gcr.io/cloudsql-docker/gce-proxy:1.32.0"
         imagePullPolicy: Always
