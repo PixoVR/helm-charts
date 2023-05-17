@@ -73,6 +73,7 @@ spec:
             secretName: app-secrets
         {{- end }}
         {{- end }}
+
         - name: tmp-dir
           emptyDir: {}
         - name: usr-tmp-dir
@@ -91,8 +92,9 @@ spec:
         {{- end }}
 
         {{- if .Values.node }}
-        - name: log-dir
+        - name: npm-dir
           emptyDir: {}
+
         {{- else if .Values.nginx }}
         - name: body-dir
           emptyDir: {}
@@ -185,8 +187,9 @@ spec:
           {{- end }}
 
           {{- if .Values.node }}
-          - name: log-dir
+          - name: npm-dir
             mountPath: /.npm
+
           {{- else if .Values.nginx }}
           - name: body-dir
             mountPath: /var/lib/nginx/body
@@ -255,8 +258,10 @@ spec:
 
         - name: DB_PROJECT_ID
           value: "{{- include "db_project_id" $ -}}"
+
         - name: REGION
           value: "{{- .Values.google.region }}"
+
         {{- if .Values.sql.proxy }}
         - name: INSTANCE_NAME
           value: "{{- include "instance_name" $ -}}"
@@ -277,24 +282,28 @@ spec:
 
         {{- end }}
 
-        {{- if or (eq .Values.microservice_name "sftp") (eq .Values.microservice_name "graphql") (eq .Values.microservice_name "web") }}
         - name: APP_ENV
-        {{- else }}
-        - name: NODE_ENV
-        {{- end }}
           value: {{ upper .Values.lifecycle }}
+
+        - name: NODE_ENV
+          value: {{ upper .Values.lifecycle }}
+
         - name: APP_DOMAIN
           value: '{{- include "app_domain" $ -}}'
+
         - name: APP_URL
           value: https://{{- include "app_domain" $ }}
+
         - name: API_DOMAIN
           value: '{{- include "api_domain" $ -}}'
+
         - name: API_URL
           value: https://{{- include "api_domain" $ }}
 
         {{- if .Values.email.enabled }}
         - name: EMAILER_EMAIL
           value: {{ .Values.email.sender }}
+
         {{- if .Values.email.mfa }}
         - name: EMAILER_PASSWORD
           valueFrom:
@@ -302,17 +311,21 @@ spec:
               name: app-secrets
               key: email-sender-password
         {{- end }}
+
         {{- end }}
 
         {{- if .Values.google.storage.enabled }}
+
         {{- range .Values.google.storage.bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
           value: {{ include "microservice_label" $ -}}-{{- .name }}
         {{- end }}
+
         {{- range .Values.google.storage.external_bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
           value: {{ include "app_label" $ -}}-{{- .external_service -}}-{{- .name }}
         {{- end }}
+
         {{- end }}
 
 
@@ -320,24 +333,26 @@ spec:
           {{- toYaml .Values.env | nindent 8 }}
         {{- end }}
 
-        {{- if .Values.external_secrets.enabled }}
-
         {{- if .Values.aws.auth.enabled }}
-        {{- if or (eq .Values.microservice_name "web") (eq .Values.microservice_name "goapi") }}
         - name: AWS_ID
-        {{- else }}
-        - name: AWS_ACCESS_KEY_ID
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: aws-id
 
-        {{- if or (eq .Values.microservice_name "web") (eq .Values.microservice_name "goapi") }}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
         - name: AWS_SECRET
-        {{- else }}
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
+
         - name: AWS_SECRET_ACCESS_KEY
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
@@ -345,7 +360,6 @@ spec:
         {{- end }}
 
         {{- if .Values.aws.cloudfront.enabled }}
-
         - name: AWS_CLOUDFRONT_PUBLIC_KEY
           valueFrom:
             secretKeyRef:
@@ -363,15 +377,18 @@ spec:
         {{- end }}
 
         {{- if .Values.external_secrets.app_secrets.enabled }}
-        {{- if eq .Values.microservice_name "web" }}
         - name: JWT_SECRET
-        {{- else }}
-        - name: SECRET_KEY
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: auth-key
+
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
+          {{- end }}
 
         {{- if .Values.external_auth }}
         - name: EXTERNAL_SECRET_KEY
@@ -409,72 +426,30 @@ spec:
               key: github-oauth-secret
         {{- end }}
 
-        {{- if .Values.oauth.facebook.enabled }}
-        - name: FACEBOOK_OAUTH_ID
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: facebook-oauth-id
-
-        - name: FACEBOOK_OAUTH_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: facebook-oauth-secret
-        {{- end }}
-
-        {{- if .Values.oauth.twitter.enabled }}
-        - name: TWITTER_OAUTH_ID
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: twitter-api-key
-
-        - name: TWITTER_OAUTH_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: twitter-api-key-secret
-        {{- end }}
-
-        {{- if .Values.sendgrid.enabled }}
-        - name: SENDGRID_EMAIL
-          value: {{ .Values.sendgrid.email }}
-
-        - name: SENDGRID_KEY
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: sendgrid-key
-        {{- end }}
-
-        {{- end }}
-
         {{- if .Values.sql.proxy }}
         - name: DB_HOST
-          value: "{{ .Values.db.host }}"
+          value: "{{- .Values.db.host -}}"
+
         - name: DB_PORT
-          value: "{{ .Values.db.port }}"
+          value: "{{- .Values.db.port -}}"
 
-        {{- if eq .Values.microservice_name "api" }}
         - name: DB_DATABASE
-        {{- else }}
+          value: '{{- include "db_name" . -}}'
+
         - name: DB_NAME
-        {{- end }}
-          value: {{ include "db_name" . }}
+          value: '{{- include "db_name" . -}}'
+
         - name: DB_USER
-        {{- if not .Values.google.sql.use_password }}
-          value: {{ include "app_sa" . }}
-        {{- else }}
-          value: {{ include "microservice_label" $ }}-basic
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: db-password
+          value: '{{- include "app_sa" . -}}'
+
+        {{- range .Values.google.sql.extra_databases }}
+        - name: 'DB_DATABASE_{{- upper .name -}}'
+          value: '{{- include "db_name" $ -}}-{{- .name -}}'
+
+        - name: 'DB_NAME_{{- upper .name -}}'
+          value: '{{- include "db_name" $ -}}-{{- .name -}}'
         {{- end }}
 
-        {{- end }}
         {{- end }}
 
         ports:

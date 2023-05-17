@@ -127,6 +127,7 @@ google:
   sql:
     enabled: false
     use_iam: true
+    extra_databases: []
   storage:
     enabled: false
     create: false

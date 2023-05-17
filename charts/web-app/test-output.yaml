@@ -99,6 +99,7 @@ spec:
         - name: app-secrets
           secret:
             secretName: app-secrets
+
         - name: tmp-dir
           emptyDir: {}
         - name: usr-tmp-dir
@@ -189,18 +190,27 @@ spec:
 
         - name: DB_PROJECT_ID
           value: "db-project"
+
         - name: REGION
           value: "us-central1"
         - name: INSTANCE_NAME
           value: "apex-instance"
+
         - name: APP_ENV
           value: DEV
+
+        - name: NODE_ENV
+          value: DEV
+
         - name: APP_DOMAIN
           value: 'sample.example.com'
+
         - name: APP_URL
           value: https://sample.example.com
+
         - name: API_DOMAIN
           value: 'api.sample.example.com'
+
         - name: API_URL
           value: https://api.sample.example.com
         - name: EMAILER_EMAIL
@@ -221,12 +231,24 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: aws-id
+
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
         - name: AWS_SECRET
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: aws-secret
 
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
         - name: AWS_CLOUDFRONT_PUBLIC_KEY
           valueFrom:
             secretKeyRef:
@@ -246,6 +268,12 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: auth-key
+
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
         - name: EXTERNAL_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -255,12 +283,23 @@ spec:
         
         - name: DB_HOST
           value: "127.0.0.1"
+
         - name: DB_PORT
           value: "5432"
+
+        - name: DB_DATABASE
+          value: 'dev-db'
+
         - name: DB_NAME
-          value: dev-db
+          value: 'dev-db'
+
         - name: DB_USER
-          value: workload@sa-project.iam
+          value: 'workload@sa-project.iam'
+        - name: 'DB_DATABASE_EXTRA'
+          value: 'dev-db-extra'
+
+        - name: 'DB_NAME_EXTRA'
+          value: 'dev-db-extra'
 
         ports:
         - containerPort: 8001
@@ -806,7 +845,21 @@ metadata:
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
-  name: dev-db
+  name: 'dev-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: db-project
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  instanceRef:
+    external: apex-instance
+---
+# Source: web-app/templates/cloud-sql.yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: 'dev-sample-web-extra-db'
   annotations:
     cnrm.cloud.google.com/project-id: db-project
   labels:

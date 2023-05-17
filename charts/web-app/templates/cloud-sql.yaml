@@ -4,7 +4,7 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
-  name: {{ include "lifecycle" $ -}}-db
+  name: '{{- include "db_name" . -}}'
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
   labels:
@@ -15,6 +15,25 @@ spec:
     external: {{ include "instance_name" $ }}
 
 ---
+
+{{- range .Values.google.sql.extra_databases }}
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: '{{- include "microservice_label" $ -}}-{{- .name -}}-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
+  labels:
+    namespace: {{ $.Release.Namespace }}
+    backstage.io/kubernetes-id: {{ $.Values.app_code }}
+spec:
+  instanceRef:
+    external: {{ include "instance_name" $ }}
+
+---
+
+{{- end }}
 
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLUser

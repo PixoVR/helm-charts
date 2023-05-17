@@ -76,6 +76,8 @@ google:
       external_service: ext-api
   sql:
     enabled: true
+    extra_databases:
+      - name: extra
   pubsub:
     enabled: true
     topic:
@@ -115,7 +117,5 @@ deployment:
   pvc:
     enabled: true
     path: /var/db
-
-
 
 
