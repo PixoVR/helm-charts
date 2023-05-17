@@ -140,7 +140,7 @@ spec:
         volumeMounts:
           - mountPath: /backend/secrets
             name: app-secrets
-          - mountPath: /var/sqlite
+          - mountPath: /var/db
             name: db-volume
           - mountPath: /tmp
             name: tmp-dir

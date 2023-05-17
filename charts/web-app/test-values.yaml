@@ -99,7 +99,6 @@ external_secrets:
 
 create_sa: true
 
-
 external_auth: true
 
 submodules:
