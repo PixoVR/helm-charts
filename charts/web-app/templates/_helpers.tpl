@@ -245,6 +245,12 @@
   {{- include "microservice_label" . }}
 {{- end -}}
 
+
+{{- define "pvc_name" -}}
+  {{- include "microservice_label" . }}-pvc
+{{- end -}}
+
+
 {{- define "cronjob_name" -}}
   {{- include "microservice_label" . }}
 {{- end -}}

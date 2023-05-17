@@ -113,9 +113,9 @@ spec:
         {{- end }}
 
         - name: db-volume
-        {{- if .Values.use_pd }}
+        {{- if .Values.deployment.pvc.enabled }}
           persistentVolumeClaim:
-            claimName: gce-pvc
+            claimName: '{{- include "pvc_name" $ -}}'
         {{- else }}
           emptyDir: {}
         {{- end }}
@@ -166,7 +166,7 @@ spec:
             name: app-secrets
           {{- end }}
           {{- end }}
-          - mountPath: /backend/var
+          - mountPath: {{ .Values.deployment.pvc.path }}
             name: db-volume
           - mountPath: /tmp
             name: tmp-dir

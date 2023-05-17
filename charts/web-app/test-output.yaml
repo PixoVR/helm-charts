@@ -10,6 +10,22 @@ metadata:
   annotations:
     iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
 ---
+# Source: web-app/templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'dev-sample-web-pvc'
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
 # Source: web-app/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -91,7 +107,8 @@ spec:
           emptyDir: {}
 
         - name: db-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: 'dev-sample-web-pvc'
         - name: clamav-run
           emptyDir: {}
         - name: clamav-var-lib
@@ -123,7 +140,7 @@ spec:
         volumeMounts:
           - mountPath: /backend/secrets
             name: app-secrets
-          - mountPath: /backend/var
+          - mountPath: /var/sqlite
             name: db-volume
           - mountPath: /tmp
             name: tmp-dir

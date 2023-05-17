@@ -112,3 +112,11 @@ extraPorts:
   - containerPort: 2022
     name: sftpgo
 
+deployment:
+  pvc:
+    enabled: true
+    path: /var/db
+
+
+
+
