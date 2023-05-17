@@ -200,7 +200,7 @@
 
 {{- define "db_name" -}}
   {{- if $.Values.db_name }}
-    {{- .Values.db_name }}
+    {{- include "lifecycle" $ -}}-{{- .Values.db_name }}-db
   {{- else }}
     {{- include "lifecycle" $ -}}-db
   {{- end }}
