@@ -54,10 +54,13 @@ spec:
   {{- end }}
 
   rules:
+  {{- if .Values.ingress.nginx }}
+  - host: {{ include "full_domain" $ }}
+    http:
+  {{- else }}
   - http:
-      {{- if .Values.ingress.nginx }}
-      host: {{ include "full_domain" $ }}
-      {{- end }}
+  {{- end }}
+
       paths:
       - path: /
         pathType: Prefix
