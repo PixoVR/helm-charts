@@ -32,6 +32,17 @@ spec:
     protocol: TCP
     targetPort: {{ .Values.containerPort }}
 
+  {{- range .Values.extraPorts }}
+
+  {{- if .exposeInService }}
+  - name: {{ .name }}
+    port: {{ .containerPort }}
+    protocol: TCP
+    targetPort: {{ .containerPort }}
+  {{- end }}
+
+  {{- end }}
+
 {{- end }}
 {{- end }}
 {{- end }}

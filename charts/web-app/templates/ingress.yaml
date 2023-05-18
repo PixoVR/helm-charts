@@ -60,6 +60,19 @@ spec:
             name: {{ include "service_name" $ }}
             port:
               number: 443
+
+      {{- range .Values.extraPorts }}
+      {{- if .exposeInIngress }}
+      - path: {{ .ingressPath }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "service_name" $ }}
+            port:
+              number: {{ .containerPort }}
+      {{- end }}
+      {{- end }}
+
       {{- if .Values.ingress.is_primary_ingress }}
       {{- range .Values.ingress.secondary_list }}
 

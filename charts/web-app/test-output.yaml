@@ -49,6 +49,10 @@ spec:
     port: 443
     protocol: TCP
     targetPort: 8001
+  - name: sftpgo
+    port: 2022
+    protocol: TCP
+    targetPort: 2022
 ---
 # Source: web-app/templates/deployment.yaml
 apiVersion: apps/v1
@@ -305,6 +309,9 @@ spec:
         - containerPort: 8001
           name: api-port
         - containerPort: 2022
+          exposeInIngress: true
+          exposeInService: true
+          ingressPath: /server
           name: sftpgo
       - name: proxy
         image: "gcr.io/cloudsql-docker/gce-proxy:1.32.0"
@@ -427,6 +434,13 @@ spec:
             name: dev-sample-web
             port:
               number: 443
+      - path: /server
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-web
+            port:
+              number: 2022
       - path: /api
 
         pathType: Prefix
