@@ -38,7 +38,8 @@ metadata:
     backstage.io/kubernetes-id: sample
   annotations:
     cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
-    cloud.google.com/neg: '{"ingress": true}'
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   type: ClusterIP
   selector:
@@ -416,13 +417,27 @@ metadata:
     backstage.io/kubernetes-id: sample
   annotations:
     networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
-    networking.gke.io/managed-certificates: test-google-cert
+    cert-manager.io/cluster-issuer: "letsencrypt-nginx"
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: >
+        DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, PATCH, OPTIONS
+    nginx.ingress.kubernetes.io/cors-allow-origin: 'api.sample.example.com'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     external-dns.alpha.kubernetes.io/hostname: 'api.sample.example.com.'
 
 spec:
+  tls:
+  - hosts:
+    - api.sample.example.com
+    secretName: ingress-certs
 
   rules:
   - http:
+      host: api.sample.example.com
       paths:
       - path: /
         pathType: Prefix

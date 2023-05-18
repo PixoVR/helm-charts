@@ -196,6 +196,7 @@ ingress:
   cert: false
   mci: false
   nginx: false
+  rewrite_target: /
   websocket: false
 
 network_policy:

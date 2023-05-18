@@ -20,9 +20,14 @@ domain: example.com
 subdomain: api
 instance_name: apex-instance
 
+cert_manager:
+  enabled: true
+
 
 ingress:
   # is_secondary: true
+  nginx: true
+  cert: false
   is_primary_ingress: true
   secondary_list:
     - name: api
