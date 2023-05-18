@@ -16,7 +16,7 @@ spec:
 
   {{- if .Values.healthCheck.enabled }}
   healthCheck:
-    checkIntervalSec: 30
+    checkIntervalSec: 60
     port: {{ .Values.containerPort }}
     type: HTTP
     requestPath: {{ .Values.healthCheck.path }}
