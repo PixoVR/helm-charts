@@ -481,7 +481,7 @@ metadata:
   namespace: test
 spec:
   healthCheck:
-    checkIntervalSec: 30
+    checkIntervalSec: 60
     port: 8001
     type: HTTP
     requestPath: /health/
@@ -625,6 +625,20 @@ spec:
     - secretKey: aws-cf-domain
       remoteRef:
         key: sample-aws-cf-domain
+---
+# Source: web-app/templates/frontend-config.yaml
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: test-gke-frontendconfig
+  namespace: test
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  sslPolicy: tls-12
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
 ---
 # Source: web-app/charts/app_iam/templates/app-project-iam.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
