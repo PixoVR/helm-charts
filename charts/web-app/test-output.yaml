@@ -52,7 +52,7 @@ spec:
     protocol: TCP
     targetPort: 8001
   - name: sftpgo
-    port: 2022
+    port: 22
     protocol: TCP
     targetPort: 2022
 ---
@@ -455,7 +455,7 @@ spec:
           service:
             name: dev-sample-web
             port:
-              number: 2022
+              number: 22
       - path: /api
 
         pathType: Prefix

@@ -116,6 +116,7 @@ clamav:
 
 extraPorts:
   - containerPort: 2022
+    hostPort: 22
     name: sftpgo
     exposeInService: true
     exposeInIngress: true

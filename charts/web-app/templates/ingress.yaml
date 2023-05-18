@@ -79,7 +79,7 @@ spec:
           service:
             name: {{ include "service_name" $ }}
             port:
-              number: {{ .containerPort }}
+              number: {{ .hostPort }}
       {{- end }}
       {{- end }}
 
