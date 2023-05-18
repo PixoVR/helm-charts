@@ -456,7 +456,10 @@ spec:
         - containerPort: {{ .Values.containerPort }}
           name: api-port
 
-        {{- toYaml .Values.extraPorts | nindent 8 }}
+        {{- range .Values.extraPorts }}
+        - containerPort: {{ .containerPort }}
+          name: {{ .name }}
+        {{- end }}
 
         {{- if .Values.debug.enabled }}
         - containerPort: {{ .Values.debug.containerPort }}
