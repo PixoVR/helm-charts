@@ -35,7 +35,8 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-headers: >
         DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth
     nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, PATCH, OPTIONS
-    nginx.ingress.kubernetes.io/cors-allow-origin: '{{- include "full_domain" $ -}}'
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    # nginx.ingress.kubernetes.io/cors-allow-origin: '{{- include "full_domain" $ -}}'
     nginx.ingress.kubernetes.io/rewrite-target: {{ .Values.ingress.rewrite_target }}
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
