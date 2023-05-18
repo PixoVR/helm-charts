@@ -14,14 +14,20 @@ metadata:
   {{- if not .Values.local }}
   annotations:
     cloud.google.com/backend-config: '{"default": "{{- .Release.Name -}}-backendconfig"}'
-    cloud.google.com/neg: '{"ingress": true}'
     {{- if .Values.ingress.nginx }}
     kubernetes.io/ingress.class: "nginx"
+    networking.gke.io/load-balancer-type: "Internal"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    {{- else }}
+    cloud.google.com/neg: '{"ingress": true}'
     {{- end }}
   {{- end }}
 spec:
+  {{- if .Values.ingress.nginx }}
+  type: LoadBalancer
+  {{- else }}
   type: ClusterIP
+  {{- end }}
   selector:
     app: {{ include "deployment_name" $ }}
     
