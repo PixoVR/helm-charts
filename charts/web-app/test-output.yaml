@@ -39,9 +39,10 @@ metadata:
   annotations:
     cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
     kubernetes.io/ingress.class: "nginx"
+    networking.gke.io/load-balancer-type: "Internal"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: dev-sample-web
     
@@ -436,8 +437,9 @@ spec:
     secretName: ingress-certs
 
   rules:
-  - http:
-      host: api.sample.example.com
+  - host: api.sample.example.com
+    http:
+
       paths:
       - path: /
         pathType: Prefix
@@ -623,20 +625,6 @@ spec:
       remoteRef:
         key: sample-aws-cf-domain
 ---
-# Source: web-app/templates/frontend-config.yaml
-apiVersion: networking.gke.io/v1beta1
-kind: FrontendConfig
-metadata:
-  name: test-gke-frontendconfig
-  namespace: test
-  annotations:
-    configsync.gke.io/cluster-name-selector: central-cluster-membership
-spec:
-  sslPolicy: tls-12
-  redirectToHttps:
-    enabled: true
-    responseCodeName: MOVED_PERMANENTLY_DEFAULT
----
 # Source: web-app/charts/app_iam/templates/app-project-iam.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
@@ -803,21 +791,6 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test infra admin service account"
----
-# Source: web-app/templates/managed-cert.yaml
-apiVersion: networking.gke.io/v1 
-kind: ManagedCertificate
-metadata:
-  name: test-google-cert
-  namespace: test
-  labels:
-    namespace: test
-    backstage.io/kubernetes-id: sample
-  annotations:
-    configsync.gke.io/cluster-name-selector: central-cluster-membership
-spec:
-  domains:
-    - api.sample.example.com
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1

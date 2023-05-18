@@ -3,6 +3,7 @@
 
 {{- if or (.Values.ingress.enabled) (.Values.ingress.cert) }}
 {{- if not .Values.ingress.is_secondary }}
+{{- if not .Values.ingress.nginx }}
 {{- if .Values.ingress.https }}
 {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) (.Values.ingress.override) }}
 
@@ -23,6 +24,7 @@ spec:
     - {{ include "extra_subdomain" $ }}
     {{- end }}
 
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
