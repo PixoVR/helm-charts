@@ -427,22 +427,23 @@ spec:
         {{- end }}
 
         {{- if .Values.sql.proxy }}
-        - name: DB_HOST
+        - name: {{ upper .Values.db.host_env_key }}
           value: "{{- .Values.db.host -}}"
 
-        - name: DB_PORT
+        - name: {{ upper .Values.db.port_env_key }}
           value: "{{- .Values.db.port -}}"
+
+        - name: {{ upper .Values.db.name_env_key }}
+          value: '{{- include "db_name" . -}}'
+
+        - name: {{ upper .Values.db.user_env_key }}
+          value: '{{- include "app_sa" . -}}'
 
         - name: DB_DATABASE
           value: '{{- include "db_name" . -}}'
 
-        - name: DB_NAME
-          value: '{{- include "db_name" . -}}'
-
-        - name: DB_USER
-          value: '{{- include "app_sa" . -}}'
-
         {{- range .Values.google.sql.extra_databases }}
+
         - name: 'DB_DATABASE_{{- upper .name -}}'
           value: '{{- include "db_name" $ -}}-{{- .name -}}'
 

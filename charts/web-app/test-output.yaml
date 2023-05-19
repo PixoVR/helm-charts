@@ -293,14 +293,15 @@ spec:
         - name: DB_PORT
           value: "5432"
 
-        - name: DB_DATABASE
-          value: 'dev-db'
-
         - name: DB_NAME
           value: 'dev-db'
 
         - name: DB_USER
           value: 'workload@sa-project.iam'
+
+        - name: DB_DATABASE
+          value: 'dev-db'
+
         - name: 'DB_DATABASE_EXTRA'
           value: 'dev-db-extra'
 
@@ -420,6 +421,7 @@ metadata:
     networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
     cert-manager.io/cluster-issuer: "letsencrypt-nginx"
     kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: >
         DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth

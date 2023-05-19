@@ -214,6 +214,10 @@ db:
   port: "5432"
   password: fakepassword
   proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.32.0
+  host_env_key: DB_HOST
+  port_env_key: DB_PORT
+  name_env_key: DB_NAME
+  user_env_key: DB_USER
 
 sendgrid:
   enabled: false
