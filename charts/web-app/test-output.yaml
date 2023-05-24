@@ -392,12 +392,24 @@ spec:
             env:
             - name: EMAILER_TO
               value: walker.obrien@pixovr.com
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
 
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
                   key: auth-key
+
             - name: API_URL
               value: https://api.sample.example.com
             - name: EMAILER_EMAIL

@@ -23,6 +23,8 @@ instance_name: apex-instance
 cert_manager:
   enabled: true
 
+service:
+  internal: true
 
 ingress:
   # is_secondary: true

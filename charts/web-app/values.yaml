@@ -188,6 +188,9 @@ deployment:
     path: /var/sqlite
     disk_size: 5Gi
 
+service:
+  internal: true
+
 ingress:
   enabled: true
   override: false

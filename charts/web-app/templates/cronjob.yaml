@@ -46,11 +46,26 @@ spec:
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
 
+            {{- if .Values.aws.auth.enabled }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+            {{- end }}
+
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
                   key: auth-key
+
             - name: API_URL
               value: https://{{- include "api_domain" $ }}
 
