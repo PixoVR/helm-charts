@@ -190,6 +190,7 @@ deployment:
 
 service:
   internal: true
+  type: ClusterIP
 
 ingress:
   enabled: true

@@ -24,7 +24,8 @@ cert_manager:
   enabled: true
 
 service:
-  internal: true
+  internal: false
+  type: ClusterIP
 
 ingress:
   # is_secondary: true

@@ -39,7 +39,6 @@ metadata:
   annotations:
     cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
     kubernetes.io/ingress.class: "nginx"
-    networking.gke.io/load-balancer-type: "Internal"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   type: LoadBalancer

@@ -25,10 +25,10 @@ metadata:
     {{- end }}
   {{- end }}
 spec:
-  {{- if or (.Values.ingress.nginx) (not .Values.service.internal) }}
+  {{- if .Values.ingress.nginx }}
   type: LoadBalancer
   {{- else }}
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   {{- end }}
   selector:
     app: {{ include "deployment_name" $ }}
