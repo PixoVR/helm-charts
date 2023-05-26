@@ -10,6 +10,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: '{{ include "ksa_name" . }}'
           restartPolicy: Never
 
           hostIPC: false
@@ -93,6 +94,20 @@ spec:
 
             - name: TMP_PATH
               value: "/tmp"
+
+            {{- if .Values.google.storage.enabled }}
+
+            {{- range .Values.google.storage.bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              value: {{ include "microservice_label" $ -}}-{{- .name }}
+            {{- end }}
+
+            {{- range .Values.google.storage.external_bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              value: {{ include "app_label" $ -}}-{{- .external_service -}}-{{- .name }}
+            {{- end }}
+
+            {{- end }}
 
             {{- if .Values.email.enabled }}
             - name: EMAILER_EMAIL
