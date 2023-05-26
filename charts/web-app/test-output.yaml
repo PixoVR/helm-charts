@@ -363,20 +363,39 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: Never
+
           hostIPC: false
           hostNetwork: false
           hostPID: false
+
           securityContext:
             runAsUser: 115
             runAsGroup: 125
             fsGroup: 190
             supplementalGroups:
               - 150
-          restartPolicy: Never
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
           containers:
-          - name: http
+          - name: job
             image: 'alpine/httpie:latest'
             imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -417,6 +436,9 @@ spec:
 
             - name: API_URL
               value: https://api.sample.example.com
+
+            - name: TMP_PATH
+              value: "/tmp"
             - name: EMAILER_EMAIL
               value: pixoplatform@pixovr.com
             - name: EMAILER_PASSWORD

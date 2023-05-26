@@ -10,20 +10,39 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: Never
+
           hostIPC: false
           hostNetwork: false
           hostPID: false
+
           securityContext:
             runAsUser: 115
             runAsGroup: 125
             fsGroup: 190
             supplementalGroups:
               - 150
-          restartPolicy: Never
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
           containers:
-          - name: http
+          - name: job
             image: '{{ include "cron_image" $ }}'
             imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
+                cpu: {{ required "REQUIRED: cpu.request" .Values.cpu.request }}
+              limits:
+                memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
+                cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -71,6 +90,9 @@ spec:
 
             - name: API_URL
               value: https://{{- include "api_domain" $ }}
+
+            - name: TMP_PATH
+              value: "/tmp"
 
             {{- if .Values.email.enabled }}
             - name: EMAILER_EMAIL
