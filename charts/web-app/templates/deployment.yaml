@@ -282,6 +282,9 @@ spec:
 
         {{- end }}
 
+        - name: LIFECYCLE
+          value: {{ upper .Values.lifecycle }}
+
         - name: APP_ENV
           value: {{ upper .Values.lifecycle }}
 

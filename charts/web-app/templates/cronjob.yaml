@@ -46,6 +46,9 @@ spec:
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
 
+            - name: LIFECYCLE
+              value: {{ upper .Values.lifecycle }}
+
             {{- if .Values.aws.auth.enabled }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:

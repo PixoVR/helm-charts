@@ -201,6 +201,9 @@ spec:
         - name: INSTANCE_NAME
           value: "apex-instance"
 
+        - name: LIFECYCLE
+          value: DEV
+
         - name: APP_ENV
           value: DEV
 
@@ -391,6 +394,9 @@ spec:
             env:
             - name: EMAILER_TO
               value: walker.obrien@pixovr.com
+
+            - name: LIFECYCLE
+              value: DEV
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
