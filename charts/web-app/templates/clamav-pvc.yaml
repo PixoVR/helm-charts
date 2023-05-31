@@ -1,0 +1,24 @@
+{{- if and (.Values.enabled) (.Values.clamav.enabled) }}
+{{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
+{{- if .Values.clamav.pvc.enabled }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: '{{- include "pvc_name" $ -}}-clamav'
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ required "REQUIRED: clamav.pvc.disk_size" .Values.clamav.pvc.disk_size }}
+
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

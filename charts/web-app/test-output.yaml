@@ -10,6 +10,22 @@ metadata:
   annotations:
     iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
 ---
+# Source: web-app/templates/clamav-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'dev-sample-web-pvc-clamav'
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
 # Source: web-app/templates/pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -119,8 +135,10 @@ spec:
           emptyDir: {}
         - name: clamav-tmp
           emptyDir: {}
+
         - name: clamav-var-lib
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: 'dev-sample-web-pvc-clamav'
 
       serviceAccountName: 'app-workload'
       restartPolicy: Always

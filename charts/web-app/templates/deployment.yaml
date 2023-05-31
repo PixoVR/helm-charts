@@ -127,8 +127,15 @@ spec:
           emptyDir: {}
         - name: clamav-tmp
           emptyDir: {}
+
         - name: clamav-var-lib
+        {{- if .Values.clamav.pvc.enabled }}
+          persistentVolumeClaim:
+            claimName: '{{- include "pvc_name" $ -}}-clamav'
+        {{- else }}
           emptyDir: {}
+        {{- end }}
+
         {{- end }}
 
       serviceAccountName: '{{ include "ksa_name" . }}'
