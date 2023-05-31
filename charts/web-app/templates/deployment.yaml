@@ -501,7 +501,7 @@ spec:
 
       {{- if .Values.clamav.enabled }}
       - name: clamav
-        image: clamav/clamav
+        image: clamav/clamav:stable
         ports:
         - containerPort: 3310
 

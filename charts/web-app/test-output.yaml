@@ -352,7 +352,7 @@ spec:
           seccompProfile:
             type: RuntimeDefault
       - name: clamav
-        image: clamav/clamav
+        image: clamav/clamav:stable
         ports:
         - containerPort: 3310
 
