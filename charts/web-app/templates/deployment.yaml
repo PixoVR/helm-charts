@@ -125,6 +125,8 @@ spec:
         {{- if .Values.clamav.enabled }}
         - name: clamav-run
           emptyDir: {}
+        - name: clamav-tmp
+          emptyDir: {}
         - name: clamav-var-lib
           emptyDir: {}
         {{- end }}
@@ -499,6 +501,8 @@ spec:
         volumeMounts:
         - name: clamav-run
           mountPath: /run
+        - name: clamav-tmp
+          mountPath: /tmp
         - name: clamav-var-lib
           mountPath: /var/lib/clamav
 
