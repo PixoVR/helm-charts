@@ -281,12 +281,14 @@ spec:
         - name: {{ .key }}
         {{- if eq .type "local" }}
           value: {{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+
         {{- else if eq .type "remote" }}
-        {{- if ne .cluster "" }}
-          value: {{ .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-        {{- else }}
-          value: {{ .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-        {{- end }}
+          {{- if ne .cluster "" }}
+          value: https://{{ .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- else }}
+          value: https://{{ .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- end }}
+
         {{- end }}
 
         {{- end }}
