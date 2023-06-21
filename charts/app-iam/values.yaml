@@ -55,6 +55,7 @@ app:
     - pubsub.admin
   app_roles:
     - errorreporting.writer
+    - iam.serviceAccountTokenCreator
     - logging.logWriter
     - monitoring.metricWriter
     - pubsub.publisher
