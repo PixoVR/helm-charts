@@ -130,4 +130,6 @@ deployment:
     enabled: true
     path: /var/db
 
+sa_json_key:
+  enabled: true
 

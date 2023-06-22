@@ -241,6 +241,8 @@ spec:
 
         - name: API_URL
           value: https://api.sample.example.com
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL
           value: pixoplatform@pixovr.com
         - name: EMAILER_PASSWORD
@@ -693,6 +695,9 @@ spec:
     - secretKey: aws-cf-domain
       remoteRef:
         key: sample-aws-cf-domain
+    - secretKey: svc-acct-json-key
+      remoteRef:
+        key: sample-svc-acct-json-key
 ---
 # Source: web-app/templates/frontend-config.yaml
 apiVersion: networking.gke.io/v1beta1

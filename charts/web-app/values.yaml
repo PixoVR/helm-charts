@@ -247,3 +247,6 @@ clamav:
     enabled: true
     disk_size: 3Gi
 
+sa_json_key:
+  enabled: false
+
