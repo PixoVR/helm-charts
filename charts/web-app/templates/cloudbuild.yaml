@@ -23,12 +23,12 @@ spec:
     - "{{ .Values.build_context -}}/**"
   {{- end }}
 
+  {{- if .Values.cloudbuild.default }}
   build:
     timeout: 1800s
     options:
       machineType: {{ .Values.ci_machine_type }}
 
-    {{- if .Values.cloudbuild.default }}
     step:
       {{- if .Values.submodules.enabled }}
       - id: Store-SSH-Key
@@ -62,7 +62,6 @@ spec:
           - --dockerfile={{- include "dockerfile" $ }}
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
-      {{- end }}
 
     {{- if .Values.submodules.enabled }}
     availableSecrets:
@@ -71,6 +70,8 @@ spec:
         versionRef:
           external: projects/{{- include "app_project_id" $ -}}/secrets/{{- include "external_submodule_secret_name" $ -}}/versions/latest
     {{- end }}
+
+  {{- end }}
 
 ---
 
