@@ -23,7 +23,7 @@ spec:
     - "{{ .Values.build_context -}}/**"
   {{- end }}
 
-  {{- if .Values.cloudbuild.default }}
+  {{- if .Values.google.cloudbuild.default }}
   build:
     timeout: 1800s
     options:
@@ -71,6 +71,8 @@ spec:
           external: projects/{{- include "app_project_id" $ -}}/secrets/{{- include "external_submodule_secret_name" $ -}}/versions/latest
     {{- end }}
 
+  {{- else }}
+  filename: {{ .Values.google.cloudbuild.filename }}
   {{- end }}
 
 ---

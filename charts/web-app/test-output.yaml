@@ -581,6 +581,7 @@ spec:
     name: apex-api 
     push:
       branch: "^dev$"
+  filename: cloudbuild.yaml
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
