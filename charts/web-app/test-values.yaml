@@ -133,3 +133,6 @@ deployment:
 sa_json_key:
   enabled: true
 
+cloudbuild:
+  default: false
+

@@ -101,6 +101,8 @@ google:
   config_connector_context: false
   create_ip: false
   create_cloudbuild: true
+  cloudbuild:
+    default: true
   create_registry: false
   create_monitoring_suite: false
   notification_channel: ""
