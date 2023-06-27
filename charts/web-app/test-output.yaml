@@ -197,7 +197,7 @@ spec:
         - name: NAMESPACE
           value: test
         - name: DOMAIN
-          value: 'api.apex.dev.example.com'
+          value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
         - name: PUBSUB_TOPIC
@@ -231,10 +231,10 @@ spec:
           value: DEV
 
         - name: APP_DOMAIN
-          value: 'apex.dev.example.com'
+          value: 'sample.dev.example.com'
 
         - name: APP_URL
-          value: https://apex.dev.example.com
+          value: https://sample.dev.example.com
 
         - name: API_DOMAIN
           value: 'api.apex.dev.example.com'
@@ -495,20 +495,20 @@ metadata:
         DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth
     nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, PATCH, OPTIONS
     nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    # nginx.ingress.kubernetes.io/cors-allow-origin: 'api.apex.dev.example.com'
+    # nginx.ingress.kubernetes.io/cors-allow-origin: 'api.sample.dev.example.com'
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    external-dns.alpha.kubernetes.io/hostname: 'api.apex.dev.example.com.'
+    external-dns.alpha.kubernetes.io/hostname: 'api.sample.dev.example.com.'
 
 spec:
   tls:
   - hosts:
-    - api.apex.dev.example.com
+    - api.sample.dev.example.com
     secretName: ingress-certs
 
   rules:
-  - host: api.apex.dev.example.com
+  - host: api.sample.dev.example.com
     http:
 
       paths:
@@ -955,7 +955,7 @@ metadata:
 spec:
   location: us-central1
   # cors:
-  #   - origin: ["https://api.apex.dev.example.com"]
+  #   - origin: ["https://api.sample.dev.example.com"]
   #     responseHeader: ["Content-Type"]
   #     method: ["*"]
   #     maxAgeSeconds: 3600
