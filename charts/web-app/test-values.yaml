@@ -1,4 +1,7 @@
 
+lifecycle: dev
+add_lifecycle_to_domain: true
+
 sa_project_id: sa-project
 app_project_id: app-project
 db_project_id: db-project
@@ -135,3 +138,4 @@ deployment:
 sa_json_key:
   enabled: true
 
+api_tenant_name: apex

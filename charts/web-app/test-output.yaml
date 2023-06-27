@@ -197,7 +197,7 @@ spec:
         - name: NAMESPACE
           value: test
         - name: DOMAIN
-          value: 'api.sample.example.com'
+          value: 'api.apex.dev.example.com'
         - name: PORT
           value: "8001"
         - name: PUBSUB_TOPIC
@@ -231,16 +231,16 @@ spec:
           value: DEV
 
         - name: APP_DOMAIN
-          value: 'sample.example.com'
+          value: 'apex.dev.example.com'
 
         - name: APP_URL
-          value: https://sample.example.com
+          value: https://apex.dev.example.com
 
         - name: API_DOMAIN
-          value: 'api.sample.example.com'
+          value: 'api.apex.dev.example.com'
 
         - name: API_URL
-          value: https://api.sample.example.com
+          value: https://api.apex.dev.example.com
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL
@@ -460,7 +460,7 @@ spec:
                   key: auth-key
 
             - name: API_URL
-              value: https://api.sample.example.com
+              value: https://api.apex.dev.example.com
 
             - name: TMP_PATH
               value: "/tmp"
@@ -495,20 +495,20 @@ metadata:
         DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth
     nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, PATCH, OPTIONS
     nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    # nginx.ingress.kubernetes.io/cors-allow-origin: 'api.sample.example.com'
+    # nginx.ingress.kubernetes.io/cors-allow-origin: 'api.apex.dev.example.com'
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    external-dns.alpha.kubernetes.io/hostname: 'api.sample.example.com.'
+    external-dns.alpha.kubernetes.io/hostname: 'api.apex.dev.example.com.'
 
 spec:
   tls:
   - hosts:
-    - api.sample.example.com
+    - api.apex.dev.example.com
     secretName: ingress-certs
 
   rules:
-  - host: api.sample.example.com
+  - host: api.apex.dev.example.com
     http:
 
       paths:
@@ -853,7 +853,7 @@ spec:
   topicRef:
     name: dev-sample-topic
   pushConfig:
-    pushEndpoint: 'https://external.service.example.com/pubsub'
+    pushEndpoint: 'https://external.service.dev.example.com/pubsub'
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -869,7 +869,7 @@ spec:
   topicRef:
     name: dev-sample-topic-builds
   pushConfig:
-    pushEndpoint: 'https://external.service.example.com/'
+    pushEndpoint: 'https://external.service.dev.example.com/'
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -955,7 +955,7 @@ metadata:
 spec:
   location: us-central1
   # cors:
-  #   - origin: ["https://api.sample.example.com"]
+  #   - origin: ["https://api.apex.dev.example.com"]
   #     responseHeader: ["Content-Type"]
   #     method: ["*"]
   #     maxAgeSeconds: 3600

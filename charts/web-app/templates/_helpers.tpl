@@ -37,7 +37,11 @@
 
 
 {{- define "app_domain" -}}
-  {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
+  {{- if .Values.api_tenant_name }}
+    {{- .Values.api_tenant_name -}}.{{- include "lifecycle_domain" . }}
+  {{- else }}
+    {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
+  {{- end }}
 {{- end }}
 
 
@@ -60,7 +64,9 @@
 
 
 {{- define "api_domain" -}}
-  {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+  {{- if .Values.api_tenant_name }}
+    {{- "api" -}}.{{- .Values.api_tenant_name -}}.{{- include "lifecycle_domain" . }}
+  {{- else if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
     {{- "api" -}}.{{- include "app_domain" $ -}}
   {{- else }}
     {{- .Values.cluster_name -}}.{{- "api" -}}.{{- include "app_domain" $ -}}
