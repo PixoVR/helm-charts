@@ -37,11 +37,7 @@
 
 
 {{- define "app_domain" -}}
-  {{- if .Values.api_tenant_name }}
-    {{- .Values.api_tenant_name -}}.{{- include "lifecycle_domain" . }}
-  {{- else }}
-    {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
-  {{- end }}
+  {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
 {{- end }}
 
 
