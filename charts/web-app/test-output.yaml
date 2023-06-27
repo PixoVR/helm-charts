@@ -221,6 +221,15 @@ spec:
         - name: INSTANCE_NAME
           value: "apex-instance"
 
+        - name: EXTERNAL_APP_URL
+          value: https://multiplayer.dev.example.com
+
+        - name: ALLOCATE_HOSTNAME
+          value: https://multi-central1.allocator.multiplayer.dev.example.com
+
+        - name: MMF_API_HOST
+          value: test-matchmaking-matchfunction.test.svc
+
         - name: LIFECYCLE
           value: DEV
 
@@ -237,10 +246,10 @@ spec:
           value: https://sample.dev.example.com
 
         - name: API_DOMAIN
-          value: 'api.apex.dev.example.com'
+          value: 'api.sample.dev.example.com'
 
         - name: API_URL
-          value: https://api.apex.dev.example.com
+          value: https://api.sample.dev.example.com
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL
@@ -460,7 +469,7 @@ spec:
                   key: auth-key
 
             - name: API_URL
-              value: https://api.apex.dev.example.com
+              value: https://api.sample.dev.example.com
 
             - name: TMP_PATH
               value: "/tmp"

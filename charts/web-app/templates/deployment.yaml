@@ -284,19 +284,22 @@ spec:
 
         {{- else if eq .type "remote" }}
 
-          {{- if ne .cluster "" }}
-            {{- if ne .service "" }}
-          value: https://{{ .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-            {{- else }}
-          value: https://{{ .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-            {{- end }}
+          {{- if .cluster }}
+
+          {{- if .service }}
+          value: https://{{- .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- else }}
+          value: https://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- end }}
 
           {{- else }}
-            {{- if ne .service "" }}
-          value: https://{{ .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-            {{- else }}
+
+          {{- if .service }}
+          value: https://{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- else }}
           value: https://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
-            {{- end }}
+          {{- end }}
+
           {{- end }}
 
         {{- end }}
