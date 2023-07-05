@@ -15,6 +15,16 @@ metadata:
     namespace: {{ $.Release.Namespace }}
 spec:
   location: {{ required "REQUIRED: google.region" $.Values.google.region }}
+
+  {{- if .retentionPolicy }}
+  retentionPolicy:
+    isLocked: {{ .retentionPolicy.isLocked }}
+    retentionPeriod: {{ .retentionPolicy.retentionPeriod }}
+  {{- else if $.Values.google.storage.retentionPolicy }}
+  retentionPolicy:
+    isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
+    retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
+  {{- end }}
   # cors:
   #   - origin: ["https://{{- include "full_domain" $ -}}"]
   #     responseHeader: ["Content-Type"]

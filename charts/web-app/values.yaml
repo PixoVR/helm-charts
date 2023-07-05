@@ -135,6 +135,9 @@ google:
     enabled: false
     create: false
     notifications: false
+    retentionPolicy:
+      isLocked: false
+      retentionPeriod: 3600
     bucket_list:
       - name: modules
         key: MODULES

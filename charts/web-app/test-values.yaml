@@ -78,9 +78,15 @@ google:
     enabled: true
     create: true
     notifications: true
+    retentionPolicy:
+      isLocked: true
+      retentionPeriod: 5
     bucket_list:
     - name: builds
       key: BUILDS
+      retentionPolicy:
+        isLocked: false
+        retentionPeriod: 10
       notifications: true
       viewing_tenant: multiplayer
       viewing_service: allocator

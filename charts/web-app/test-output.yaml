@@ -963,6 +963,9 @@ metadata:
     namespace: test
 spec:
   location: us-central1
+  retentionPolicy:
+    isLocked: false
+    retentionPeriod: 10
   # cors:
   #   - origin: ["https://api.sample.dev.example.com"]
   #     responseHeader: ["Content-Type"]
