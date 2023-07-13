@@ -590,7 +590,55 @@ spec:
     name: apex-api 
     push:
       branch: "^dev$"
-  filename: cloudbuild.yaml
+
+  substitutions:
+    - key: LIFECYCLE
+      value: dev
+    - key: APP_CODE
+      value: sample
+    - key: SERVICE_NAME
+      value: web
+  build:
+    timeout: 1800s
+    options:
+      machineType: E2_HIGHCPU_8
+
+    step:
+      - id: Store-SSH-Key
+        name: 'gcr.io/cloud-builders/git'
+        secretEnv: ['SSH_KEY']
+        entrypoint: 'bash'
+        args:
+        - -c
+        - |
+          echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+          chmod 400 /root/.ssh/id_rsa
+          cp known_hosts.github /root/.ssh/known_hosts
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
+      - id: "Pull-Submodules"
+        name: gcr.io/cloud-builders/git
+        args: ['submodule', 'update', '--init', '--recursive']
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
+      - id: "Build-Image"
+        name: "gcr.io/kaniko-project/executor:latest"
+        args:
+          - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
+          - --destination=gcr.io/app-project/sample/dev/web:latest
+          - --context=.
+          - --dockerfile=Dockerfile
+          - --cache=true
+          - --cache-ttl=240h
+    availableSecrets:
+      secretManager:
+      - env: 'SSH_KEY'
+        versionRef:
+          external: projects/app-project/secrets/web-submodule-reader-key/versions/latest
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1

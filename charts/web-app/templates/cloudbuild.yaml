@@ -23,6 +23,14 @@ spec:
     - "{{ .Values.build_context -}}/**"
   {{- end }}
 
+  substitutions:
+    - key: LIFECYCLE
+      value: {{ .Values.lifecycle }}
+    - key: APP_CODE
+      value: {{ .Values.app_code }}
+    - key: SERVICE_NAME
+      value: {{ .Values.microservice_name }}
+
   {{- if .Values.google.cloudbuild.default }}
   build:
     timeout: 1800s

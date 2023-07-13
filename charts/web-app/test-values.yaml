@@ -72,8 +72,6 @@ aws:
 
 google:
   config_connector_context: true
-  cloudbuild:
-    default: false
   storage:
     enabled: true
     create: true
