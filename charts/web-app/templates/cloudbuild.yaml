@@ -24,12 +24,9 @@ spec:
   {{- end }}
 
   substitutions:
-    - key: LIFECYCLE
-      value: {{ .Values.lifecycle }}
-    - key: APP_CODE
-      value: {{ .Values.app_code }}
-    - key: SERVICE_NAME
-      value: {{ .Values.microservice_name }}
+    "_LIFECYCLE": {{ .Values.lifecycle }}
+    "_APP_CODE": {{ .Values.app_code }}
+    "_SERVICE_NAME": {{ .Values.microservice_name }}
 
   {{- if .Values.google.cloudbuild.default }}
   build:
