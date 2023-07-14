@@ -320,6 +320,9 @@ spec:
               key: external-auth-key
 
         
+        - name: DB_VENDOR
+          value: "postgres"
+
         - name: DB_HOST
           value: "127.0.0.1"
 
@@ -592,12 +595,9 @@ spec:
       branch: "^dev$"
 
   substitutions:
-    - key: LIFECYCLE
-      value: dev
-    - key: APP_CODE
-      value: sample
-    - key: SERVICE_NAME
-      value: web
+    "_LIFECYCLE": dev
+    "_APP_CODE": sample
+    "_SERVICE_NAME": web
   build:
     timeout: 1800s
     options:

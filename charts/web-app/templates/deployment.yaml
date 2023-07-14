@@ -459,6 +459,9 @@ spec:
         {{- end }}
 
         {{- if .Values.sql.proxy }}
+        - name: DB_VENDOR
+          value: "postgres"
+
         - name: {{ upper .Values.db.host_env_key }}
           value: "{{- .Values.db.host -}}"
 
