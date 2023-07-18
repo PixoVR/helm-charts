@@ -25,11 +25,17 @@ spec:
     isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
     retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
   {{- end }}
-  # cors:
-  #   - origin: ["https://{{- include "full_domain" $ -}}"]
-  #     responseHeader: ["Content-Type"]
-  #     method: ["*"]
-  #     maxAgeSeconds: 3600
+  cors:
+    - origin: ["{{- include "app_domain" $ }}"]
+      responseHeader: ["Content-Type"]
+      method: ["*"]
+      maxAgeSeconds: 3600
+  {{- if eq $.Values.lifecycle "dev" }}
+    - origin: ["https://localhost:3000"]
+      responseHeader: ["Content-Type"]
+      method: ["*"]
+      maxAgeSeconds: 3600
+  {{- end }}
   uniformBucketLevelAccess: false
 
 ---

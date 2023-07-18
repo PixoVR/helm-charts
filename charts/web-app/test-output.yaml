@@ -1014,11 +1014,15 @@ spec:
   retentionPolicy:
     isLocked: false
     retentionPeriod: 10
-  # cors:
-  #   - origin: ["https://api.sample.dev.example.com"]
-  #     responseHeader: ["Content-Type"]
-  #     method: ["*"]
-  #     maxAgeSeconds: 3600
+  cors:
+    - origin: ["sample.dev.example.com"]
+      responseHeader: ["Content-Type"]
+      method: ["*"]
+      maxAgeSeconds: 3600
+    - origin: ["https://localhost:3000"]
+      responseHeader: ["Content-Type"]
+      method: ["*"]
+      maxAgeSeconds: 3600
   uniformBucketLevelAccess: false
 ---
 # Source: web-app/templates/storage-buckets.yaml
