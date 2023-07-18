@@ -26,13 +26,13 @@ spec:
     retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
   {{- end }}
   cors:
-    - origin: ["{{- include "app_domain" $ }}"]
-      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+    - origin: ["https://{{- include "app_domain" $ }}"]
+      responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
       method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   {{- if eq $.Values.lifecycle "dev" }}
-    - origin: ["http://localhost:3000"]
-      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+    - origin: ["http://localhost"]
+      responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
       method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   {{- end }}

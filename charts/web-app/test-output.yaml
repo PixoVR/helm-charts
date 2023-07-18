@@ -1015,12 +1015,12 @@ spec:
     isLocked: false
     retentionPeriod: 10
   cors:
-    - origin: ["sample.dev.example.com"]
-      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+    - origin: ["https://sample.dev.example.com"]
+      responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
       method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
-    - origin: ["http://localhost:3000"]
-      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+    - origin: ["http://localhost"]
+      responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
       method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: false
