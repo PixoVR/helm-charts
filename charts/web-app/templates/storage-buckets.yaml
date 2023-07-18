@@ -27,13 +27,13 @@ spec:
   {{- end }}
   cors:
     - origin: ["{{- include "app_domain" $ }}"]
-      responseHeader: ["Content-Type"]
-      method: ["*"]
+      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+      method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   {{- if eq $.Values.lifecycle "dev" }}
     - origin: ["http://localhost:3000"]
-      responseHeader: ["Content-Type"]
-      method: ["*"]
+      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+      method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   {{- end }}
   uniformBucketLevelAccess: false

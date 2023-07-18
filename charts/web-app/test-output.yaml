@@ -1016,12 +1016,12 @@ spec:
     retentionPeriod: 10
   cors:
     - origin: ["sample.dev.example.com"]
-      responseHeader: ["Content-Type"]
-      method: ["*"]
+      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+      method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
-    - origin: ["https://localhost:3000"]
-      responseHeader: ["Content-Type"]
-      method: ["*"]
+    - origin: ["http://localhost:3000"]
+      responseHeader: ["Content-Type", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary"]
+      method: ["GET", "HEAD", "DELETE", "PUT", "POST"]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: false
 ---
