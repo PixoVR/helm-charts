@@ -135,6 +135,18 @@ google:
     enabled: false
     create: false
     notifications: false
+    cors:
+      headers:
+        - "Content-Type"
+        - "Content-Length"
+        - "Content-Range"
+        - "Access-Control-Allow-Origin"
+        - "Origin"
+        - "Date"
+        - "Server"
+        - "Vary"
+        - "X-Access-Token"
+        - 'X-Goog-Resumable'
     retentionPolicy:
       isLocked: false
       retentionPeriod: 1

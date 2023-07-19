@@ -1016,12 +1016,11 @@ spec:
     retentionPeriod: 10
   cors:
     - origin: ["https://sample.dev.example.com"]
-      responseHeader: ["*"]
+      responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
       method: ["*"]
       maxAgeSeconds: 3600
     - origin: ["http://localhost"]
-      responseHeader: ["*"]
-      # responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
+      responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
       method: ["*"]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: false

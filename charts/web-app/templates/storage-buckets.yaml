@@ -27,13 +27,12 @@ spec:
   {{- end }}
   cors:
     - origin: ["https://{{- include "app_domain" $ }}"]
-      responseHeader: ["*"]
+      responseHeader: {{ $.Values.google.storage.cors.headers }}
       method: ["*"]
       maxAgeSeconds: 3600
   {{- if eq $.Values.lifecycle "dev" }}
     - origin: ["http://localhost"]
-      responseHeader: ["*"]
-      # responseHeader: ["Content-Type", "Content-Range", "Access-Control-Allow-Origin", "Content-Length", "Date", "Server", "Vary", "X-Access-Token"]
+      responseHeader: {{ $.Values.google.storage.cors.headers }}
       method: ["*"]
       maxAgeSeconds: 3600
   {{- end }}
