@@ -267,4 +267,5 @@ clamav:
 
 sa_json_key:
   enabled: false
+  envKey: GOOGLE_APPLICATION_CREDENTIALS
 

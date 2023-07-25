@@ -250,7 +250,7 @@ spec:
 
         - name: API_URL
           value: https://api.sample.dev.example.com
-        - name: GOOGLE_APPLICATION_CREDENTIALS
+        - name: GOOGLE_JSON_KEY
           value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL
           value: pixoplatform@pixovr.com
