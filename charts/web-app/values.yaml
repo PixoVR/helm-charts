@@ -136,11 +136,6 @@ google:
     create: false
     notifications: false
     cors:
-      methods:
-        - "PUT"
-        - "POST"
-        - "GET"
-        - "HEAD"
       headers:
         - "Content-Type"
         - "Content-Length"

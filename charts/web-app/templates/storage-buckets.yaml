@@ -28,12 +28,20 @@ spec:
   cors:
     - origin: ["https://{{- include "app_domain" $ }}"]
       responseHeader: {{ $.Values.google.storage.cors.headers }}
-      method: {{ $.Values.google.storage.cors.methods }}
+      method:
+        - "PUT"
+        - "POST"
+        - "GET"
+        - "HEAD"
       maxAgeSeconds: 3600
   {{- if eq $.Values.lifecycle "dev" }}
-- origin: ["http://localhost:3000"]
+    - origin: ["http://localhost"]
       responseHeader: {{ $.Values.google.storage.cors.headers }}
-      method: {{ $.Values.google.storage.cors.methods }}
+      method:
+        - "PUT"
+        - "POST"
+        - "GET"
+        - "HEAD"
       maxAgeSeconds: 3600
   {{- end }}
   uniformBucketLevelAccess: false
