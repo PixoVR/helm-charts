@@ -1017,11 +1017,11 @@ spec:
   cors:
     - origin: ["https://sample.dev.example.com"]
       responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
-      method: ["*"]
+      method: [PUT POST GET HEAD]
       maxAgeSeconds: 3600
     - origin: ["http://localhost"]
       responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
-      method: ["*"]
+      method: [PUT POST GET HEAD]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: false
 ---
