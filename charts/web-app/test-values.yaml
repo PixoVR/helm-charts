@@ -75,6 +75,8 @@ google:
   storage:
     enabled: true
     create: true
+    cors:
+      allow_all: true
     notifications: true
     retentionPolicy:
       isLocked: true

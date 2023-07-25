@@ -25,25 +25,29 @@ spec:
     isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
     retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
   {{- end }}
+
   cors:
+
+    {{- if $.Values.google.storage.cors.allow_all }}
+    - origin: ["*"]
+      method: ["*"]
+    {{- else }}
     - origin: ["https://{{- include "app_domain" $ }}"]
+      method: ["PUT", "POST", "GET", "HEAD"]
+    {{- end }}
       responseHeader: {{ $.Values.google.storage.cors.headers }}
-      method:
-        - "PUT"
-        - "POST"
-        - "GET"
-        - "HEAD"
       maxAgeSeconds: 3600
-  {{- if eq $.Values.lifecycle "dev" }}
+
+    {{- if eq $.Values.lifecycle "dev" }}
     - origin: ["http://localhost"]
-      responseHeader: {{ $.Values.google.storage.cors.headers }}
       method:
         - "PUT"
         - "POST"
         - "GET"
         - "HEAD"
+      responseHeader: {{ $.Values.google.storage.cors.headers }}
       maxAgeSeconds: 3600
-  {{- end }}
+    {{- end }}
   uniformBucketLevelAccess: false
 
 ---
