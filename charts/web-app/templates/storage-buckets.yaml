@@ -27,27 +27,20 @@ spec:
   {{- end }}
 
   cors:
-
     {{- if $.Values.google.storage.cors.allow_all }}
     - origin: ["*"]
       method: ["*"]
     {{- else }}
-    - origin: ["https://{{- include "app_domain" $ }}"]
-      method: ["PUT", "POST", "GET", "HEAD"]
-    {{- end }}
-      responseHeader: {{ $.Values.google.storage.cors.headers }}
-      maxAgeSeconds: 3600
-
     {{- if eq $.Values.lifecycle "dev" }}
-    - origin: ["http://localhost"]
-      method:
-        - "PUT"
-        - "POST"
-        - "GET"
-        - "HEAD"
-      responseHeader: {{ $.Values.google.storage.cors.headers }}
-      maxAgeSeconds: 3600
+    - origin: ["http://localhost", https://{{- include "app_domain" $ }}"]
+    {{- else }}
+    - origin: ["https://{{- include "app_domain" $ }}"]
     {{- end }}
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+    {{- end }}
+      responseHeader: {{ $.Values.google.storage.cors.headers }}
+      maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
+
   uniformBucketLevelAccess: false
 
 ---

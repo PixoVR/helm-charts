@@ -137,12 +137,31 @@ google:
     notifications: false
     cors:
       allow_all: false
+      maxAgeSeconds: 3600
       headers:
-        - "Content-Type"
+        - "Accept"
+        - "Access-Control-Request-Headers"
+        - "Access-Control-Request-Method"
+        - "Access-Control-Allow-Origin"
+        - "Accept-Encoding"
+        - "Accept-Language"
+        - "Cache-Control"
+        - "Connection"
         - "Content-Length"
         - "Content-Range"
-        - "Access-Control-Allow-Origin"
+        - "Content-Type"
+        - "Host"
         - "Origin"
+        - "Pragma"
+        - "Referer"
+        - "Sec-Ch-Ua"
+        - "Sec-Ch-Ua-Mobile"
+        - "Sec-Ch-Ua-Platform"
+        - "Sec-Fetch-Dest"
+        - "Sec-Fetch-Mode"
+        - "Sec-Fetch-Site"
+        - "User-Agent"
+        - "X-Client-Data"
         - "Date"
         - "Server"
         - "Vary"

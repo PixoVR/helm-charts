@@ -1016,18 +1016,11 @@ spec:
     retentionPeriod: 10
 
   cors:
-    - origin: ["*"]
-      method: ["*"]
-      responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
+    - origin: ["http://localhost", https://sample.dev.example.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
       maxAgeSeconds: 3600
-    - origin: ["http://localhost"]
-      method:
-        - "PUT"
-        - "POST"
-        - "GET"
-        - "HEAD"
-      responseHeader: [Content-Type Content-Length Content-Range Access-Control-Allow-Origin Origin Date Server Vary X-Access-Token X-Goog-Resumable]
-      maxAgeSeconds: 3600
+
   uniformBucketLevelAccess: false
 ---
 # Source: web-app/templates/storage-buckets.yaml
