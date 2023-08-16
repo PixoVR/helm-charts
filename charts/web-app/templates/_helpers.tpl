@@ -188,7 +188,6 @@
   {{- include "registry" . -}}:{{- .Values.image.tag }}
 {{- end -}}
 
-
 {{- define "cron_image" -}}
   {{- if .Values.deployment.enabled }}
     {{- .Values.cronjob.image.name }}:{{ .Values.cronjob.image.tag }}
@@ -198,22 +197,32 @@
 {{- end -}}
 
 
+
 {{- define "db_name" -}}
   {{- if $.Values.db_name }}
-    {{- include "lifecycle" $ -}}-{{- .Values.db_name }}-db
+    {{- include "lifecycle" $ -}}-{{- .Values.db_name -}}-db
   {{- else }}
     {{- include "lifecycle" $ -}}-db
   {{- end }}
 {{- end -}}
 
 
-{{- define "instance_name" -}}
+{{- define "instance_name_suffix" -}}
   {{- if $.Values.instance_name }}
     {{- .Values.instance_name }}
   {{- else }}
     {{- .Values.lifecycle -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-instance
   {{- end }}
 {{- end -}}
+
+
+{{- define "instance_name" -}}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    {{- $.Values.cluster_name -}}-{{- include "instance_name_suffix" $ }}
+  {{- else }}
+    {{- include "instance_name_suffix" $ }}
+  {{- end }}
+{{- end }}
 
 
 {{- define "app_admin_sa" -}}

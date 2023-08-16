@@ -2,6 +2,9 @@
 lifecycle: dev
 add_lifecycle_to_domain: true
 
+cpl_cluster_name: us-central
+cluster_name: us-east
+
 sa_project_id: sa-project
 app_project_id: app-project
 db_project_id: db-project

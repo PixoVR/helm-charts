@@ -219,7 +219,7 @@ spec:
         - name: REGION
           value: "us-central1"
         - name: INSTANCE_NAME
-          value: "apex-instance"
+          value: "us-east-apex-instance"
 
         - name: EXTERNAL_APP_URL
           value: https://multiplayer.dev.example.com
@@ -354,7 +354,7 @@ spec:
         imagePullPolicy: Always
         command:
         - /cloud_sql_proxy
-        - -instances=db-project:us-central1:apex-instance=tcp:127.0.0.1:5432
+        - -instances=db-project:us-central1:us-east-apex-instance=tcp:127.0.0.1:5432
         - -enable_iam_login
 
         securityContext:
@@ -956,7 +956,7 @@ metadata:
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
-    external: apex-instance
+    external: us-east-apex-instance
 ---
 # Source: web-app/templates/cloud-sql.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
@@ -970,7 +970,7 @@ metadata:
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
-    external: apex-instance
+    external: us-east-apex-instance
 ---
 # Source: web-app/templates/cloud-sql.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
@@ -984,7 +984,7 @@ metadata:
     backstage.io/kubernetes-id: sample
 spec:
   instanceRef:
-    external: apex-instance
+    external: us-east-apex-instance
   resourceID: workload@sa-project.iam
   type: CLOUD_IAM_SERVICE_ACCOUNT
 ---
