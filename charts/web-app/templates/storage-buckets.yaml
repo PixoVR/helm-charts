@@ -12,7 +12,6 @@ metadata:
   {{- else }}
   name: {{ include "microservice_label" $ -}}-{{- .name }}
   {{- end }}
-  name: {{ include "microservice_label" $ -}}-{{- .name }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
     cnrm.cloud.google.com/force-destroy: "false"
