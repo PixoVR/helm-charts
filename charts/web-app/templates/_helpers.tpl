@@ -105,7 +105,7 @@
 {{- end -}}
 
 
-{{- define "pubsub_topic_name" -}}
+{{- define "pubsub_topic_name_suffix" -}}
   {{- if .Values.google.pubsub.add_label }}
     {{- include "microservice_label" $ -}}-topic
   {{- else }}
@@ -114,8 +114,26 @@
 {{- end -}}
 
 
-{{- define "pubsub_subscription_name" -}}
+{{- define "pubsub_topic_name" -}}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    {{- $.Values.cluster_name -}}-{{- include "pubsub_topic_name_suffix" $ }}
+  {{- else }}
+    {{- include "pubsub_topic_name_suffix" $ }}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "pubsub_subscription_name_suffix" -}}
   {{- include "pubsub_topic_name" $ -}}-sub
+{{- end -}}
+
+
+{{- define "pubsub_subscription_name" -}}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    {{- $.Values.cluster_name -}}-{{- include "pubsub_subscription_name_suffix" $ }}
+  {{- else }}
+    {{- include "pubsub_subscription_name_suffix" $ }}
+  {{- end -}}
 {{- end -}}
 
 

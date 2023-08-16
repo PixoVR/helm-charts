@@ -201,9 +201,9 @@ spec:
         - name: PORT
           value: "8001"
         - name: PUBSUB_TOPIC
-          value: dev-sample-topic
+          value: us-east-dev-sample-topic
         - name: PUBSUB_SUBSCRIPTION
-          value: dev-sample-topic-sub
+          value: us-east-us-east-dev-sample-topic-sub
         - name: USE_PUBSUB
           value: "true"
 
@@ -900,7 +900,7 @@ spec:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
-  name: dev-sample-topic-sub
+  name: us-east-us-east-dev-sample-topic-sub
   annotations:
     cnrm.cloud.google.com/project-id: app-project
 spec:
@@ -908,7 +908,7 @@ spec:
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: dev-sample-topic
+    name: us-east-dev-sample-topic
   pushConfig:
     pushEndpoint: 'https://external.service.dev.example.com/pubsub'
 ---
@@ -916,7 +916,7 @@ spec:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
-  name: dev-sample-topic-sub-builds
+  name: us-east-us-east-dev-sample-topic-sub-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
 spec:
@@ -924,7 +924,7 @@ spec:
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: dev-sample-topic-builds
+    name: us-east-dev-sample-topic-builds
   pushConfig:
     pushEndpoint: 'https://external.service.dev.example.com/'
 ---
@@ -932,7 +932,7 @@ spec:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: dev-sample-topic
+  name: us-east-dev-sample-topic
   annotations:
     cnrm.cloud.google.com/project-id: app-project
 ---
@@ -940,7 +940,7 @@ metadata:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: dev-sample-topic-builds
+  name: us-east-dev-sample-topic-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
 ---
@@ -1003,6 +1003,7 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  name: us-east-dev-sample-web-builds
   name: dev-sample-web-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
@@ -1030,7 +1031,7 @@ metadata:
   name: dev-sample-web-builds-bucket-access
 spec:
   bucketRef:
-    name: dev-sample-web-builds
+    name: us-east-dev-sample-web-builds
   entity: user-multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
   role: READER
 ---
@@ -1041,7 +1042,7 @@ metadata:
   name: dev-sample-web-builds-access
 spec:
   bucketRef:
-    name: dev-sample-web-builds
+    name: us-east-dev-sample-web-builds
   entity: user-multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
   role: READER
 ---
@@ -1049,12 +1050,12 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageNotification
 metadata:
-  name: dev-sample-web-builds-notification
+  name: us-east-dev-sample-web-builds-notification
 spec:
   bucketRef:
-    name: dev-sample-web-builds
+    name: us-east-dev-sample-web-builds
   payloadFormat: JSON_API_V1
   topicRef:
-    name: dev-sample-topic-builds
+    name: us-east-dev-sample-topic-builds
   eventTypes:
     - "OBJECT_FINALIZE"

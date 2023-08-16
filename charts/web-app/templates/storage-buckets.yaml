@@ -7,6 +7,11 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name }}
+  {{- end }}
   name: {{ include "microservice_label" $ -}}-{{- .name }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
@@ -53,7 +58,11 @@ metadata:
   name: {{ include "microservice_label" $ -}}-{{- .name -}}-bucket-access
 spec:
   bucketRef:
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
     name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
   entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
   {{- if .viewing_role }}
   role: {{ .viewing_role }}
@@ -69,7 +78,11 @@ metadata:
   name: {{ include "microservice_label" $ -}}-{{- .name -}}-access
 spec:
   bucketRef:
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
     name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
   entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
   {{- if .viewing_role }}
   role: {{ .viewing_role }}
