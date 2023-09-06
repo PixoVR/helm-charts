@@ -259,6 +259,8 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: email-sender-password
+        - name: GOOGLE_STORAGE_PUBLIC
+          value: dev-sample-web-public
         - name: GOOGLE_STORAGE_BUILDS
           value: dev-sample-web-builds
         - name: GOOGLE_STORAGE_EXT
@@ -476,6 +478,8 @@ spec:
 
             - name: TMP_PATH
               value: "/tmp"
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: dev-sample-web-public
             - name: GOOGLE_STORAGE_BUILDS
               value: dev-sample-web-builds
             - name: GOOGLE_STORAGE_EXT
@@ -1003,6 +1007,30 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  name: us-east-dev-sample-web-public
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+  retentionPolicy:
+    isLocked: true
+    retentionPeriod: 5
+
+  cors:
+    - origin: ["http://localhost", https://sample.dev.example.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
   name: us-east-dev-sample-web-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
@@ -1027,7 +1055,20 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucketAccessControl
 metadata:
-  name: dev-sample-web-builds-bucket-access
+  labels:
+    namespace: test
+  name: us-east-dev-sample-web-public-bucket-access
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-public
+  entity: allUsers
+  role: READER
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  name: us-east-dev-sample-web-builds-tenant-bucket-access
 spec:
   bucketRef:
     name: us-east-dev-sample-web-builds
@@ -1038,7 +1079,7 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageDefaultObjectAccessControl
 metadata:
-  name: dev-sample-web-builds-access
+  name: us-east-dev-sample-web-builds-default-bucket-access
 spec:
   bucketRef:
     name: us-east-dev-sample-web-builds

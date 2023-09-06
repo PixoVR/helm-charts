@@ -83,6 +83,9 @@ google:
       isLocked: true
       retentionPeriod: 5
     bucket_list:
+    - name: public
+      key: PUBLIC
+      public: true
     - name: builds
       key: BUILDS
       retentionPolicy:
