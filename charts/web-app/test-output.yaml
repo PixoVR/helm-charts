@@ -677,6 +677,24 @@ spec:
 apiVersion: external-secrets.io/v1beta1 
 kind: ExternalSecret
 metadata:
+  name: github-credentials
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: github-credentials
+    creationPolicy: Owner
+  data:
+  - secretKey: github-ssh-private-key
+    remoteRef:
+      key: github-ssh-private-key
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1 
+kind: ExternalSecret
+metadata:
   name: app-secrets
   namespace: test
 spec:

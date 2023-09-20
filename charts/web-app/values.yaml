@@ -184,6 +184,12 @@ google:
 security_policy: no-russia
 ssl_policy: tls-12
 
+github:
+  credentials:
+    enabled: false
+    https:
+      enabled: false
+
 oauth:
   google:
     enabled: false

@@ -11,6 +11,10 @@ db_project_id: db-project
 gke_project_id: gke-project
 domain: example.com
 
+github:
+  credentials:
+    enabled: true
+
 dynamicHosts:
   - key: EXTERNAL_APP_URL
     type: remote
