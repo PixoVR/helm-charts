@@ -16,6 +16,10 @@ github:
     enabled: true
     https:
       enabled: true
+    pat:
+      enabled: true
+    ssh:
+      enabled: true
 
 dynamicHosts:
   - key: EXTERNAL_APP_URL

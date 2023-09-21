@@ -687,9 +687,15 @@ spec:
     name: github-credentials
     creationPolicy: Owner
   data:
-  - secretKey: github-https-token
+  - secretKey: github-https-username
     remoteRef:
-      key: github-https-token
+      key: github-https-username
+  - secretKey: github-https-password
+    remoteRef:
+      key: github-https-password
+  - secretKey: github-access-token
+    remoteRef:
+      key: github-access-token
   - secretKey: github-ssh-private-key
     remoteRef:
       key: github-ssh-private-key

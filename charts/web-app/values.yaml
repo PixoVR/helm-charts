@@ -189,6 +189,8 @@ github:
     enabled: false
     ssh:
       enabled: true
+    pat:
+      enabled: true
     https:
       enabled: false
 
