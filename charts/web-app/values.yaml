@@ -187,6 +187,8 @@ ssl_policy: tls-12
 github:
   credentials:
     enabled: false
+    ssh:
+      enabled: true
     https:
       enabled: false
 
