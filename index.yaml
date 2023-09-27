@@ -253,6 +253,17 @@ entries:
     version: 0.0.1
   argo-cd:
   - apiVersion: v2
+    created: "2023-09-27T20:58:26.492040585Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.46.7
+    digest: e4d7599c26be3710d9bde4cc848f5c965e72be777a9cf4d10333e7b0e47a1d12
+    name: argo-cd
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argo-cd-0.0.3/argo-cd-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
     created: "2022-11-29T04:12:15.040992359Z"
     dependencies:
     - name: argo-cd
@@ -1166,6 +1177,23 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.1/argocd-app-deploy-0.0.1.tgz
     version: 0.0.1
   argocd-image-updater:
+  - apiVersion: v2
+    created: "2023-09-27T20:58:26.6643178Z"
+    dependencies:
+    - name: argocd-image-updater
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.9.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: A Helm chart for Kubernetes
+    digest: afcad619571d72500daad9b8410795cf783476bacb942611da16b9c39e6b6883
+    name: argocd-image-updater
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.32/argocd-image-updater-0.0.32.tgz
+    version: 0.0.32
   - apiVersion: v2
     created: "2023-02-08T21:46:25.919900041Z"
     dependencies:
