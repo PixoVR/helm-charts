@@ -8,5 +8,5 @@
 {{- end }}
 
 {{- define "domain" -}}
-  {{ "event-source" }}.{{- required "REQUIRED: event_source_domain" .Values.event_source_domain }}
+  {{ "es" }}-{{- .Values.trigger_id -}}.{{- required "REQUIRED: event_source_domain" .Values.event_source_domain }}
 {{- end -}}
