@@ -28,6 +28,17 @@ spec:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
 
+            - dest: body.trigger.gitOrgName
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: git_org_name" .Values.git_org_name -}}'
+
+            - dest: body.trigger.repoName
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: repo_name" .Values.repo_name -}}'
+
+
             - dest: body.trigger.revision
               src:
                 dependencyName: trigger-dep
