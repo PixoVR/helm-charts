@@ -17,7 +17,7 @@ spec:
           service:
             name: 'build-event-source-svc-{{- include "label" $ -}}'
             port:
-              number: '{{- .Values.webhook.port -}}'
+              number: {{ .Values.webhook.port }}
         path: /
         pathType: Prefix
 
