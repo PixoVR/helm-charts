@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    {{- if .Values.backendconfig_name }}
+    cloud.google.com/backend-config: '{"default": "{{- .Values.backendconfig_name }}"}'
+    {{- end }}
+    cloud.google.com/neg: '{"ingress": true}'
+  name: 'build-event-source-svc-{{- include "label" $ -}}'
+spec:
+  type: ClusterIP
+  selector:
+    eventsource-name: 'build-event-source-{{- include "label" $ -}}'
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.webhook.port }}
+      targetPort: {{ .Values.webhook.port }}
+

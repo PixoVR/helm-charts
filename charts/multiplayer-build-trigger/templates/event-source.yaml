@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: 'build-event-source-{{- include "label" $ -}}'
+spec:
+  github:
+    build:
+      repositories:
+        - owner: '{{- required "REQUIRED: git_org_name" .Values.git_org_name -}}'
+          names:
+            - '{{- required "REQUIRED: repo_name" .Values.repo_name -}}'
+      webhook:
+        endpoint: '{{- .Values.webhook.endpoint -}}'
+        port: '{{- .Values.webhook.port -}}'
+        method: POST
+        url: 'https://{{- include "domain" $ -}}'
+      events:
+        - "push"
+
+      {{- if .Values.github_credentials.enabled }}
+      apiToken:
+        name: '{{- .Values.github_credentials.secret_name -}}'
+        key: '{{- .Values.github_credentials.access_token_key_name -}}'
+      {{- end }}
+

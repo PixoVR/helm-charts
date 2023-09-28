@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: 'trigger-sensor-{{- include "label" $ -}}'
+spec:
+  dependencies:
+      - name: trigger-dep
+        eventSourceName: 'build-event-source-{{- include "label" $ -}}'
+        eventName: build
+  triggers:
+    - template:
+        name: http-trigger
+        http:
+          url: '{{- required "REQUIRED: trigger_url" .Values.trigger_url }}'
+          method: POST
+          payload:
+            - src:
+                dependencyName: trigger-dep
+              dest: body
+            - dest: body.trigger.id
+              value: '{{- required "REQUIRED: trigger_id" .Values.trigger_id -}}'
+
+            - dest: body.trigger.moduleId
+              value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
+
+            - dest: body.trigger.dockerfile
+              value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
+
+            - dest: body.trigger.context
+              value: '{{- required "REQUIRED: context" .Values.context -}}'
+
+            - dest: body.trigger.config
+              value: '{{- required "REQUIRED: config" .Values.config -}}'
+

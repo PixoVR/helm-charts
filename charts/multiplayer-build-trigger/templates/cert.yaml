@@ -1,0 +1,9 @@
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: 'build-event-source-google-cert-{{- include "label" $ -}}'
+spec:
+  domains:
+  - '{{- include "domain" $ -}}'
+

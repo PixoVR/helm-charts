@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: '{{- include "domain" $ -}}.'
+    networking.gke.io/managed-certificates: 'build-event-source-google-cert-{{- include "label" $ -}}'
+    {{- if .Values.frontend_config_name }}
+    networking.gke.io/v1beta1.FrontendConfig: '{{- .Values.frontend_config_name -}}'
+    {{- end }}
+  name: 'build-event-source-ingress-{{- include "label" $ -}}'
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: 'build-event-source-svc-{{- include "label" $ -}}'
+            port:
+              number: '{{- .Values.webhook.port -}}'
+        path: /
+        pathType: Prefix
+
