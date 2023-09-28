@@ -12,6 +12,7 @@ backendconfig_name: event-source-backendconfig
 trigger_id: ''
 module_id: ''
 
+revision: main
 dockerfile: Server/Dockerfile
 context: .
 config: Config/DefaultGame.ini

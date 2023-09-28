@@ -24,6 +24,9 @@ spec:
             - dest: body.trigger.moduleId
               value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
 
+            - dest: body.trigger.revision
+              value: '{{- required "REQUIRED: revision" .Values.revision -}}'
+
             - dest: body.trigger.dockerfile
               value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
 
