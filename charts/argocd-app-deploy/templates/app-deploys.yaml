@@ -78,6 +78,7 @@ spec:
           ignoreMissingValueFiles: true
           valueFiles:
             - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
+            - 'clusters/{{ "{{ nameNormalized }}" }}.yaml'
           values: |
             {{ .Values.deploy_chart_name }}:
               {{- if .Values.multi_cluster }}
