@@ -5141,6 +5141,15 @@ entries:
     version: 0.0.7
   multiplayer-build-trigger:
   - apiVersion: v2
+    created: "2023-09-28T04:48:23.584578793Z"
+    description: A Helm chart for deploying multiplayer build triggers
+    digest: 931f643ccb9dea6b76fb56e0a60c662422ce33ac0c4401055609fa97df43fb35
+    name: multiplayer-build-trigger
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/multiplayer-build-trigger-0.0.3/multiplayer-build-trigger-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
     created: "2023-09-28T04:13:34.489493885Z"
     description: A Helm chart for deploying multiplayer build triggers
     digest: cb84d34841efec6521e805a9e19970e1f8df2fb7c4a36f62be737ee3306f5ab0
