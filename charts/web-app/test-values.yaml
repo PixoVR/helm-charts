@@ -164,3 +164,8 @@ sa_json_key:
   envKey: GOOGLE_JSON_KEY
 
 api_tenant_name: apex
+
+cache:
+  enabled: true
+
+

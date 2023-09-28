@@ -127,6 +127,8 @@ spec:
           emptyDir: {}
         - name: var-tmp-dir
           emptyDir: {}
+        - name: cache-dir
+          emptyDir: {}
 
         - name: db-volume
           persistentVolumeClaim:
@@ -174,6 +176,8 @@ spec:
             name: usr-tmp-dir
           - mountPath: /var/tmp
             name: var-tmp-dir
+          - mountPath: /.cache
+            name: cache-dir
         livenessProbe:
           httpGet:
             path: /health/

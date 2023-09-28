@@ -86,6 +86,11 @@ spec:
           emptyDir: {}
         {{- end }}
 
+        {{- if .Values.cache.enabled }}
+        - name: cache-dir
+          emptyDir: {}
+        {{- end }}
+
         {{- if eq .Values.microservice_name "api" }}
         - name: server-logs-dir
           emptyDir: {}
@@ -185,9 +190,15 @@ spec:
             name: usr-tmp-dir
           - mountPath: /var/tmp
             name: var-tmp-dir
+
           {{- if .Values.debug.enabled }}
           - mountPath: /server/.config
             name: config-dir
+          {{- end }}
+
+          {{- if .Values.cache.enabled }}
+          - mountPath: /.cache
+            name: cache-dir
           {{- end }}
 
           {{- if eq .Values.microservice_name "api" }}

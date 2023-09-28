@@ -65,6 +65,9 @@ submodules:
 sql:
   proxy: false
 
+cache:
+  enabled: false
+
 memory:
   request: 128Mi
   limit: 256Mi
