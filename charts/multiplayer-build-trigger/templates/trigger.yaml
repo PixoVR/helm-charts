@@ -19,20 +19,32 @@ spec:
                 dependencyName: trigger-dep
               dest: body
             - dest: body.trigger.id
-              value: '{{- required "REQUIRED: trigger_id" .Values.trigger_id -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: trigger_id" .Values.trigger_id -}}'
 
             - dest: body.trigger.moduleId
-              value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
 
             - dest: body.trigger.revision
-              value: '{{- required "REQUIRED: revision" .Values.revision -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: revision" .Values.revision -}}'
 
             - dest: body.trigger.dockerfile
-              value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
 
             - dest: body.trigger.context
-              value: '{{- required "REQUIRED: context" .Values.context -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: context" .Values.context -}}'
 
             - dest: body.trigger.config
-              value: '{{- required "REQUIRED: config" .Values.config -}}'
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: config" .Values.config -}}'
 
