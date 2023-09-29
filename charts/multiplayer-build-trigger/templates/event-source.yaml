@@ -15,6 +15,14 @@ spec:
         port: '{{- .Values.webhook.port -}}'
         method: POST
         url: 'https://{{- include "domain" $ -}}'
+
+      webhookSecret:
+        secretKeyRef:
+          name: '{{- .Values.webhook.secret.name }}'
+          key: '{{- .Values.webhook.secret.key }}'
+
+      active: {{ .Values.webhook.active }}
+      insecure: {{ .Values.webhook.insecure }} 
       events:
         - "push"
 

@@ -1,8 +1,14 @@
 
 
 webhook:
+  active: true
+  insecure: false
   endpoint: /build
   port: 12000
+  event: '*'
+  secret:
+    name: app-secrets
+    key: auth-key
 
 trigger_url: ''
 
@@ -21,3 +27,4 @@ github_credentials:
   enabled: true
   secret_name: github-credentials
   access_token_key_name: github-access-token
+

@@ -1,0 +1,139 @@
+---
+# Source: multiplayer-build-trigger/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/backend-config: '{"default": "event-source-backendconfig"}'
+    cloud.google.com/neg: '{"ingress": true}'
+  name: 'build-event-source-svc-1'
+spec:
+  type: ClusterIP
+  selector:
+    eventsource-name: 'build-event-source-1'
+  ports:
+    - name: http
+      protocol: TCP
+      port: 12000
+      targetPort: 12000
+---
+# Source: multiplayer-build-trigger/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: 'es-1.example.com.'
+    networking.gke.io/managed-certificates: 'build-event-source-google-cert-1'
+  name: 'build-event-source-ingress-1'
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: 'build-event-source-svc-1'
+            port:
+              number: 12000
+        path: /
+        pathType: Prefix
+---
+# Source: multiplayer-build-trigger/templates/event-source.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: 'build-event-source-1'
+spec:
+  github:
+    build:
+      repositories:
+        - owner: 'PixoVR'
+          names:
+            - 'multiplayer-gameservers'
+      webhook:
+        endpoint: '/build'
+        port: '12000'
+        method: POST
+        url: 'https://es-1.example.com'
+
+      webhookSecret:
+        secretKeyRef:
+          name: 'app-secrets'
+          key: 'auth-key'
+
+      active: true
+      insecure: false
+      events:
+        - "push"
+      apiToken:
+        name: 'github-credentials'
+        key: 'github-access-token'
+---
+# Source: multiplayer-build-trigger/templates/cert.yaml
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: 'build-event-source-google-cert-1'
+spec:
+  domains:
+  - 'es-1.example.com'
+---
+# Source: multiplayer-build-trigger/templates/trigger.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: 'trigger-sensor-1'
+spec:
+  dependencies:
+      - name: trigger-dep
+        eventSourceName: 'build-event-source-1'
+        eventName: build
+  triggers:
+    - template:
+        name: http-trigger
+        http:
+          url: 'https://example.com/build'
+          method: POST
+          payload:
+            - src:
+                dependencyName: trigger-dep
+              dest: body
+            - dest: body.trigger.id
+              src:
+                dependencyName: trigger-dep
+                value: '1'
+
+            - dest: body.trigger.moduleId
+              src:
+                dependencyName: trigger-dep
+                value: '1'
+
+            - dest: body.trigger.gitOrgName
+              src:
+                dependencyName: trigger-dep
+                value: 'PixoVR'
+
+            - dest: body.trigger.repoName
+              src:
+                dependencyName: trigger-dep
+                value: 'multiplayer-gameservers'
+
+
+            - dest: body.trigger.revision
+              src:
+                dependencyName: trigger-dep
+                value: 'main'
+
+            - dest: body.trigger.dockerfile
+              src:
+                dependencyName: trigger-dep
+                value: 'Server/Dockerfile'
+
+            - dest: body.trigger.context
+              src:
+                dependencyName: trigger-dep
+                value: '.'
+
+            - dest: body.trigger.config
+              src:
+                dependencyName: trigger-dep
+                value: 'Config/DefaultGame.ini'
