@@ -61,7 +61,7 @@ spec:
           key: 'auth-key'
 
       active: true
-      insecure: false
+      insecure: false 
       events:
         - "push"
       apiToken:

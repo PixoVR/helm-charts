@@ -17,9 +17,8 @@ spec:
         url: 'https://{{- include "domain" $ -}}'
 
       webhookSecret:
-        secretKeyRef:
-          name: '{{- .Values.webhook.secret.name }}'
-          key: '{{- .Values.webhook.secret.key }}'
+        name: '{{- .Values.webhook.secret.name }}'
+        key: '{{- .Values.webhook.secret.key }}'
 
       active: {{ .Values.webhook.active }}
       insecure: {{ .Values.webhook.insecure }} 
