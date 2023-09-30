@@ -76,7 +76,7 @@ spec:
   domains:
   - 'es-1.example.com'
 ---
-# Source: multiplayer-build-trigger/templates/trigger.yaml
+# Source: multiplayer-build-trigger/templates/sensor.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
@@ -100,12 +100,12 @@ spec:
             - dest: body.trigger.id
               src:
                 dependencyName: trigger-dep
-                value: 1
+                value: '1'
 
             - dest: body.trigger.moduleId
               src:
                 dependencyName: trigger-dep
-                value: 1
+                value: '1'
 
             - dest: body.trigger.gitOrgName
               src:
