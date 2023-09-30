@@ -15,46 +15,43 @@ spec:
           url: '{{- required "REQUIRED: trigger_url" .Values.trigger_url }}'
           method: POST
           payload:
-            - src:
-                dependencyName: trigger-dep
-              dest: event
-            - dest: trigger.id
+            - dest: body.trigger.id
               src:
                 dependencyName: trigger-dep
                 value: {{ required "REQUIRED: trigger_id" .Values.trigger_id }}
 
-            - dest: trigger.moduleId
+            - dest: body.trigger.moduleId
               src:
                 dependencyName: trigger-dep
                 value: {{ required "REQUIRED: module_id" .Values.module_id }}
 
-            - dest: trigger.gitOrgName
+            - dest: body.trigger.gitOrgName
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: git_org_name" .Values.git_org_name -}}'
 
-            - dest: trigger.repoName
+            - dest: body.trigger.repoName
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: repo_name" .Values.repo_name -}}'
 
 
-            - dest: trigger.revision
+            - dest: body.trigger.revision
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: revision" .Values.revision -}}'
 
-            - dest: trigger.dockerfile
+            - dest: body.trigger.dockerfile
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
 
-            - dest: trigger.context
+            - dest: body.trigger.context
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: context" .Values.context -}}'
 
-            - dest: trigger.config
+            - dest: body.trigger.config
               src:
                 dependencyName: trigger-dep
                 value: '{{- required "REQUIRED: config" .Values.config -}}'
