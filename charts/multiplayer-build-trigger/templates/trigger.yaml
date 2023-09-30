@@ -21,12 +21,12 @@ spec:
             - dest: trigger.id
               src:
                 dependencyName: trigger-dep
-                value: '{{- required "REQUIRED: trigger_id" .Values.trigger_id -}}'
+                value: {{ required "REQUIRED: trigger_id" .Values.trigger_id }}
 
             - dest: trigger.moduleId
               src:
                 dependencyName: trigger-dep
-                value: '{{- required "REQUIRED: module_id" .Values.module_id -}}'
+                value: {{ required "REQUIRED: module_id" .Values.module_id }}
 
             - dest: trigger.gitOrgName
               src:
