@@ -56,9 +56,8 @@ spec:
         url: 'https://es-1.example.com'
 
       webhookSecret:
-        secretKeyRef:
-          name: 'app-secrets'
-          key: 'auth-key'
+        name: 'app-secrets'
+        key: 'auth-key'
 
       active: true
       insecure: false 
