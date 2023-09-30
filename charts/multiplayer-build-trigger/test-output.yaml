@@ -93,18 +93,19 @@ spec:
           url: 'https://example.com/build'
           method: POST
           payload:
-            - src:
+            - dest: body
+              src:
                 dependencyName: trigger-dep
-              dest: body
+
             - dest: body.trigger.id
               src:
                 dependencyName: trigger-dep
-                value: '1'
+                value: 1
 
             - dest: body.trigger.moduleId
               src:
                 dependencyName: trigger-dep
-                value: '1'
+                value: 1
 
             - dest: body.trigger.gitOrgName
               src:

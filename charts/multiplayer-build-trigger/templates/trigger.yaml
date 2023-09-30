@@ -15,6 +15,10 @@ spec:
           url: '{{- required "REQUIRED: trigger_url" .Values.trigger_url }}'
           method: POST
           payload:
+            - dest: body
+              src:
+                dependencyName: trigger-dep
+
             - dest: body.trigger.id
               src:
                 dependencyName: trigger-dep
