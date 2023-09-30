@@ -42,6 +42,7 @@ spec:
             - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
           values: |
             lifecycle: {{ .Values.lifecycle }}
+            domain: {{ "{{ path.basename }}" }}.{{ .Values.domain }}
             parent_folder_id: {{ .Values.parent_folder_id }}
             sa_project_id: {{ .Values.sa_project_id }}
             gke_project_id: {{ .Values.gke_project_id }}
