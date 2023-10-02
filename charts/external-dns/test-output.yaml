@@ -1,0 +1,312 @@
+---
+# Source: external-dns/charts/external-dns/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-dns
+  namespace: dev-multiplayer
+  labels:
+    helm.sh/chart: external-dns-1.13.0
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/version: "0.13.5"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: external-dns/charts/external-dns/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-dns
+  labels:
+    helm.sh/chart: external-dns-1.13.0
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/version: "0.13.5"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["list","watch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get","watch","list"]
+  - apiGroups: [""]
+    resources: ["services","endpoints"]
+    verbs: ["get","watch","list"]
+  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get","watch","list"]
+---
+# Source: external-dns/charts/external-dns/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+  labels:
+    helm.sh/chart: external-dns-1.13.0
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/version: "0.13.5"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+  - kind: ServiceAccount
+    name: external-dns
+    namespace: dev-multiplayer
+---
+# Source: external-dns/charts/external-dns/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-dns
+  namespace: dev-multiplayer
+  labels:
+    helm.sh/chart: external-dns-1.13.0
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/version: "0.13.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+  ports:
+    - name: http
+      port: 7979
+      targetPort: http
+      protocol: TCP
+---
+# Source: external-dns/charts/external-dns/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: dev-multiplayer
+  labels:
+    helm.sh/chart: external-dns-1.13.0
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/version: "0.13.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: external-dns
+      app.kubernetes.io/instance: external-dns
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: external-dns
+        app.kubernetes.io/instance: external-dns
+    spec:
+      serviceAccountName: external-dns
+      securityContext:
+        fsGroup: 65534
+      containers:
+        - name: external-dns
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65534
+          image: registry.k8s.io/external-dns/external-dns:v0.13.5
+          imagePullPolicy: IfNotPresent
+          args:
+            - --log-level=info
+            - --log-format=text
+            - --interval=1m
+            - --source=service
+            - --source=ingress
+            - --policy=sync
+            - --registry=txt
+            - --provider=google
+            - --google-project=replace-me
+            - --txt-owner-id=replace-me
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 7979
+          livenessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: ".05"
+              memory: 64Mi
+            requests:
+              cpu: ".01"
+              memory: 32Mi
+---
+# Source: external-dns/charts/app_iam/templates/app-project-iam.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: external-dns-app-policy
+  namespace: infra-admin
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: 'replace-me'
+  bindings:
+    - role: roles/artifactregistry.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/cloudbuild.builds.editor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/cloudfunctions.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/dns.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/secretmanager.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/run.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/cloudsql.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns-infra'
+            namespace: infra-admin
+    - role: roles/errorreporting.writer
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns'
+            namespace: infra-admin
+    - role: roles/logging.logWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns'
+            namespace: infra-admin
+    - role: roles/monitoring.metricWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns'
+            namespace: infra-admin
+    - role: roles/secretmanager.secretAccessor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns'
+            namespace: infra-admin
+    - role: roles/storage.objectAdmin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'external-dns'
+            namespace: infra-admin
+---
+# Source: external-dns/charts/app_iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'external-dns-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replace-me'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'external-dns'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replace-me.svc.id.goog[external-dns/external-dns]
+---
+# Source: external-dns/charts/app_iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'external-dns-infra-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replace-me'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'external-dns-infra'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replace-me.svc.id.goog[cnrm-system/cnrm-controller-manager-external-dns]
+---
+# Source: external-dns/charts/app_iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'external-dns'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replace-me'
+spec:
+  displayName: "external-dns workload service account"
+---
+# Source: external-dns/charts/app_iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'external-dns-infra'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replace-me'
+spec:
+  displayName: "external-dns infra admin service account"

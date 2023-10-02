@@ -1,6 +1,9 @@
 
-all: test
+all: diff
 
 test:
-	helm template pixo-apex . --debug -v 4
+	helm template external-dns . > test-output.yaml
+
+diff: test
+	git diff test-output.yaml
 
