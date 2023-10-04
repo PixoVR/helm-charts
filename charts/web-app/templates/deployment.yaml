@@ -355,6 +355,11 @@ spec:
               key: email-sender-password
         {{- end }}
 
+        {{- if .Values.email.bcc }}
+        - name: EMAIL_BCC
+          value: '{{- .Values.email.bcc -}}'
+        {{- end }}
+
         {{- end }}
 
         {{- if .Values.google.storage.enabled }}

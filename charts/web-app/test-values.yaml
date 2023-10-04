@@ -76,6 +76,7 @@ email:
   enabled: true
   mfa: true
   sender: 'pixoplatform@pixovr.com'
+  bcc: 'newuser@pixovr.com'
 
 aws:
   auth:

@@ -89,6 +89,7 @@ email:
   enabled: false
   mfa: false
   sender: ''
+  bcc: ''
 
 aws:
   auth:

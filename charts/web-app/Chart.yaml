@@ -2,10 +2,10 @@ apiVersion: v2
 name: web-app
 description: A Helm chart for deploying web applications or web application micro services
 type: application
-version: 0.1.50
+version: 0.1.51
 
 dependencies:
-- name: app-iam
-  version: 0.0.34
-  repository: "https://pixovr.github.io/helm-charts"
-  alias: app_iam
+  - name: app-iam
+    version: 0.0.34
+    repository: "https://pixovr.github.io/helm-charts"
+    alias: app_iam
