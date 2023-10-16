@@ -45,6 +45,9 @@ metadata:
 spec:
   github:
     build:
+      filter:
+        expression: "(body.ref == 'refs/heads/main')"
+
       repositories:
         - owner: 'PixoVR'
           names:

@@ -6,6 +6,9 @@ metadata:
 spec:
   github:
     build:
+      filter:
+        expression: "(body.ref == 'refs/heads/{{- required "REQUIRED: revision" .Values.revision -}}')"
+
       repositories:
         - owner: '{{- required "REQUIRED: git_org_name" .Values.git_org_name -}}'
           names:
