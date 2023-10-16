@@ -37,7 +37,11 @@
 
 
 {{- define "app_domain" -}}
-  {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
+  {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
+    {{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
+  {{- else }}
+    {{- .Values.cluster_name -}}.{{- .Values.app_code -}}.{{- include "lifecycle_domain" . }}
+  {{- end }}
 {{- end }}
 
 
