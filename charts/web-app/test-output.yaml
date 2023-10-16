@@ -263,10 +263,12 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: email-sender-password
+        - name: EMAIL_BCC
+          value: 'newuser@pixovr.com'
         - name: GOOGLE_STORAGE_PUBLIC
-          value: dev-sample-web-public
+          value: us-east-dev-sample-web-public
         - name: GOOGLE_STORAGE_BUILDS
-          value: dev-sample-web-builds
+          value: us-east-dev-sample-web-builds
         - name: GOOGLE_STORAGE_EXT
           value: dev-sample-ext-api-ext
         - name: EMAILER_TO
