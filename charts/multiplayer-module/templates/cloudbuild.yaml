@@ -29,7 +29,7 @@ spec:
 
     step:
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:v1.6.0"
+        name: "gcr.io/kaniko-project/executor:v1.16.0"
         args:
           - --destination={{- include "registry" . }}:$COMMIT_SHA
           - --destination={{- include "registry" . }}:latest

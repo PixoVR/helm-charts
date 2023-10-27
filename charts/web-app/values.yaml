@@ -290,7 +290,7 @@ cronjob:
 
 sa_name: workload
 
-kaniko_version_tag: 1.16.0
+kaniko_version_tag: v1.16.0
 ci_machine_type: E2_HIGHCPU_8
 
 clamav:
