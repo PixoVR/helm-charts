@@ -191,9 +191,6 @@ spec:
             port: 8001
           initialDelaySeconds: 30
           periodSeconds: 10
-        envFrom:
-        - secretRef:
-            name: cron-auth-secret
 
         env:
         - name: USE_GCS
@@ -452,7 +449,7 @@ spec:
                 type: RuntimeDefault
             args:
             - dev-sample-web.test.svc:443/
-            - key=$(SECRET_KEY)
+            - x-access-token:$(SECRET_KEY)
             - --ignore-stdin
 
             env:
@@ -636,7 +633,7 @@ spec:
           path: /root/.ssh
 
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:latest"
+        name: "gcr.io/kaniko-project/executor:v1.16.0"
         args:
           - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
           - --destination=gcr.io/app-project/sample/dev/web:latest
@@ -657,27 +654,6 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
 spec:
   googleServiceAccount: 'app-infra@sa-project.iam.gserviceaccount.com'
----
-# Source: web-app/templates/external-secrets.yaml
-apiVersion: external-secrets.io/v1beta1 
-kind: ExternalSecret
-metadata:
-  name: cron-auth-secret
-  namespace: test
-spec:
-  secretStoreRef:
-    kind: SecretStore
-    name: pixo-secret-store
-  target:
-    name: cron-auth-secret
-    creationPolicy: Owner
-  data:
-  - secretKey: EWN_USER
-    remoteRef:
-      key: ewn-username
-  - secretKey: EWN_PASSWORD
-    remoteRef:
-      key: ewn-password
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1 

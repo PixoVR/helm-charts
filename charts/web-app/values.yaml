@@ -283,6 +283,7 @@ cilium:
 
 cronjob:
   enabled: false
+  secrets: []
   image:
     name: alpine/httpie
     tag: latest
