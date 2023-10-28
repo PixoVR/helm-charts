@@ -4,7 +4,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: '{{ include "cronjob_name" $ }}'
+  name: '{{ include "cronjob_name" $ }}-cronjob'
 spec:
   schedule: "{{- .Values.cronjob.schedule -}}"
   jobTemplate:
