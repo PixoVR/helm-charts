@@ -68,10 +68,10 @@ sql:
 cronjob:
   enabled: true
   external_secrets:
-    enabled: false
-  secrets:
-  - secretKey: SECRET_KEY
-    remoteSecretKey: secret-key
+    enabled: true
+    secrets:
+    - secretKey: SOME_SECRET
+      remoteSecretKey: some-secret
 
 env:
   - name: EMAILER_TO

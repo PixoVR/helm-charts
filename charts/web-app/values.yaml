@@ -283,11 +283,13 @@ cilium:
 
 cronjob:
   enabled: false
-  secrets: []
   image:
     name: alpine/httpie
     tag: latest
   schedule: '0 8 * * *'
+  external_secrets:
+    enabled: false
+    secrets: []
 
 sa_name: workload
 

@@ -191,6 +191,9 @@ spec:
             port: 8001
           initialDelaySeconds: 30
           periodSeconds: 10
+        envFrom:
+        - secretRef:
+            name: cronjob-secrets
 
         env:
         - name: USE_GCS
@@ -654,6 +657,24 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
 spec:
   googleServiceAccount: 'app-infra@sa-project.iam.gserviceaccount.com'
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1 
+kind: ExternalSecret
+metadata:
+  name: cronjob-secrets
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: cronjob-secrets
+    creationPolicy: Owner
+  data:
+  - secretKey: SOME_SECRET
+    remoteRef:
+      key: some-secret
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1 
