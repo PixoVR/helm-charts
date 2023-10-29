@@ -2,6 +2,9 @@
 argocd-image-updater:
   serviceAccount:
     name: image-updater
+  extraArgs:
+    - --interval
+    - 1m
     
 app_iam:
   sa_project_id: ''

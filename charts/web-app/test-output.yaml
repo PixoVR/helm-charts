@@ -400,7 +400,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: 'dev-sample-web'
+  name: 'dev-sample-web-cronjob'
 spec:
   schedule: "0 8 * * *"
   jobTemplate:
