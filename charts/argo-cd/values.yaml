@@ -1,6 +1,9 @@
 
 argo-cd:
   fullnameOverride: argocd
+  configs:
+    cm:
+      timeout.reconciliation: 90s
   server:
     config:
       # Fix crossplane unwanted pruning
