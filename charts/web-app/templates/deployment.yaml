@@ -298,17 +298,17 @@ spec:
           {{- if .cluster }}
 
           {{- if .service }}
-          value: https://{{- .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- else }}
-          value: https://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}
 
           {{- else }}
 
           {{- if .service }}
-          value: https://{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- else }}
-          value: https://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}
 
           {{- end }}

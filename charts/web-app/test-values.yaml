@@ -25,17 +25,26 @@ dynamicHosts:
   - key: EXTERNAL_APP_URL
     type: remote
     tenant: multiplayer
+    protocol: https
+
+  - key: MATCHMAKER_URL
+    type: remote
+    service: match
+    tenant: apex
+    protocol: wss
 
   - key: ALLOCATE_HOSTNAME
     type: remote
     cluster: multi-central1
     tenant: multiplayer
     service: allocator
+    protocol: https
     
   - key: MMF_API_HOST
     type: local
     lifecycle: true
     service: matchmaking-matchfunction
+    protocol: http
 
 subdomain: api
 instance_name: apex-instance

@@ -228,6 +228,9 @@ spec:
         - name: EXTERNAL_APP_URL
           value: https://multiplayer.dev.example.com
 
+        - name: MATCHMAKER_URL
+          value: wss://match.apex.dev.example.com
+
         - name: ALLOCATE_HOSTNAME
           value: https://multi-central1.allocator.multiplayer.dev.example.com
 
