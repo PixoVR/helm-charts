@@ -637,13 +637,16 @@ spec:
         volumes:
         - name: 'ssh'
           path: /root/.ssh
-      - id: Gcloud
+      - id: GKE-Auth
         name: "gcr.io/cloud-builders/gcloud-slim"
         entrypoint: "bash"
         args:
           - "-c"
           - |
-            gcloud container clusters get-credentials us-east --region=us-central1 --project=gke-project
+            gcloud components install kubectl &&
+            gcloud container clusters get-credentials us-east-cluster --region=us-central1 --project=gke-project
+        env:
+          - KUBECONFIG=~/kube/.config
 
 
       - id: "Build-Image"
