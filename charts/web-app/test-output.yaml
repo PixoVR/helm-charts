@@ -646,7 +646,7 @@ spec:
             gcloud components install kubectl &&
             gcloud container clusters get-credentials us-east-cluster --region=us-central1 --project=gke-project
         env:
-          - KUBECONFIG=~/kube/.config
+          - KUBECONFIG=/workspace/kube/.config
 
 
       - id: "Build-Image"
@@ -658,6 +658,8 @@ spec:
           - --dockerfile=Dockerfile
           - --cache=true
           - --cache-ttl=240h
+        env:
+          - KUBECONFIG=/workspace/kube/.config
     availableSecrets:
       secretManager:
       - env: 'SSH_KEY'

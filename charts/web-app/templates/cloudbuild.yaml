@@ -68,7 +68,7 @@ spec:
             gcloud components install kubectl &&
             gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }}-cluster --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
         env:
-          - KUBECONFIG=~/kube/.config
+          - KUBECONFIG=/workspace/kube/.config
       {{- end }}
 
 
@@ -81,6 +81,10 @@ spec:
           - --dockerfile={{- include "dockerfile" $ }}
           - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
+        {{- if .Values.google.cloudbuild.gke }}
+        env:
+          - KUBECONFIG=/workspace/kube/.config
+        {{- end }}
 
     {{- if .Values.submodules.enabled }}
     availableSecrets:
