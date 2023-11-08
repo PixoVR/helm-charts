@@ -65,6 +65,7 @@ spec:
         args:
           - "-c"
           - |
+            gcloud components install kubectl
             gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }}-cluster --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
       {{- end }}
 
