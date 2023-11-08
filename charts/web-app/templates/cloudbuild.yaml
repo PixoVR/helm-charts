@@ -83,7 +83,7 @@ spec:
           - --cache-ttl=240h
         {{- if .Values.google.cloudbuild.gke }}
         env:
-          - KUBECONFIG=/workspace/kube/.config
+          - HOME=/workspace
         {{- end }}
 
     {{- if .Values.submodules.enabled }}

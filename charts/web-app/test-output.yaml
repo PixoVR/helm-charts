@@ -659,7 +659,7 @@ spec:
           - --cache=true
           - --cache-ttl=240h
         env:
-          - KUBECONFIG=/workspace/kube/.config
+          - HOME=/workspace
     availableSecrets:
       secretManager:
       - env: 'SSH_KEY'
