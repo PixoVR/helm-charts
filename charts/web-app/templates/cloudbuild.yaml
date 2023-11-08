@@ -58,6 +58,17 @@ spec:
           path: /root/.ssh
       {{- end }}
 
+      {{- if .Values.google.cloudbuild.gke }}
+      - id: Gcloud
+        name: "gcr.io/cloud-builders/gcloud-slim"
+        entrypoint: "bash"
+        args:
+          - "-c"
+          - |
+            gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }} --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
+      {{- end }}
+
+
       - id: "Build-Image"
         name: "gcr.io/kaniko-project/executor:{{- .Values.kaniko_version_tag -}}"
         args:

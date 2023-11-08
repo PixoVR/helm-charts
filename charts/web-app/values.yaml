@@ -108,6 +108,7 @@ google:
   cloudbuild:
     default: true
     filename: cloudbuild.yaml
+    gke: false
   create_registry: false
   create_monitoring_suite: false
   notification_channel: ""

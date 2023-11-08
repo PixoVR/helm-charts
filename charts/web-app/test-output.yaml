@@ -637,6 +637,14 @@ spec:
         volumes:
         - name: 'ssh'
           path: /root/.ssh
+      - id: Gcloud
+        name: "gcr.io/cloud-builders/gcloud-slim"
+        entrypoint: "bash"
+        args:
+          - "-c"
+          - |
+            gcloud container clusters get-credentials us-east --region=us-central1 --project=gke-project
+
 
       - id: "Build-Image"
         name: "gcr.io/kaniko-project/executor:v1.16.0"
