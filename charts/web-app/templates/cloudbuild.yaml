@@ -59,13 +59,13 @@ spec:
       {{- end }}
 
       {{- if .Values.google.cloudbuild.gke }}
-      - id: Gcloud
+      - id: GKE-Auth
         name: "gcr.io/cloud-builders/gcloud-slim"
         entrypoint: "bash"
         args:
           - "-c"
           - |
-            gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }} --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
+            gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }}-cluster --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
       {{- end }}
 
 
