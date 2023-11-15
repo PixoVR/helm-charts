@@ -10,14 +10,15 @@ spec:
         eventName: build
   triggers:
     - template:
-        name: http-trigger
+        name: build-trigger
         http:
           url: '{{- required "REQUIRED: trigger_url" .Values.trigger_url }}'
           method: POST
           payload:
-            - dest: body
+            - dest: body.event
               src:
                 dependencyName: trigger-dep
+                dataKey: body
 
             - dest: body.trigger.id
               src:
