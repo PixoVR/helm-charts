@@ -325,11 +325,19 @@
 
 
 
-{{- define "workflows_artifact_bucket" -}}
+{{- define "workflows_artifact_bucket_suffix" -}}
   {{- if .Values.workflows.artifacts.bucket_prefix }}
     {{- .Values.lifecycle -}}-{{- .Values.workflows.artifacts.bucket_prefix -}}-{{- .Values.workflows.artifacts.bucket_name }}
   {{- else }}
     {{- include "microservice_label" $ -}}-{{- .Values.workflows.artifacts.bucket_name }}
+  {{- end }}
+{{- end }}
+
+{{- define "workflows_artifact_bucket" -}}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    {{- $.Values.cluster_name -}}-{{- include "workflows_artifact_bucket_suffix" $ }}
+  {{- else }}
+    {{- include "workflows_artifact_bucket_suffix" $ }}
   {{- end }}
 {{- end }}
 
