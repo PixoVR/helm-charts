@@ -22,6 +22,9 @@ spec:
     metadata:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- if .Values.linkerd.enabled }}
+        linkerd.io/inject: enabled
+        {{- end }}
 
         {{- if not .Values.debug.enabled }}
         container.apparmor.security.beta.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
