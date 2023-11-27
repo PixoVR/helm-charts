@@ -25,40 +25,47 @@ spec:
     {{- end }}
   {{- end }}
 
----
 {{- end }}
 
-{{- if .Values.google.pubsub.topic.create }}
+{{- range .Values.google.pubsub.topics }}
+---
+
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: {{ include "pubsub_topic_name" $ }}
+  name: {{ .name -}}-{{ include "pubsub_topic_name" $ }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 
-{{- if .Values.google.pubsub.topic.schema.enabled }}
+{{- if .schema }}
 spec:
   schemaSettings:
     schemaRef:
-      name: {{ include "pubsub_topic_name" $ -}}-schema
-    encoding: {{ .Values.google.pubsub.topic.encoding }}
+      name: {{ .schema.name -}}-{{ include "pubsub_topic_name" $ -}}-schema
+    {{- if .schema.encoding }}
+    encoding: {{ .schema.encoding }}
+    {{- end }}
+{{- end }}
 
+{{- end }}
+
+
+{{- range .Values.google.pubsub.schemas }}
 ---
 
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSchema
 metadata:
-  name: {{ include "pubsub_topic_name" $ -}}-schema
+  name: {{ .name -}}-{{ include "pubsub_topic_name" $ -}}-schema
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
-  type: {{ .Values.google.pubsub.topic.schema.type }}
+  type: '{{- .type -}}'
   projectRef:
     external: {{ include "app_project_id" $ }}
 
+{{- end }}
 
-{{- end }}
-{{- end }}
 
 {{- end }}
 {{- end }}

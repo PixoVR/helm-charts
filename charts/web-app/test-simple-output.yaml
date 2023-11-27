@@ -1,0 +1,469 @@
+---
+# Source: web-app/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-workload
+  namespace: test
+  labels:
+    namespace: test
+  annotations:
+    iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
+---
+# Source: web-app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-sample-web
+  namespace: test
+  labels:
+    namespace: test
+    tier: backend
+    backstage.io/kubernetes-id: sample
+  annotations:
+    cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  type: ClusterIP
+  selector:
+    app: dev-sample-web
+    
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 80
+---
+# Source: web-app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'dev-sample-web'
+  namespace: test
+  labels:
+    namespace: test
+    microservice_name: web
+    tier: backend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: 'dev-sample-web'
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        linkerd.io/inject: enabled
+        container.apparmor.security.beta.kubernetes.io/web: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/web: runtime/default
+
+      labels:
+        app: 'dev-sample-web'
+        namespace: test
+        microservice_name: web
+        tier: backend
+    spec:
+
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        supplementalGroups:
+          - 150
+
+      volumes:
+
+        - name: tmp-dir
+          emptyDir: {}
+        - name: usr-tmp-dir
+          emptyDir: {}
+        - name: var-tmp-dir
+          emptyDir: {}
+
+        - name: db-volume
+          emptyDir: {}
+
+      serviceAccountName: 'app-workload'
+      restartPolicy: Always
+      containers:
+      - name: web
+        image: 'gcr.io/app-project/sample/dev/web:latest'
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 0.1
+          limits:
+            memory: 256Mi
+            cpu: 0.25
+
+        volumeMounts:
+          - mountPath: /var/sqlite
+            name: db-volume
+          - mountPath: /tmp
+            name: tmp-dir
+          - mountPath: /usr/tmp
+            name: usr-tmp-dir
+          - mountPath: /var/tmp
+            name: var-tmp-dir
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        env:
+        - name: USE_GCS
+          value: "true"
+        - name: NAMESPACE
+          value: test
+        - name: DOMAIN
+          value: 'api.sample.dev.simple.com'
+        - name: PORT
+          value: "80"
+
+        - name: TMP_PATH
+          value: "/var/tmp"
+
+        - name: GCP_PROJECT_ID
+          value: "app-project"
+
+        - name: DB_PROJECT_ID
+          value: "db-project"
+
+        - name: REGION
+          value: "us-central1"
+
+        - name: LIFECYCLE
+          value: DEV
+
+        - name: APP_ENV
+          value: DEV
+
+        - name: NODE_ENV
+          value: DEV
+
+        - name: APP_DOMAIN
+          value: 'sample.dev.simple.com'
+
+        - name: APP_URL
+          value: https://sample.dev.simple.com
+
+        - name: API_DOMAIN
+          value: 'api.sample.dev.simple.com'
+
+        - name: API_URL
+          value: https://api.sample.dev.simple.com
+
+        
+
+        ports:
+        - containerPort: 80
+          name: api-port
+---
+# Source: web-app/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+  annotations:
+    networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
+    networking.gke.io/managed-certificates: test-google-cert
+    external-dns.alpha.kubernetes.io/hostname: 'api.sample.dev.simple.com.'
+
+spec:
+
+  rules:
+  - http:
+
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-web
+            port:
+              number: 443
+---
+# Source: web-app/templates/backend-config.yaml
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: test-backendconfig
+  namespace: test
+spec:
+  healthCheck:
+    checkIntervalSec: 60
+    port: 80
+    type: HTTP
+    requestPath: /
+
+  securityPolicy:
+    name: no-russia
+
+  cdn:
+    enabled: false
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+---
+# Source: web-app/templates/cloudbuild.yaml
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: dev-sample-web-ci
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+  labels:
+    namespace: test
+spec:
+  disabled: false
+  github:
+    owner: PixoVR
+    name: replaceme 
+    push:
+      branch: "^dev$"
+
+  substitutions:
+    "_LIFECYCLE": dev
+    "_APP_CODE": sample
+    "_SERVICE_NAME": web
+  build:
+    timeout: 1800s
+    options:
+      machineType: E2_HIGHCPU_8
+
+    step:
+
+
+      - id: "Build-Image"
+        name: "gcr.io/kaniko-project/executor:v1.16.0"
+        args:
+          - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
+          - --destination=gcr.io/app-project/sample/dev/web:latest
+          - --context=.
+          - --dockerfile=Dockerfile
+          - --cache=true
+          - --cache-ttl=240h
+---
+# Source: web-app/templates/frontend-config.yaml
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: test-gke-frontendconfig
+  namespace: test
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  sslPolicy: tls-12
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+---
+# Source: web-app/charts/app_iam/templates/app-project-iam.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: test-app-policy
+  namespace: infra-admin
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: 'replaceme'
+  bindings:
+    - role: roles/artifactregistry.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudbuild.builds.editor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudfunctions.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/dns.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/secretmanager.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/run.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/pubsub.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudsql.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/errorreporting.writer
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/logging.logWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/monitoring.metricWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.publisher
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.subscriber
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/secretmanager.secretAccessor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+---
+# Source: web-app/charts/app_iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'workload-sa-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'workload-sa'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
+---
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'cnrm-controller-manager-infra-admin-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'cnrm-controller-manager-infra-admin'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
+---
+# Source: web-app/charts/app_iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'workload-sa'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test workload service account"
+---
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'cnrm-controller-manager-infra-admin'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test infra admin service account"
+---
+# Source: web-app/templates/managed-cert.yaml
+apiVersion: networking.gke.io/v1 
+kind: ManagedCertificate
+metadata:
+  name: test-google-cert
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  domains:
+    - api.sample.dev.simple.com

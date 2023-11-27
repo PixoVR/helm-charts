@@ -134,8 +134,17 @@ google:
       - name: extra
   pubsub:
     enabled: true
-    topic:
-      create: true
+    schemas:
+      - name: grpc
+        type: PROTOCOL_BUFFER
+      - name: json
+        type: JSON
+    topics:
+      - name: create-foo
+        schema:
+          name: json
+          ecoding: JSON
+      - name: update-foo
     subscription:
       create: true
       push:

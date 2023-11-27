@@ -1,0 +1,15 @@
+
+lifecycle: dev
+add_lifecycle_to_domain: true
+
+cpl_cluster_name: us-central
+cluster_name: us-central
+
+sa_project_id: sa-project
+app_project_id: app-project
+db_project_id: db-project
+gke_project_id: gke-project
+domain: simple.com
+
+subdomain: api
+

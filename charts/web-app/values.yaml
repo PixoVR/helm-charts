@@ -119,12 +119,8 @@ google:
   pubsub:
     enabled: false
     add_label: false
-    topic:
-      create: false
-      encoding: JSON
-      schema:
-        enabled: false
-        type: PROTOCOL_BUFFER
+    schemas: []
+    topics: []
     subscription:
       create: false
       ackDeadlineSeconds: 15
