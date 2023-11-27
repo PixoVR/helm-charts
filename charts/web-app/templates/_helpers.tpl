@@ -315,7 +315,7 @@
 {{- end }}
 
 
-{{- define "custom_pubsub_push_domain" -}}
+{{- define "custom_storage_pubsub_push_domain" -}}
   {{- if .Values.google.storage.notification_endpoint }}
     {{- .Values.google.storage.notification_endpoint }}
   {{- else }}

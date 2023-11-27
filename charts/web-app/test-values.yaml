@@ -143,15 +143,15 @@ google:
       - name: create-foo
         schema:
           name: json
-          ecoding: JSON
+          encoding: JSON
       - name: update-foo
-    subscription:
-      create: true
-      push:
-        enabled: true
-        custom_endpoint:
-          enabled: true
-          prefix: external.service
+    subscriptions:
+      - name: example
+        push:
+          endpoint: external
+      - name: example2
+        push:
+          endpoint: external2
 
 
 external_secrets:

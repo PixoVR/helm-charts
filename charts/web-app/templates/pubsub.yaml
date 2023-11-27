@@ -1,28 +1,24 @@
 {{- if .Values.create_infra }}
 {{- if .Values.google.pubsub.enabled }}
 
-{{- if .Values.google.pubsub.subscription.create }}
+{{- range .Values.google.pubsub.subscriptions }}
 ---
 
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
-  name: {{ include "pubsub_subscription_name" $ }}
+  name: {{ .name -}}-{{ include "pubsub_subscription_name" $ }}
   annotations:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
-  ackDeadlineSeconds: {{ .Values.google.pubsub.subscription.ackDeadlineSeconds }}
-  messageRetentionDuration: {{ .Values.google.pubsub.subscription.messageRetentionDuration }}
-  retainAckedMessages: {{ .Values.google.pubsub.subscription.retainAckedMessages }}
+  ackDeadlineSeconds: {{ $.Values.google.pubsub.subscription.ackDeadlineSeconds }}
+  messageRetentionDuration: {{ $.Values.google.pubsub.subscription.messageRetentionDuration }}
+  retainAckedMessages: {{ $.Values.google.pubsub.subscription.retainAckedMessages }}
   topicRef:
-    name: {{ include "pubsub_topic_name" $ }}
-  {{- if .Values.google.pubsub.subscription.push.enabled }}
+    name: {{ .name -}}-{{ include "pubsub_topic_name" $ }}
+  {{- if .push.endpoint }}
   pushConfig:
-    {{- if .Values.google.pubsub.subscription.push.custom_endpoint.enabled }}
-    pushEndpoint: 'https://{{- include "custom_pubsub_push_domain" $ -}}/{{- .Values.google.pubsub.subscription.push.endpoint }}'
-    {{- else }}
-    pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .Values.google.pubsub.subscription.push.endpoint }}'
-    {{- end }}
+    pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .push.endpoint }}'
   {{- end }}
 
 {{- end }}

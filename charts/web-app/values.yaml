@@ -122,15 +122,10 @@ google:
     schemas: []
     topics: []
     subscription:
-      create: false
       ackDeadlineSeconds: 15
       messageRetentionDuration: 86400s
       retainAckedMessages: false
-      push:
-        enabled: false
-        endpoint: pubsub
-        custom_endpoint:
-          enabled: false
+      subscriptions: []
   sql:
     enabled: false
     use_iam: true
