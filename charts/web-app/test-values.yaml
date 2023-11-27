@@ -147,6 +147,7 @@ google:
       - name: update-foo
     subscriptions:
       - name: example
+        tenant: sample
         push:
           endpoint: external
       - name: example2

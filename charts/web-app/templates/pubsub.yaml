@@ -15,7 +15,11 @@ spec:
   messageRetentionDuration: {{ $.Values.google.pubsub.subscription.messageRetentionDuration }}
   retainAckedMessages: {{ $.Values.google.pubsub.subscription.retainAckedMessages }}
   topicRef:
+    {{- if .tenant }}
+    name: {{ .name -}}-{{ include "lifecycle" $ -}}-{{- .tenant -}}-topic
+    {{- else }}
     name: {{ .name -}}-{{ include "pubsub_topic_name" $ }}
+    {{- end }}
   {{- if .push.endpoint }}
   pushConfig:
     pushEndpoint: 'https://{{- include "full_domain" $ -}}/{{- .push.endpoint }}'

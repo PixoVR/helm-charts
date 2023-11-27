@@ -983,7 +983,7 @@ spec:
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: example-us-east-dev-sample-topic
+    name: example-dev-sample-topic
   pushConfig:
     pushEndpoint: 'https://api.sample.dev.example.com/external'
 ---
