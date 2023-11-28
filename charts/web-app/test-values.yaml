@@ -141,19 +141,16 @@ google:
         type: JSON
     topics:
       - name: create-foo
+        subscriptions:
+          - name: create-foo
+            push:
+              region: multi-central1
+              tenant: multiplayer
+              service: allocator
+              endpoint: triggers
         schema:
           name: json
           encoding: JSON
-      - name: update-foo
-    subscriptions:
-      - name: example
-        tenant: sample
-        push:
-          endpoint: external
-      - name: example2
-        push:
-          endpoint: external2
-
 
 external_secrets:
   enabled: true
