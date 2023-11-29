@@ -123,6 +123,7 @@ google:
     topics: []
     subscription:
       ackDeadlineSeconds: 15
+      enableMessageOrdering: true
       messageRetentionDuration: 86400s
       retainAckedMessages: false
       subscriptions: []

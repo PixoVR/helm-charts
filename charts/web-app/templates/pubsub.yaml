@@ -33,6 +33,7 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
 spec:
   ackDeadlineSeconds: {{ $.Values.google.pubsub.subscription.ackDeadlineSeconds }}
+  enableMessageOrdering: {{ $.Values.google.pubsub.subscription.enableMessageOrdering }}
   messageRetentionDuration: {{ $.Values.google.pubsub.subscription.messageRetentionDuration }}
   retainAckedMessages: {{ $.Values.google.pubsub.subscription.retainAckedMessages }}
   topicRef:
