@@ -90,9 +90,6 @@ spec:
                   name: app-secrets
                   key: auth-key
 
-            - name: API_URL
-              value: https://{{- include "api_domain" $ }}
-
             - name: TMP_PATH
               value: "/tmp"
 

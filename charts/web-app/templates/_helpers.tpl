@@ -59,15 +59,6 @@
 {{- end }}
 
 
-{{- define "api_domain" -}}
-  {{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
-    {{- "api" -}}.{{- include "app_domain" $ -}}
-  {{- else }}
-    {{- .Values.cluster_name -}}.{{- "api" -}}.{{- include "app_domain" $ -}}
-  {{- end }}
-{{- end }}
-
-
 {{- define "branch" -}}
   {{- if .Values.branch }}
     {{- .Values.branch }} 

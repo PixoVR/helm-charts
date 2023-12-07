@@ -335,12 +335,6 @@ spec:
         - name: APP_URL
           value: https://{{- include "app_domain" $ }}
 
-        - name: API_DOMAIN
-          value: '{{- include "api_domain" $ -}}'
-
-        - name: API_URL
-          value: https://{{- include "api_domain" $ }}
-
         {{- if .Values.sa_json_key.enabled }}
         - name: {{ .Values.sa_json_key.envKey }}
           value: /backend/secrets/svc-acct-json-key
