@@ -270,27 +270,27 @@ spec:
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: host
         - name: DB_PORT
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: port
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: dbname
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: password
         {{- end }}
 

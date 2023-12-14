@@ -210,27 +210,27 @@ spec:
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  'dev-db-pguser-dev-db'
               key: host
         - name: DB_PORT
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  'dev-db-pguser-dev-db'
               key: port
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  'dev-db-pguser-dev-db'
               key: dbname
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  'dev-db-pguser-dev-db'
               key: user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: crunchydb-pguser-crunchydb
+              name:  'dev-db-pguser-dev-db'
               key: password
         - name: PUBSUB_TOPIC
           value: us-east-dev-sample-topic
