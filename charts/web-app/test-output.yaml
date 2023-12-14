@@ -988,7 +988,7 @@ spec:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - host 'dev-db' 'dev-db' 0.0.0.0/0 password
+          - host dev-db dev-db 0.0.0.0/0 password
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
