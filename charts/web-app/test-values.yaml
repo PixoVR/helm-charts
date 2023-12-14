@@ -194,6 +194,5 @@ cache:
 
 crunchydb:
   enabled: true
-  create: false
 
 

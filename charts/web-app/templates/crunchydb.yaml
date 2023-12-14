@@ -27,7 +27,7 @@ spec:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - host crunchydb crunchydb 0.0.0.0/0 password
+          - host '{{- include "db_name" $ -}}' '{{- include "db_name" $ -}}' 0.0.0.0/0 password
   backups:
     pgbackrest:
       image: {{ .Values.crunchydb.pgbackrest.image }}
