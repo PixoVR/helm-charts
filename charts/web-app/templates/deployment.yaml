@@ -277,6 +277,11 @@ spec:
             secretKeyRef:
               name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
               key: port
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: dbname
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
