@@ -205,6 +205,33 @@ spec:
           value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
+        - name: DB_VENDOR
+          value: "postgres"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: port
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: password
         - name: PUBSUB_TOPIC
           value: us-east-dev-sample-topic
         - name: PUBSUB_SUBSCRIPTION
@@ -252,12 +279,6 @@ spec:
 
         - name: APP_URL
           value: https://sample.dev.example.com
-
-        - name: API_DOMAIN
-          value: 'api.sample.dev.example.com'
-
-        - name: API_URL
-          value: https://api.sample.dev.example.com
         - name: GOOGLE_JSON_KEY
           value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL
@@ -482,9 +503,6 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: auth-key
-
-            - name: API_URL
-              value: https://api.sample.dev.example.com
 
             - name: TMP_PATH
               value: "/tmp"
@@ -980,6 +998,7 @@ metadata:
     cnrm.cloud.google.com/project-id: app-project
 spec:
   ackDeadlineSeconds: 15
+  enableMessageOrdering: true
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:

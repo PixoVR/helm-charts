@@ -264,6 +264,36 @@ spec:
         - name: PORT
           value: "{{ .Values.containerPort }}"
 
+        {{- if .Values.crunchydb.enabled }}
+        - name: DB_VENDOR
+          value: "postgres"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: port
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crunchydb-pguser-crunchydb
+              key: password
+        {{- end }}
+
         {{- if .Values.google.pubsub.enabled }}
         - name: PUBSUB_TOPIC
           value: {{ include "pubsub_topic_name" $ }}

@@ -192,4 +192,8 @@ api_tenant_name: apex
 cache:
   enabled: true
 
+crunchydb:
+  enabled: true
+  create: false
+
 

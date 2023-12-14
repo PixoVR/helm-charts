@@ -40,6 +40,15 @@ external_auth: false
 linkerd:
   enabled: true
 
+crunchydb:
+  enabled: false
+  create: true
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.6-2
+  pgbackrest:
+    image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+  pg_version: 14
+  disk_size: 20Gi
+
 toleration: ''
 
 primary_cluster_name: central-cluster

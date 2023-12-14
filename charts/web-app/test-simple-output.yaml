@@ -171,12 +171,6 @@ spec:
         - name: APP_URL
           value: https://sample.dev.simple.com
 
-        - name: API_DOMAIN
-          value: 'api.sample.dev.simple.com'
-
-        - name: API_URL
-          value: https://api.sample.dev.simple.com
-
         
 
         ports:
