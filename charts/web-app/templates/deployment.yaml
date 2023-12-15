@@ -123,7 +123,7 @@ spec:
         {{- end }}
 
         - name: db-volume
-        {{- if .Values.deployment.pvc.enabled }}
+        {{- if and .Values.deployment.pvc.enabled .Values.deployment.pvc.mount }}
           persistentVolumeClaim:
             claimName: '{{- include "pvc_name" $ -}}'
         {{- else }}

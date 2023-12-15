@@ -242,6 +242,7 @@ deployment:
   enabled: true
   pvc:
     enabled: false
+    mount: true
     path: /var/sqlite
     disk_size: 5Gi
     access_mode: ReadWriteOnce
