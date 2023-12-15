@@ -34,8 +34,8 @@ metadata:
   namespace: test
   labels:
     namespace: test
-    backstage.io/kubernetes-id: sample
 spec:
+  storageClassName: 
   accessModes:
     - ReadWriteOnce
   resources:
@@ -217,6 +217,11 @@ spec:
             secretKeyRef:
               name:  'dev-db-pguser-dev-db'
               key: port
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: dbname
         - name: DB_NAME
           valueFrom:
             secretKeyRef:

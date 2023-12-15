@@ -244,6 +244,7 @@ deployment:
     enabled: false
     path: /var/sqlite
     disk_size: 5Gi
+    access_mode: ReadWriteOnce
 
 service:
   internal: true
