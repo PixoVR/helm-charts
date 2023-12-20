@@ -2,11 +2,11 @@ apiVersion: v2
 name: external-dns
 description: External DNS Operator
 type: application
-version: 0.0.31
+version: 0.0.32
 
 dependencies:
 - name: external-dns
-  version: 1.13.0
+  version: 1.14.0
   repository: https://kubernetes-sigs.github.io/external-dns 
 - name: app-iam
   version: 0.0.28
