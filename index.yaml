@@ -4437,6 +4437,23 @@ entries:
     version: 0.0.1
   external-dns:
   - apiVersion: v2
+    created: "2023-12-20T19:48:01.06743666Z"
+    dependencies:
+    - name: external-dns
+      repository: https://kubernetes-sigs.github.io/external-dns
+      version: 1.13.1
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.28
+    description: External DNS Operator
+    digest: 01a6f0666758f0e7c7e2afd989f13067fc8bb79f93ada26bddbb5400e1861645
+    name: external-dns
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/external-dns-0.0.33/external-dns-0.0.33.tgz
+    version: 0.0.33
+  - apiVersion: v2
     created: "2023-10-02T16:57:14.078517364Z"
     dependencies:
     - name: external-dns
