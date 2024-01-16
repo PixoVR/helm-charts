@@ -20,6 +20,9 @@ argo-cd:
         - type: helm
           name: pixovr
           url: https://pixovr.github.io/helm-charts
+        - type: helm
+          name: bitnami
+          url: oci://registry-1.docker.io/bitnamicharts
       resource.customizations.health.argoproj.io_Application: |
         hs = {}
         hs.status = "Progressing"
