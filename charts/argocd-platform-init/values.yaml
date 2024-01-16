@@ -13,7 +13,7 @@ config_connector:
   sa_project_id: replace-me
 
 helm_charts_repo: https://pixovr.github.io/helm-charts
-redis_repo: oci://registry-1.docker.io/bitnamicharts/redis
+bitnami_charts_repo: registry-1.docker.io/bitnamicharts
 
 revision: HEAD
 target_revision: HEAD
