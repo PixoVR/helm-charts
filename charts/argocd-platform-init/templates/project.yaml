@@ -15,6 +15,7 @@ spec:
   sourceRepos:
   - 'git@github.com:{{- required "REQUIRED: github_org" .Values.github_org -}}/{{- required "REQUIRED: repo_name" .Values.repo_name -}}.git'
   - {{ .Values.helm_charts_repo }}
+  - {{ .Values.bitnami_charts_repo }}
 
   destinations:
   - namespace: '*'
