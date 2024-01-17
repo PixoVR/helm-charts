@@ -40,6 +40,23 @@ external_auth: false
 linkerd:
   enabled: true
 
+hpa:
+  enabled: false
+  min_replicas: 1
+  max_replicas: 10
+  target_mem: 80
+  average_utilization: 50
+  scale_down:
+    stabilization_window_sec: 60
+    type: Percent
+    value: 50
+    period_seconds: 15
+  scale_up:
+    stabilization_window_sec: 0
+    type: Pods
+    value: 2
+    period_seconds: 10
+
 crunchydb:
   enabled: false
   create: true
@@ -266,9 +283,6 @@ network_policy:
   enabled: false
 
 acm:
-  enabled: false
-
-autoscaler:
   enabled: false
 
 db:

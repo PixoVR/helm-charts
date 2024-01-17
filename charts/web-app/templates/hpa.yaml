@@ -1,65 +1,48 @@
-{{- if and (.Values.enabled) (not .Values.local) }}
-{{- if .Values.autoscaler.enabled }}
+{{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
 {{- if .Values.deployment.enabled }}
+{{- if .Values.hpa.enabled }}
 
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: api-autoscaler
+  name: '{{- include "deployment_name" $ -}}-hpa'
   namespace: {{ .Release.Namespace }}
-  labels:
-    backstage.io/kubernetes-id: {{ .Values.app_code }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api-dep
-  minReplicas: {{ .Values.api.replicas }}
-  maxReplicas: {{ .Values.api.max_replicas }}
+    name: '{{ include "deployment_name" $ }}'
+  minReplicas: {{ .Values.hpa.min_replicas }}
+  maxReplicas: {{ .Values.hpa.max_replicas }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: {{ .Values.hpa.scale_down.stabilization_window_sec }}
+      policies:
+      - type: {{ .Values.hpa.scale_down.type }}
+        value: {{ .Values.hpa.scale_down.value }}
+        periodSeconds: {{ .Values.hpa.scale_down.period_seconds }}
+    scaleUp:
+      stabilizationWindowSeconds: {{ .Values.hpa.scale_up.stabilization_window_sec }}
+      policies:
+      - type: {{ .Values.hpa.scale_up.type }}
+        value: {{ .Values.hpa.scale_up.value }}
+        periodSeconds: {{ .Values.hpa.scale_up.period_seconds }}
   metrics:
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
-        averageValue: {{ .Values.api.target_mem }}
+        averageValue: {{ .Values.hpa.target_mem }}
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: {{ .Values.api.target_cpu }}
+        averageUtilization: {{ .Values.hpa.average_utilization }}
 
 ---
-
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: nginx-autoscaler
-  namespace: {{ .Release.Namespace }}
-  labels:
-    backstage.io/kubernetes-id: {{ .Values.app_code }}
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: nginx-dep
-  minReplicas: {{ .Values.nginx.replicas }}
-  maxReplicas: {{ .Values.nginx.max_replicas }}
-  metrics:
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageValue: {{ .Values.nginx.target_mem }}
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: {{ .Values.nginx.target_cpu }}
 
 {{- end }}
 {{- end }}

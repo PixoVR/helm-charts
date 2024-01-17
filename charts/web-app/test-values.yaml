@@ -199,4 +199,7 @@ redis:
   enabled: true
   secret_suffix: cache
 
+hpa:
+  enabled: true
+
 
