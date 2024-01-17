@@ -195,4 +195,8 @@ cache:
 crunchydb:
   enabled: true
 
+redis:
+  enabled: true
+  secret_suffix: cache
+
 

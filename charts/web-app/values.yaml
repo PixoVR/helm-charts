@@ -313,3 +313,8 @@ sa_json_key:
   enabled: false
   envKey: GOOGLE_APPLICATION_CREDENTIALS
 
+redis:
+  enabled: false
+  secret_suffix: cache
+
+
