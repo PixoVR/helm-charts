@@ -9,7 +9,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     namespace: {{ .Release.Namespace }}
-    microservice_name: {{ .Values.microservice_name }}
+    name: {{ .Values.microservice_name }}
     tier: backend
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
@@ -45,7 +45,7 @@ spec:
       labels:
         app: '{{ include "deployment_name" $ }}'
         namespace: {{ .Release.Namespace }}
-        microservice_name: {{ .Values.microservice_name }}
+        name: {{ .Values.microservice_name }}
         tier: backend
     spec:
       {{- if .Values.toleration }}
@@ -344,7 +344,7 @@ spec:
           {{- if .cluster }}
 
           {{- if .service }}
-          value: {{ .protocol }}://{{- .cluster -}}.{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
           {{- else }}
           value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}
@@ -352,7 +352,7 @@ spec:
           {{- else }}
 
           {{- if .service }}
-          value: {{ .protocol }}://{{- .service -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
           {{- else }}
           value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}
