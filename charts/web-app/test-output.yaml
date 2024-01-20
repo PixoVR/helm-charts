@@ -77,9 +77,11 @@ kind: Deployment
 metadata:
   name: 'dev-sample-web'
   namespace: test
+  annotations:
+    platform.pixovr.com/service-account-name: 'test-pixo-sa'
   labels:
     namespace: test
-    microservice_name: web
+    name: web
     tier: backend
 spec:
   replicas: 1
@@ -103,7 +105,7 @@ spec:
       labels:
         app: 'dev-sample-web'
         namespace: test
-        microservice_name: web
+        name: web
         tier: backend
     spec:
 
@@ -267,10 +269,10 @@ spec:
           value: https://multiplayer.dev.example.com
 
         - name: MATCHMAKER_URL
-          value: wss://match.apex.dev.example.com
+          value: wss://apex.dev.example.com/match
 
         - name: ALLOCATE_HOSTNAME
-          value: https://multi-central1.allocator.multiplayer.dev.example.com
+          value: https://multi-central1.multiplayer.dev.example.com/allocator
 
         - name: MMF_API_HOST
           value: test-matchmaking-matchfunction.test.svc
@@ -432,7 +434,7 @@ spec:
             type: RuntimeDefault
 ---
 # Source: web-app/templates/hpa.yaml
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: 'dev-sample-web-hpa'
@@ -1014,6 +1016,17 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test infra admin service account"
+---
+# Source: web-app/templates/pixo-service-account.yaml
+apiVersion: platform.pixovr.com/v1
+kind: PixoServiceAccount
+metadata:
+  name: 'test-pixo-sa'
+spec:
+  firstName: Web
+  lastName: Service
+  orgId: 20
+  role: admin
 ---
 # Source: web-app/templates/crunchydb.yaml
 apiVersion: postgres-operator.crunchydata.com/v1beta1

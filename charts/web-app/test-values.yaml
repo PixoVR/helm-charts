@@ -202,4 +202,9 @@ redis:
 hpa:
   enabled: true
 
+pixo_service_account:
+  enabled: true
+  name: test-pixo-sa
+  org_id: 20
+
 

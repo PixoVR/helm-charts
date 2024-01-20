@@ -7,6 +7,10 @@ kind: Deployment
 metadata:
   name: '{{ include "deployment_name" $ }}'
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.pixo_service_account.enabled }}
+  annotations:
+    platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
+  {{- end }}
   labels:
     namespace: {{ .Release.Namespace }}
     name: {{ .Values.microservice_name }}

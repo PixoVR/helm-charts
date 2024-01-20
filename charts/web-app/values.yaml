@@ -331,4 +331,13 @@ redis:
   enabled: false
   secret_suffix: cache
 
+pixo_service_account:
+  enabled: false
+  name: ""
+  firstName: ""
+  lastName: ""
+  orgId: ""
+  role: "superadmin"
+
+
 

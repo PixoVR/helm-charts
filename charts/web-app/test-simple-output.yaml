@@ -42,7 +42,7 @@ metadata:
   namespace: test
   labels:
     namespace: test
-    microservice_name: web
+    name: web
     tier: backend
 spec:
   replicas: 1
@@ -62,7 +62,7 @@ spec:
       labels:
         app: 'dev-sample-web'
         namespace: test
-        microservice_name: web
+        name: web
         tier: backend
     spec:
 

@@ -259,6 +259,34 @@
 {{- end -}}
 
 
+{{- define "pixo_sa_name" -}}
+  {{- required "REQUIRED: pixo_service_account.name" .Values.pixo_service_account.name }}
+{{- end -}}
+
+
+{{- define "pixo_sa_org_id" -}}
+  {{- required "REQUIRED: pixo_service_account.org_id" .Values.pixo_service_account.org_id }}
+{{- end -}}
+
+
+{{- define "pixo_sa_first_name" -}}
+  {{- if .Values.pixo_service_account.first_name }}
+    {{- .Values.pixo_service_account.first_name }}
+  {{- else }}
+    {{- .Values.microservice_name | title }}
+  {{- end -}}
+{{- end -}}
+
+
+{{- define "pixo_sa_last_name" -}}
+  {{- if .Values.pixo_service_account.last_name }}
+    {{- .Values.pixo_service_account.last_name }}
+  {{- else }}
+    {{- "Service" }}
+  {{- end -}}
+{{- end -}}
+
+
 {{- define "deployment_name" -}}
   {{- include "microservice_label" . }}
 {{- end -}}
