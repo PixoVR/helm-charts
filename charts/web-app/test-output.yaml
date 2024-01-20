@@ -78,7 +78,7 @@ metadata:
   name: 'dev-sample-web'
   namespace: test
   annotations:
-    platform.pixovr.com/service-account-name: 'test-pixo-sa'
+    platform.pixovr.com/service-account-name: 'dev-sample-web'
   labels:
     namespace: test
     name: web
@@ -1021,12 +1021,12 @@ spec:
 apiVersion: platform.pixovr.com/v1
 kind: PixoServiceAccount
 metadata:
-  name: 'test-pixo-sa'
+  name: 'dev-sample-web'
 spec:
   firstName: Web
   lastName: Service
   orgId: 20
-  role: admin
+  role: superadmin
 ---
 # Source: web-app/templates/crunchydb.yaml
 apiVersion: postgres-operator.crunchydata.com/v1beta1

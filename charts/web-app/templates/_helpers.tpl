@@ -260,7 +260,11 @@
 
 
 {{- define "pixo_sa_name" -}}
-  {{- required "REQUIRED: pixo_service_account.name" .Values.pixo_service_account.name }}
+  {{- if .Values.pixo_service_account.name }}
+    {{- .Values.pixo_service_account.name }}
+  {{- else }}
+    {{- include "microservice_label" . }}-service
+  {{- end }}
 {{- end -}}
 
 
