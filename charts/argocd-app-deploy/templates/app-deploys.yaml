@@ -11,6 +11,11 @@ metadata:
     deployment: helm
     lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
 spec:
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/spec/containers/0/env
   generators:
   - matrix:
       generators:
