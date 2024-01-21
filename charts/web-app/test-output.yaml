@@ -78,7 +78,7 @@ metadata:
   name: 'dev-sample-web'
   namespace: test
   annotations:
-    platform.pixovr.com/service-account-name: 'dev-sample-web'
+    platform.pixovr.com/service-account-name: 'dev-sample-web-service'
   labels:
     namespace: test
     name: web
@@ -1021,7 +1021,7 @@ spec:
 apiVersion: platform.pixovr.com/v1
 kind: PixoServiceAccount
 metadata:
-  name: 'dev-sample-web'
+  name: 'dev-sample-web-service'
 spec:
   firstName: Web
   lastName: Service
@@ -1104,7 +1104,7 @@ spec:
   topicRef:
     name: create-foo-us-east-dev-sample-topic
   pushConfig: 
-    pushEndpoint: 'https://multi-central1.allocator.multiplayer.dev.example.com/triggers'
+    pushEndpoint: 'https://multi-central1.multiplayer.dev.example.com/triggers'
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
