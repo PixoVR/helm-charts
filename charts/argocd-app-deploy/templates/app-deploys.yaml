@@ -11,11 +11,6 @@ metadata:
     deployment: helm
     lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
 spec:
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/template/spec/containers/0/env
   generators:
   - matrix:
       generators:
@@ -69,6 +64,15 @@ spec:
       finalizers:
       - resources-finalizer.argocd.argoproj.io
     spec:
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/template/spec/containers/*/env
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
       project: {{ .Values.argocd_project }}
       source:
         repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
