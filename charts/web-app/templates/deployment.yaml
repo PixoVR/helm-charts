@@ -345,10 +345,16 @@ spec:
 
         {{- else if eq .type "remote" }}
 
+          {{ $url := include "lifecycle_domain" $ }}
+
           {{- if .cluster }}
 
           {{- if .service }}
           value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
+
+          {{- else if .subdomain }}
+          value: {{ .protocol }}://{{- .cluster -}}{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
           {{- else }}
           value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}
@@ -357,6 +363,10 @@ spec:
 
           {{- if .service }}
           value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
+
+          {{- else if .subdomain }}
+          value: {{ .protocol }}://{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
           {{- else }}
           value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
           {{- end }}

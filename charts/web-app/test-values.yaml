@@ -29,8 +29,8 @@ dynamicHosts:
 
   - key: MATCHMAKER_URL
     type: remote
-    service: match
-    tenant: apex
+    service: matchmaking
+    tenant: match
     protocol: wss
 
   - key: ALLOCATE_HOSTNAME

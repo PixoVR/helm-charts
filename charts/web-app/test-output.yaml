@@ -266,12 +266,18 @@ spec:
           value: "us-east-apex-instance"
 
         - name: EXTERNAL_APP_URL
+
+          
           value: https://multiplayer.dev.example.com
 
         - name: MATCHMAKER_URL
-          value: wss://apex.dev.example.com/match
+
+          
+          value: wss://match.dev.example.com/matchmaking
 
         - name: ALLOCATE_HOSTNAME
+
+          
           value: https://multi-central1.multiplayer.dev.example.com/allocator
 
         - name: MMF_API_HOST
