@@ -1,0 +1,7 @@
+
+
+pixoPlatform:
+  lifecycle: "dev"
+
+gcpsm:
+  enabled: true

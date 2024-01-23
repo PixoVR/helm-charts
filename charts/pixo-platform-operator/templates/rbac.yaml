@@ -1,0 +1,204 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: platform-operator-leader-election-role
+  namespace: '{{- .Release.Namespace -}}'
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    control-plane: controller-manager
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-operator-manager-role
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - platform.pixovr.com
+    resources:
+      - pixoserviceaccounts
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - platform.pixovr.com
+    resources:
+      - pixoserviceaccounts/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - platform.pixovr.com
+    resources:
+      - pixoserviceaccounts/status
+    verbs:
+      - get
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  name: platform-operator-metrics-reader
+rules:
+  - nonResourceURLs:
+      - /metrics
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  name: platform-operator-proxy-role
+rules:
+  - apiGroups:
+      - authentication.k8s.io
+    resources:
+      - tokenreviews
+    verbs:
+      - create
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: platform-operator-leader-election-rolebinding
+  namespace: '{{- .Release.Namespace -}}'
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: platform-operator-leader-election-role
+subjects:
+  - kind: ServiceAccount
+    name: platform-operator-controller-manager
+    namespace: platform-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+
+  name: platform-operator-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: platform-operator-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: platform-operator-controller-manager
+    namespace: platform-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: platform-operator-proxy-rolebinding
+  namespace: '{{- .Release.Namespace -}}'
+  labels:
+    app.kubernetes.io/version: '{{- .Chart.AppVersion -}}'
+    app.kubernetes.io/component: rbac
+    {{- range $key, $value := .Values.defaultLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: platform-operator-proxy-role
+subjects:
+  - kind: ServiceAccount
+    name: platform-operator-controller-manager
+    namespace: platform-operator-system
