@@ -12,6 +12,7 @@ defaultLabels:
 
 pixoPlatform:
   lifecycle: prod
+  region: na
 
 manager:
   replicas: 1

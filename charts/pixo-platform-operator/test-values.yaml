@@ -2,6 +2,7 @@
 
 pixoPlatform:
   lifecycle: "dev"
+  region: "saudi"
 
 gcpsm:
   enabled: true

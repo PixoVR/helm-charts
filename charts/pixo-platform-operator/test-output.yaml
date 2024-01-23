@@ -240,7 +240,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: platform-operator-controller-manager
-    namespace: platform-operator-system
+    namespace: 'test'
 ---
 # Source: pixo-platform-operator/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -265,7 +265,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: platform-operator-controller-manager
-    namespace: platform-operator-system
+    namespace: 'test'
 ---
 # Source: pixo-platform-operator/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -340,7 +340,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: platform-operator-controller-manager
-    namespace: platform-operator-system
+    namespace: 'test'
 ---
 # Source: pixo-platform-operator/templates/service.yaml
 apiVersion: v1
@@ -428,6 +428,10 @@ spec:
           command:
             - /manager
           env:
+            - name: NAMESPACE
+              value: 'test'
+            - name: REGION
+              value: 'saudi'
             - name: LIFECYCLE
               value: 'dev'
             - name: PIXO_USERNAME

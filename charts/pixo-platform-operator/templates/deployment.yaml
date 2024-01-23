@@ -55,6 +55,10 @@ spec:
           command:
             - /manager
           env:
+            - name: NAMESPACE
+              value: '{{- .Release.Namespace -}}'
+            - name: REGION
+              value: '{{- include "region" $ -}}'
             - name: LIFECYCLE
               value: '{{- include "lifecycle" $ -}}'
             - name: PIXO_USERNAME
