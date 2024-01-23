@@ -95,8 +95,8 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         linkerd.io/inject: enabled
-        container.apparmor.security.beta.kubernetes.io/api: runtime/default
-        container.seccomp.security.alpha.kubernetes.io/api: runtime/default
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
         container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
         container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
         container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
@@ -148,7 +148,7 @@ spec:
       serviceAccountName: 'app-workload'
       restartPolicy: Always
       containers:
-      - name: api
+      - name: app
         image: 'gcr.io/app-project/sample/dev/web:latest'
         imagePullPolicy: Always
         securityContext:
@@ -397,7 +397,7 @@ spec:
 
         ports:
         - containerPort: 8001
-          name: api-port
+          name: app-port
         - containerPort: 2022
           name: sftpgo
       - name: proxy

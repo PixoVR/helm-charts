@@ -56,8 +56,8 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         linkerd.io/inject: enabled
-        container.apparmor.security.beta.kubernetes.io/api: runtime/default
-        container.seccomp.security.alpha.kubernetes.io/api: runtime/default
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
 
       labels:
         app: 'dev-sample-web'
@@ -91,7 +91,7 @@ spec:
       serviceAccountName: 'app-workload'
       restartPolicy: Always
       containers:
-      - name: api
+      - name: app
         image: 'gcr.io/app-project/sample/dev/web:latest'
         imagePullPolicy: Always
         securityContext:
@@ -175,7 +175,7 @@ spec:
 
         ports:
         - containerPort: 80
-          name: api-port
+          name: app-port
 ---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1

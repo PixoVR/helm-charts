@@ -31,8 +31,8 @@ spec:
         {{- end }}
 
         {{- if not .Values.debug.enabled }}
-        container.apparmor.security.beta.kubernetes.io/api: runtime/default
-        container.seccomp.security.alpha.kubernetes.io/api: runtime/default
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
 
         {{- if .Values.sql.proxy }}
         container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
@@ -153,7 +153,7 @@ spec:
       serviceAccountName: '{{ include "ksa_name" . }}'
       restartPolicy: Always
       containers:
-      - name: api
+      - name: app
         image: '{{ include "image" . }}'
         imagePullPolicy: Always
 
@@ -564,7 +564,7 @@ spec:
 
         ports:
         - containerPort: {{ .Values.containerPort }}
-          name: api-port
+          name: app-port
 
         {{- range .Values.extraPorts }}
         - containerPort: {{ .containerPort }}
