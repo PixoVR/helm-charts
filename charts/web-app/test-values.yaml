@@ -132,6 +132,7 @@ google:
     enabled: true
     extra_databases:
       - name: extra
+
   pubsub:
     enabled: true
     schemas:
@@ -146,7 +147,7 @@ google:
             push:
               region: multi-central1
               tenant: multiplayer
-              service: allocator
+              subdomain: allocator
               endpoint: triggers
         schema:
           name: json

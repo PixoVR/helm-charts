@@ -2,7 +2,7 @@ apiVersion: v2
 name: web-app
 description: A Helm chart for deploying web applications or web application micro services
 type: application
-version: 0.1.94
+version: 0.1.95
 
 dependencies:
   - name: app-iam

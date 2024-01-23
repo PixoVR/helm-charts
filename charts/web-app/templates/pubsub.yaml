@@ -41,10 +41,23 @@ spec:
   {{- if .push }}
   pushConfig:
     {{- if .push.region }} 
+
+    {{- if .push.subdomain }}
+    pushEndpoint: 'https://{{- .push.region -}}.{{- .push.subdomain -}}.{{- .push.tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .push.endpoint }}'
+    {{- else }}
     pushEndpoint: 'https://{{- .push.region -}}.{{- .push.tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .push.endpoint }}'
+    {{- end }}
+
+    {{- else }}
+
+    {{- if .push.subdomain }}
+    pushEndpoint: 'https://{{- .push.subdomain -}}.{{- .push.tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .push.endpoint }}'
     {{- else }}
     pushEndpoint: 'https://{{- .push.tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .push.endpoint }}'
     {{- end }}
+
+    {{- end }}
+
   {{- end }}
 
 {{- end }}

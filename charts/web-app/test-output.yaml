@@ -1109,8 +1109,8 @@ spec:
   retainAckedMessages: false
   topicRef:
     name: create-foo-us-east-dev-sample-topic
-  pushConfig: 
-    pushEndpoint: 'https://multi-central1.multiplayer.dev.example.com/triggers'
+  pushConfig:
+    pushEndpoint: 'https://multi-central1.allocator.multiplayer.dev.example.com/triggers'
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
