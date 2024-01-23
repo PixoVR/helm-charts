@@ -3,4 +3,4 @@ name: pixo-platform-operator
 description: A Helm chart for deploying the Pixo Platform Operator
 type: application
 appVersion: 0.0.13
-version: 0.0.2
+version: 0.0.3

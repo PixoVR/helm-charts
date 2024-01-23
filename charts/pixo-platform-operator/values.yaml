@@ -8,6 +8,9 @@ defaultLabels:
   app.kubernetes.io/name: platform-operator
   helm.sh/chart: platform-operator-0.1.0
 
+pixoPlatform:
+  lifecycle: prod
+
 manager:
   replicas: 1
   image:
