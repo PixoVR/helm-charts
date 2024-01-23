@@ -5767,6 +5767,17 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/opa-gatekeeper-0.0.1/opa-gatekeeper-0.0.1.tgz
     version: 0.0.1
+  pixo-platform-operator:
+  - apiVersion: v2
+    appVersion: 0.0.13
+    created: "2024-01-23T03:11:44.358260713Z"
+    description: A Helm chart for deploying the Pixo Platform Operator
+    digest: dfe81dcf28da0689a83dc7f691a5b7189be34e16e1e357be2ed6810926adbb35
+    name: pixo-platform-operator
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/pixo-platform-operator-0.0.1/pixo-platform-operator-0.0.1.tgz
+    version: 0.0.1
   tenant-rbac:
   - apiVersion: v2
     appVersion: 1.0.0
