@@ -47,6 +47,9 @@ spec:
             sa_project_id: {{ .Values.sa_project_id }}
             gke_project_id: {{ .Values.gke_project_id }}
             dns_project_id: {{ .Values.dns_project_id }}
+            pixo-platform-operator:
+              gcpsm:
+                projectId: {{ .Values.gke_project_id }}
             argocd-image-updater:
               argocd-image-updater:
                 serviceAccount:

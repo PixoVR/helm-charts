@@ -5,3 +5,5 @@ pixoPlatform:
 
 gcpsm:
   enabled: true
+  projectId: pixo-platform
+

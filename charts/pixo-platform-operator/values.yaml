@@ -17,7 +17,7 @@ manager:
 
 gcpsm:
   enabled: false
-  projectId: pixo-platform
+  projectId: ''
   refreshInterval: 1h
   username:
     remoteKey: pixo-platform-operator-username
