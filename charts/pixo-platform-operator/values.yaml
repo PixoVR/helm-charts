@@ -18,7 +18,7 @@ manager:
   replicas: 1
   image:
     repository: gcr.io/pixo-bootstrap/pixo-platform-operator
-    tag: 0.0.13
+    tag: ''
     pullPolicy: IfNotPresent
 
 gcpsm:
