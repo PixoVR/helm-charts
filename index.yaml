@@ -1675,6 +1675,16 @@ entries:
   argocd-platform-init:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-01-23T03:32:25.072773306Z"
+    description: Initializes ArgoCD platform
+    digest: ad4a49be45363b117a0a82c96aca698cb20168c1c88f402bfbe9f5461e36b706
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.147/argocd-platform-init-0.0.147.tgz
+    version: 0.0.147
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-01-21T00:11:52.338452785Z"
     description: Initializes ArgoCD platform
     digest: 168bafa79aa7e31a868676090dbf954e221a113fc46f584f3f35351d27251067
@@ -5768,6 +5778,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/opa-gatekeeper-0.0.1/opa-gatekeeper-0.0.1.tgz
     version: 0.0.1
   pixo-platform-operator:
+  - apiVersion: v2
+    appVersion: 0.0.13
+    created: "2024-01-23T03:32:25.340578379Z"
+    description: A Helm chart for deploying the Pixo Platform Operator
+    digest: 37e5c6bc8ba7c99b5f3194e42c9cf849bcf305aea8e8b965b7d0156241a2dbb9
+    name: pixo-platform-operator
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/pixo-platform-operator-0.0.2/pixo-platform-operator-0.0.2.tgz
+    version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.13
     created: "2024-01-23T03:11:44.358260713Z"
