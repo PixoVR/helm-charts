@@ -5790,6 +5790,16 @@ entries:
   pixo-platform-operator:
   - apiVersion: v2
     appVersion: 0.0.13
+    created: "2024-01-23T06:28:41.270376007Z"
+    description: A Helm chart for deploying the Pixo Platform Operator
+    digest: 5702842fd7209abe7e746740f1d29a9a3d55d44e527d45490d403fd8d1943cee
+    name: pixo-platform-operator
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/pixo-platform-operator-0.0.6/pixo-platform-operator-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: 0.0.13
     created: "2024-01-23T04:42:13.695063006Z"
     description: A Helm chart for deploying the Pixo Platform Operator
     digest: 41f93bd132a4f27eaf84cb2dbacc2990008b6ec2f9871d66f549a1f0526ba1e8
@@ -5850,6 +5860,20 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/tenant-rbac-0.0.1/tenant-rbac-0.0.1.tgz
     version: 0.0.1
   web-app:
+  - apiVersion: v2
+    created: "2024-01-23T06:28:41.420409691Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.34
+    description: A Helm chart for deploying web applications or web application micro services
+    digest: d90b35c5bb5d36b4c3b0bcbfc68261706a76f71ff6b0201f697dcf50e985ee81
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.1.94/web-app-0.1.94.tgz
+    version: 0.1.94
   - apiVersion: v2
     created: "2024-01-22T15:14:22.601558511Z"
     dependencies:
