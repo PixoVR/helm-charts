@@ -1,4 +1,6 @@
 
+installCRDs: true
+
 defaultLabels:
   app.kubernetes.io/managed-by: Helm
   app.kubernetes.io/instance: platform-operator
