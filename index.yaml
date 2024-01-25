@@ -5790,6 +5790,16 @@ entries:
   pixo-platform-operator:
   - apiVersion: v2
     appVersion: 0.0.15
+    created: "2024-01-25T23:55:55.574329131Z"
+    description: A Helm chart for deploying the Pixo Platform Operator
+    digest: c32253c8b0cd690da6d0a2fafe286d0918f67a36276ba54b020764dda8950566
+    name: pixo-platform-operator
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/pixo-platform-operator-0.0.8/pixo-platform-operator-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
+    appVersion: 0.0.15
     created: "2024-01-25T23:39:22.973274031Z"
     description: A Helm chart for deploying the Pixo Platform Operator
     digest: 73b926c662943c0d3aca5acb4613655f0f48f3f9005bc352908693885020341c
