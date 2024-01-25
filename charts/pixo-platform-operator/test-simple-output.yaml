@@ -438,15 +438,10 @@ spec:
               value: 'na'
             - name: LIFECYCLE
               value: 'prod'
-            - name: PIXO_USERNAME
+            - name: PIXO_API_KEY
               valueFrom:
                 secretKeyRef:
-                  key: username
-                  name: pixo-platform-credentials
-            - name: PIXO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
+                  key: api-key
                   name: pixo-platform-credentials
           image: 'gcr.io/pixo-bootstrap/pixo-platform-operator:0.0.15'
           livenessProbe:

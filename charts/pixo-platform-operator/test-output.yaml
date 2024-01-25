@@ -438,15 +438,10 @@ spec:
               value: 'saudi'
             - name: LIFECYCLE
               value: 'dev'
-            - name: PIXO_USERNAME
+            - name: PIXO_API_KEY
               valueFrom:
                 secretKeyRef:
-                  key: username
-                  name: pixo-platform-credentials
-            - name: PIXO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
+                  key: api-key
                   name: pixo-platform-credentials
           image: 'gcr.io/pixo-bootstrap/pixo-platform-operator:0.0.15'
           livenessProbe:
@@ -497,11 +492,8 @@ metadata:
 spec:
   data:
     - remoteRef:
-        key: 'pixo-platform-operator-username'
-      secretKey: username
-    - remoteRef:
-        key: 'pixo-platform-operator-password'
-      secretKey: password
+        key: 'pixo-platform-operator-api-key'
+      secretKey: api-key
   refreshInterval: '1h'
   secretStoreRef:
     kind: SecretStore
