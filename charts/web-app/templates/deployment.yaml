@@ -353,7 +353,7 @@ spec:
           value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
 
           {{- else if .subdomain }}
-          value: {{ .protocol }}://{{- .cluster -}}{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
 
           {{- else }}
           value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}

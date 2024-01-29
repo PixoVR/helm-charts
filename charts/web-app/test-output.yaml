@@ -292,11 +292,8 @@ spec:
         - name: NODE_ENV
           value: DEV
 
-        - name: APP_DOMAIN
-          value: 'sample.dev.example.com'
-
         - name: APP_URL
-          value: https://sample.dev.example.com
+          value: https://api.sample.dev.example.com
         - name: GOOGLE_JSON_KEY
           value: /backend/secrets/svc-acct-json-key
         - name: EMAILER_EMAIL

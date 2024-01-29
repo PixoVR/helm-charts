@@ -165,11 +165,8 @@ spec:
         - name: NODE_ENV
           value: DEV
 
-        - name: APP_DOMAIN
-          value: 'sample.dev.simple.com'
-
         - name: APP_URL
-          value: https://sample.dev.simple.com
+          value: https://api.sample.dev.simple.com
 
         
 
