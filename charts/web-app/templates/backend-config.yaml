@@ -1,6 +1,6 @@
 {{- if and (.Values.enabled) (not .Values.local) }}
 {{- if .Values.deploy_app }}
-{{- if .Values.ingress.enabled }}
+{{- if .Values.deployment.enabled }}
 
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
