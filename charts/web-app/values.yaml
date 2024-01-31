@@ -331,6 +331,7 @@ redis:
   enabled: false
   auth:
     enabled: true
+    username: default
   secret_suffix: cache
 
 pixo_service_account:

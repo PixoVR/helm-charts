@@ -269,6 +269,8 @@ spec:
           value: "{{ .Values.containerPort }}"
 
         {{- if and .Values.redis.enabled .Values.redis.auth.enabled }}
+        - name: REDIS_USERNAME
+          value: {{ .Values.redis.auth.username }}
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
