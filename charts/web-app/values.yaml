@@ -329,6 +329,8 @@ sa_json_key:
 
 redis:
   enabled: false
+  auth:
+    enabled: true
   secret_suffix: cache
 
 pixo_service_account:

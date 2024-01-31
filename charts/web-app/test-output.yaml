@@ -207,11 +207,6 @@ spec:
           value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: 'test-cache'
-              key: redis-password
         - name: DB_VENDOR
           value: "postgres"
         - name: DB_HOST

@@ -198,6 +198,8 @@ crunchydb:
 
 redis:
   enabled: true
+  auth:
+    enabled: false
   secret_suffix: cache
 
 hpa:
