@@ -267,6 +267,7 @@ deployment:
 service:
   internal: true
   type: ClusterIP
+  websocket: false
 
 ingress:
   enabled: true
@@ -277,7 +278,6 @@ ingress:
   mci: false
   nginx: false
   rewrite_target: /
-  websocket: false
 
 network_policy:
   enabled: false
