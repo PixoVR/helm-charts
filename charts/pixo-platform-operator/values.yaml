@@ -23,6 +23,7 @@ manager:
 
 gcpsm:
   enabled: false
+  regionPrefix: false
   projectId: ''
   refreshInterval: 1h
   apiKey:

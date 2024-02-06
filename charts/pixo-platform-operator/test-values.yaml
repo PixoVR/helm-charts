@@ -6,5 +6,6 @@ pixoPlatform:
 
 gcpsm:
   enabled: true
+  regionPrefix: true
   projectId: pixo-platform
 

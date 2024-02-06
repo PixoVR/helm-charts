@@ -492,7 +492,7 @@ metadata:
 spec:
   data:
     - remoteRef:
-        key: 'pixo-platform-operator-api-key'
+        key: 'saudi-pixo-platform-operator-api-key'
       secretKey: api-key
   refreshInterval: '1h'
   secretStoreRef:
