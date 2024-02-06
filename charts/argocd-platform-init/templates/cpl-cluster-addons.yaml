@@ -51,8 +51,6 @@ spec:
               gcpsm:
                 enabled: true
                 projectId: {{ .Values.gke_project_id }}
-                apiKey:
-                  remoteKey: '{{- "{{ nameNormalized }}" -}}-pixo-platform-operator-api-key'
             argocd-image-updater:
               argocd-image-updater:
                 serviceAccount:
