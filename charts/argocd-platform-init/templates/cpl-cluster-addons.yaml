@@ -46,8 +46,13 @@ spec:
             gke_project_id: {{ .Values.gke_project_id }}
             dns_project_id: {{ .Values.dns_project_id }}
             pixo-platform-operator:
+              pixoPlatform:
+                lifecycle: {{ .Values.lifecycle }}
               gcpsm:
+                enabled: true
                 projectId: {{ .Values.gke_project_id }}
+                apiKey:
+                  remoteKey: '{{- "{{ nameNormalized }}" -}}-pixo-platform-operator-api-key'
             argocd-image-updater:
               argocd-image-updater:
                 serviceAccount:
