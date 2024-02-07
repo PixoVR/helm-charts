@@ -2,5 +2,5 @@ apiVersion: v2
 name: pixo-platform-operator
 description: A Helm chart for deploying the Pixo Platform Operator
 type: application
-appVersion: 0.0.16
-version: 0.0.12
+appVersion: 0.0.17
+version: 0.0.13

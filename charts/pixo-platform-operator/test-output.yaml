@@ -6,7 +6,7 @@ metadata:
   name: platform-operator-controller-manager
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -25,7 +25,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: crd
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -113,7 +113,7 @@ kind: ClusterRole
 metadata:
   name: platform-operator-manager-role
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -176,7 +176,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -197,7 +197,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -226,7 +226,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -253,7 +253,7 @@ metadata:
   name: platform-operator-proxy-rolebinding
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -278,7 +278,7 @@ metadata:
   name: platform-operator-leader-election-role
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     control-plane: controller-manager
     app.kubernetes.io/component: "platform-operator"
@@ -328,7 +328,7 @@ metadata:
   name: platform-operator-leader-election-rolebinding
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: rbac
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -353,7 +353,7 @@ metadata:
   name: platform-operator-controller-manager-metrics-service
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: metrics
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -378,7 +378,7 @@ metadata:
   name: platform-operator-controller-manager
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: controller-manager
     control-plane: controller-manager
     app.kubernetes.io/component: "platform-operator"
@@ -443,7 +443,7 @@ spec:
                 secretKeyRef:
                   key: api-key
                   name: pixo-platform-credentials
-          image: 'gcr.io/pixo-bootstrap/pixo-platform-operator:0.0.16'
+          image: 'gcr.io/pixo-bootstrap/pixo-platform-operator:0.0.17'
           livenessProbe:
             httpGet:
               path: /healthz
@@ -480,7 +480,7 @@ kind: ExternalSecret
 metadata:
   name: platform-operator-pixo-platform-credentials
   labels:
-    app.kubernetes.io/version: '0.0.16'
+    app.kubernetes.io/version: '0.0.17'
     app.kubernetes.io/component: secrets
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
@@ -510,7 +510,7 @@ metadata:
   name: platform-operator-pixo-secret-store
   namespace: 'test'
   labels:
-    app.kubernetes.io/version: 0.0.16
+    app.kubernetes.io/version: 0.0.17
     app.kubernetes.io/component: secrets
     app.kubernetes.io/component: "platform-operator"
     app.kubernetes.io/created-by: "pixo-platform-operator"
