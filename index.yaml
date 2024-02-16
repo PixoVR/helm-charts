@@ -5971,13 +5971,29 @@ entries:
     version: 0.0.1
   web-app:
   - apiVersion: v2
+    created: "2024-02-16T01:42:43.346072123Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.34
+    description: A Helm chart for deploying web applications or web application micro
+      services
+    digest: 76bc29a1ad7d0ebf7a7479c20428c04caf26e80d96b4fa28ac1655345c750902
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.2.2/web-app-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     created: "2024-01-31T18:47:58.759339542Z"
     dependencies:
     - alias: app_iam
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b1817842e95444245df462da84e340c79998ab1d8a2b8f6c3f92ad09c235c464
     name: web-app
     type: application
@@ -5991,7 +6007,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 97a479ecdfe1fdff6e2e474e9deab3c7665d3a5a9e4d5a3cdef200db00a4ce1a
     name: web-app
     type: application
@@ -6005,7 +6022,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e45c3cffb6268aa6eace19ca9f63eb7db9945a4c88f4257ba0a2e5412a9bb171
     name: web-app
     type: application
@@ -6019,7 +6037,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 17cf59b1d5edd274d6e773b0339ca2fde63d3c807f691043d717cddb85991f91
     name: web-app
     type: application
@@ -6033,7 +6052,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cdd89d6fbe7e4170bc28527f496fb39bca07b8a33fe0a8b6831091c306cf29ab
     name: web-app
     type: application
@@ -6047,7 +6067,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4b833eb6bf4b5b7a100e89027006bac7ce5e13a867669b5b99ce23228e4062a6
     name: web-app
     type: application
@@ -6061,7 +6082,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 740b30dcbb965fb6f962a1087641fe8d14a713572987b6409a204e2aa03bd132
     name: web-app
     type: application
@@ -6075,7 +6097,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d90b35c5bb5d36b4c3b0bcbfc68261706a76f71ff6b0201f697dcf50e985ee81
     name: web-app
     type: application
@@ -6089,7 +6112,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 985936a3b13cf5c4c7415a6ab9233d949db28662aac6680563f2a0c0e89e7161
     name: web-app
     type: application
@@ -6103,7 +6127,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4012e06a1d33260fddfef8b90af9740071f3a48f4a1fbb6b48934cd6ac6bde6f
     name: web-app
     type: application
@@ -6117,7 +6142,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 808e28ee49a819bf3f01379b3f456533fdf246bd48cbde9babf39e1f5c44271b
     name: web-app
     type: application
@@ -6131,7 +6157,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8fb4c93bb81e1cfae5de78a16c8c24d8481b3d6a4690a774880628d854169de6
     name: web-app
     type: application
@@ -6145,7 +6172,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4914b7e04d185e41b898c8311a943812c29084052c0d30913a1518fee1534728
     name: web-app
     type: application
@@ -6159,7 +6187,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: fff7e7d9e429392a3c0ef875e42bca253d1db90ecd012632f58544be01220eae
     name: web-app
     type: application
@@ -6173,7 +6202,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0db3c196b55d144c8329b63c5f4c855e8fffe352f46c6bf61c84446531e5c650
     name: web-app
     type: application
@@ -6187,7 +6217,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 995e3cda812e100f09f578ac21718657fd5ca7620614ee04bc6f3da55f7f8fa7
     name: web-app
     type: application
@@ -6201,7 +6232,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b75e5981f9f8f3632f44ad7316fcfbf02b232cca0b0c98fa4090526abea0b9b9
     name: web-app
     type: application
@@ -6215,7 +6247,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: bb84a447f3dd66d0463424708c9a0c798319aba20081cb2ea2715b1b23d7b87e
     name: web-app
     type: application
@@ -6229,7 +6262,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1d3597bac5286ce3b85cfd98e6bf4111a3615dda40812947872d8d8091a2ee23
     name: web-app
     type: application
@@ -6243,7 +6277,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 264b2a29cd003bc145eea3133dba20934b98c2f6d9e356271cb76e596a1b647a
     name: web-app
     type: application
@@ -6257,7 +6292,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0c539f58d453a628ee54c354cd571922ea63b017bcc35a61dd665f7229ae65fe
     name: web-app
     type: application
@@ -6271,7 +6307,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9a850f1be11e62bb99bb3cbc610fd873d3ef5d3eb2defcf46a2a5e666fba89c9
     name: web-app
     type: application
@@ -6285,7 +6322,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6cd96ac90f57f8f04905a83f58c71927ecd120c7d0c6ff14c2069220ffb2f8d5
     name: web-app
     type: application
@@ -6299,7 +6337,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: addba6600ed71edb62a28da41ed3f3731b7395eb381ae75ccdcc04806b613b34
     name: web-app
     type: application
@@ -6313,7 +6352,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e96dcbc7d894f75a21ce707e234ce8a8d5a1ca1e8a39b6b0473aee7886046ace
     name: web-app
     type: application
@@ -6327,7 +6367,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2ceee1950437d98090b11de6212853e54f15b4badacef5a34965f94b6dee64b9
     name: web-app
     type: application
@@ -6341,7 +6382,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 53dce318e980a02848c08be2e9b0125f64005072d2c3dc3948b327fc76ff9680
     name: web-app
     type: application
@@ -6355,7 +6397,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 798d34ef1b733e161ed6e8dca00c3425e79ec7a1c124508e41bb6261a204d10e
     name: web-app
     type: application
@@ -6369,7 +6412,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 57b5db373e843979d1eabcf0749de1072a5546d97493e2691fa2e7461a1a3dc8
     name: web-app
     type: application
@@ -6383,7 +6427,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 33c72d85d849ef9f24b5b5b15019c329d1a063cb955a8043e7c066a137439ed2
     name: web-app
     type: application
@@ -6397,7 +6442,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9225349b69562c874aa7ffcc6deb113c722bf8d409d16dab646b83361e414a77
     name: web-app
     type: application
@@ -6411,7 +6457,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 49810f65596ac69bc231a2c9a4c2ad34c381d0c59f282704945a1bba14bc93ce
     name: web-app
     type: application
@@ -6425,7 +6472,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 90157efbf2a0a6a69f81e57160b155e0d823405f5e6072916ea8943693596367
     name: web-app
     type: application
@@ -6439,7 +6487,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 15902617b678cc766c1b48b026a45e0414fab08895daa9027d61a1d0120f2816
     name: web-app
     type: application
@@ -6453,7 +6502,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 3f007299b9e09bc91a95edf41dff9e6dfef530b9d9a69b1c57e3d9be3792a7f0
     name: web-app
     type: application
@@ -6467,7 +6517,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 56fe189d183ab65d0ac75e2614048d98c24652f5b79d68495e384f6bc5a50f9f
     name: web-app
     type: application
@@ -6481,7 +6532,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 931369b0205d1b9610c130097331a2c5166a34563b34edafe2acf5c27a8aef45
     name: web-app
     type: application
@@ -6495,7 +6547,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9c3eb72ca27d73a7dbf9bffecff2282584e4672f4866c114d9599ef52ce07774
     name: web-app
     type: application
@@ -6509,7 +6562,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: da991103d003e924d711e6ec97780d0259071e0c49e9c29ec12855ff6345e3c7
     name: web-app
     type: application
@@ -6523,7 +6577,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 84532d3e999c0c9cccb18c5a6e5a980063ea60dcb85f16ec315de0a3a44e9382
     name: web-app
     type: application
@@ -6537,7 +6592,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 3a66e74a65a0ee254d0b35b091e4362d56e3009280c8b2aa4880bb1a58d29c37
     name: web-app
     type: application
@@ -6551,7 +6607,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: fdd89de6315baa2635ddfcc95d342508e43dd2996f39d73087d750d70ac7fa8f
     name: web-app
     type: application
@@ -6565,7 +6622,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e4418cceb4a10786a184a2171dac8e1b89017b436a75ef23cfd63d88ca3c1229
     name: web-app
     type: application
@@ -6579,7 +6637,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a53f93014ee4178deda1e8ed140895879b82adc98b80a4fe795e3b12805f63bd
     name: web-app
     type: application
@@ -6593,7 +6652,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 11a7c2c96b968b529d30176046eef3a37e1aaaeaaf039c37c534962728c12a9e
     name: web-app
     type: application
@@ -6607,7 +6667,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9c2ae88c146b52a38d7240bfb177046d7f0a5df2f612d8fbc56d2ea71edc8e25
     name: web-app
     type: application
@@ -6621,7 +6682,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 09a5b1760c473255a153c06e27aaf39968c0e2598000facb11af87f96b5687a0
     name: web-app
     type: application
@@ -6635,7 +6697,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cc9b17eb0ffcfce1c3e57e24fe55f2e2c52410aff8fe39a3d5af806a50c80948
     name: web-app
     type: application
@@ -6649,7 +6712,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e9e5e7a85d279e81de95f652a332eb283e263d128c41f3f693749a4c030dbe39
     name: web-app
     type: application
@@ -6663,7 +6727,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 199824695bf3f0319de531a7f149bd3c1035e7bc93c8977d0fdb9f597c53a316
     name: web-app
     type: application
@@ -6677,7 +6742,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b7fa7532336c87dbe0677ef2a409c971a9b80c2d32630e8b88c3798f176d4382
     name: web-app
     type: application
@@ -6691,7 +6757,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8d3e1ca387a16c1d063ca7d2314c166eb0a2762c1f218e70285cb85d30e962c2
     name: web-app
     type: application
@@ -6705,7 +6772,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e2eafa253942786ce7d460dcf50dcd569def83579fb474f8a5c27287287371ae
     name: web-app
     type: application
@@ -6719,7 +6787,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 025173f92b9885e5c928f7662cf46a84ad02d4cd51f84af69f49ee29c18d7f23
     name: web-app
     type: application
@@ -6733,7 +6802,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1fee907150d6256fb68f08282f90646cd163cb777cbc4391d761cb9a4b96e907
     name: web-app
     type: application
@@ -6747,7 +6817,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 15abfa72d507ef5525fcd383765b1bd139b3d59694530ac435ee1666af5281ab
     name: web-app
     type: application
@@ -6761,7 +6832,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 26fdced312218ce77cab7619ccfea18158a1ce6005a71c087667e5b633c2e54f
     name: web-app
     type: application
@@ -6775,7 +6847,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d048ba05bd43ffa91c4eb01073394aba96d7e4e332843a4d1f8b0e3521b55127
     name: web-app
     type: application
@@ -6789,7 +6862,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 76977384c9913c281f1ecd530f97f914b75b021a122e33b8dd55c58828d4f1dc
     name: web-app
     type: application
@@ -6803,7 +6877,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8d3a97f201b8f4ea4384d3c03b8d660e0304f843e775ed3c657932f78396848e
     name: web-app
     type: application
@@ -6817,7 +6892,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d78a530222535db0969f6c5dddb7a46b7cef8120311a8f72eef13abb4959a5a6
     name: web-app
     type: application
@@ -6831,7 +6907,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 75995e648853bc5afa1a4aca8ccfa0f450de6181973a8599ccb50b3bc9cae28d
     name: web-app
     type: application
@@ -6845,7 +6922,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: deb15bdd007dca9af98ac87b082f61169f25eaeca035c6a1db417af96770e52e
     name: web-app
     type: application
@@ -6859,7 +6937,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0ee44ecff15950ac3283ed4cd491948320818ffd32a8dda9f8f02cf480090d31
     name: web-app
     type: application
@@ -6873,7 +6952,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2ca7c669cbf43a2674c66ecf8712029ef2a0b9610a286d7a2861b463c1a6323a
     name: web-app
     type: application
@@ -6887,7 +6967,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1b4b35f87fcd55b64bb1e01933dc78c299d1c4a168bac5e4d20144f7bc154a90
     name: web-app
     type: application
@@ -6901,7 +6982,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d6765d0a38fe47a620897ed2baec8fd14f26cfc3736fa5d1402b8843439bc440
     name: web-app
     type: application
@@ -6915,7 +6997,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 003c31b7b13cbf0a82b0aa3586f2f749022d71165b126659d3a7cfeae11fe9ee
     name: web-app
     type: application
@@ -6929,7 +7012,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0072c00e65a4a40e9cb7ea84544fb66a0431a02a30e5e1bdf4cb4c681d125735
     name: web-app
     type: application
@@ -6943,7 +7027,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4060f29fb02b3cbc87ea1bc82f9a37dd4ae106c57d7c3a9ee9257d0cec3f3ebb
     name: web-app
     type: application
@@ -6957,7 +7042,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4127eac027dae87e7b140844aa830173eb1b7ec73b3a29a4f437690139a91a39
     name: web-app
     type: application
@@ -6971,7 +7057,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6de6e4cd2d525367ced79662256e534dd817b84a3b10372897715b58cfe7a0b1
     name: web-app
     type: application
@@ -6985,7 +7072,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4c428ba9d2d226edfc143a8c5cf275929e03e952efca4e8490fa3aaacba65fc7
     name: web-app
     type: application
@@ -6999,7 +7087,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 147863127837444abd1421922b3d997d6dfb9fd6f58e97562687a4d1bf2a0ca1
     name: web-app
     type: application
@@ -7013,7 +7102,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: f6267325eea6a495ec1204e91a12a729a1c120e001b6d2ab16c78c8844fc8361
     name: web-app
     type: application
@@ -7027,7 +7117,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 84396c6ecdfbb36162a432bff29dd6ad258570c66e43ab794aedf98f2658024e
     name: web-app
     type: application
@@ -7041,7 +7132,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 42bc7bc284ddd2157de354e90da37b5d3f32809d7c916acbfad925ebdae22ade
     name: web-app
     type: application
@@ -7055,7 +7147,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b552bfdafacfbff5603620c0f3b9aa5d559f6c108d4ddb33ab9e61e54e95f4a4
     name: web-app
     type: application
@@ -7069,7 +7162,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 12c5b0e238768e2b9284e326b6d5ae7a311f2b8f15b717f1d71a7e81138fe4f8
     name: web-app
     type: application
@@ -7083,7 +7177,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e49e82aa14897a4673e49190eac87cedc5640a1e999e67e540caf42d68c5c3d9
     name: web-app
     type: application
@@ -7097,7 +7192,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 09cf95cfd1136cc4823de64e85192ac55e2f9d9274f395086cde5338f8439d65
     name: web-app
     type: application
@@ -7111,7 +7207,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 94be1636ce233969f220e078919330900e0d06635b058ec5cebeda70bd32a46b
     name: web-app
     type: application
@@ -7125,7 +7222,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b7b7e8442b7527826ebb018bbd7dc6a9846c5309f0f544c9f32523f2376b7a3e
     name: web-app
     type: application
@@ -7139,7 +7237,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 87e74bee5a5dc14e6dd9a07cb91fa8babde61b3c2fdb71916000cc93506f45a1
     name: web-app
     type: application
@@ -7153,7 +7252,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e6c5f3128219975a200e9eb2916cd2c06210194134561005e7c07ecaabcbd0d1
     name: web-app
     type: application
@@ -7167,7 +7267,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 78a48a3c939b5d94163c8575d65720b04601e287e1f83e4bc5e3537235d93445
     name: web-app
     type: application
@@ -7181,7 +7282,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c4dfb2ae198d498712e178a77e7460e8855adf3168447fbf3b655e0e46ef1e63
     name: web-app
     type: application
@@ -7195,7 +7297,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 482439a6950c6c0a4be99bdd26d121339a255f926bd54db7acee8f10717208cd
     name: web-app
     type: application
@@ -7209,7 +7312,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6d598f559bc48383f14b837cf0f25c13301148110429b7a1e675026792d836d6
     name: web-app
     type: application
@@ -7223,7 +7327,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: dbbcbca233b01c0fd22dcf155c6a54228114eee6f1adce42039d6e46f3f40c9f
     name: web-app
     type: application
@@ -7237,7 +7342,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: aaafe869761f9f0ad7a7d7a44f66fb555008711b882a543dd5c49ab0b3d24da2
     name: web-app
     type: application
@@ -7251,7 +7357,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 03fe9528ecd599453b451e8c5631123977db44c879af5d979fb07e4f87ab4dcc
     name: web-app
     type: application
@@ -7265,7 +7372,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 775621dbc9a2b719e8e5817d3bccbca8f2c195d52c9e2a3b70075fd9ce80f194
     name: web-app
     type: application
@@ -7279,7 +7387,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: bf658b4be77673fa2a318007e6d6529fd38d4e7b4f1d8046f8fc76c16913a39d
     name: web-app
     type: application
@@ -7293,7 +7402,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1d174019830f280d2cc78cec59c132c2a04c88f723457ceb48353828331d0e3a
     name: web-app
     type: application
@@ -7307,7 +7417,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2b79a4f05ec732e5a2aa1a816fa9d8724d9763050957a326ff27ece5529ca7ff
     name: web-app
     type: application
@@ -7321,7 +7432,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: eb1eb43dd02a213b84c8906fe9a2595d32962ea984b8e6a2bbcad01f66250072
     name: web-app
     type: application
@@ -7335,7 +7447,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 5e24673c059c58d8c6bc97baf2204cdc54b5ff7108c6e715f956dababafa3d32
     name: web-app
     type: application
@@ -7349,7 +7462,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1fdd6db8f219df04a499cf8037225259d41f7b936f9a04fb91d9d78afa355327
     name: web-app
     type: application
@@ -7363,7 +7477,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 258fa08af4a7a93cf5eb41125760b95ec8f62025bb0967f100dd057c99d0ff40
     name: web-app
     type: application
@@ -7377,7 +7492,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9b709e2e49b52021de78ce6ee12077d3ecb3f3c5d53aa6f4cd6603f59e573779
     name: web-app
     type: application
@@ -7391,7 +7507,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6b60b19c35042669e9508a07e24289cfb8c7f5cadf77afa68c880d1354fa7f94
     name: web-app
     type: application
@@ -7405,7 +7522,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 70d930f0f34d096aa15fd085b06e0ef3a69186bd344cfd4044c128b4021d77b7
     name: web-app
     type: application
@@ -7419,7 +7537,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6e0899950ee3c36fac29e4b4753a4275ec4c1769283e21ff2c344da376f2472e
     name: web-app
     type: application
@@ -7433,7 +7552,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 14cc85a69049a31a382babbe28d25ffe37c797378c605d878b02264e546dcce2
     name: web-app
     type: application
@@ -7447,7 +7567,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7a989650c262ab773e035f9ba41eb96f90d8e16661b02acff8f3ab102094b833
     name: web-app
     type: application
@@ -7461,7 +7582,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7dc3a85def914236ef0b3005d855295669402e3f80e8ef7a28ca73d6ca3fddc9
     name: web-app
     type: application
@@ -7475,7 +7597,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 05673f951f2b1efd0d8a768cda4bc214545a5ee3e0a6dc0f45c9dc332aa8b9ff
     name: web-app
     type: application
@@ -7489,7 +7612,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 76e702983bf73bfcab46004b5eeb888f15e9c770ed47ceaf5940d0d441426c38
     name: web-app
     type: application
@@ -7503,7 +7627,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c0e50f4f83c8b53bfbe5074e58eb4e3ae79634176b939a15f714632dfa510717
     name: web-app
     type: application
@@ -7517,7 +7642,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e65f214cbf0672fb9f4382659cf51c1a70afc52a4d390fb0610733984d795a71
     name: web-app
     type: application
@@ -7531,7 +7657,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 08a53c831bca5f02a0c42d07f1aa3cac9e469be2cc83b33a03d42efe6ae70bbd
     name: web-app
     type: application
@@ -7545,7 +7672,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6d016727e7a5f53a7315d1452fee585a55c808ce2e3a8842956d8cbf4649dba7
     name: web-app
     type: application
@@ -7559,7 +7687,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d1bd153d7d605d775f1cfdfeacf917d7c551a79b6d4c7431c274ff77198a0d9b
     name: web-app
     type: application
@@ -7573,7 +7702,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c7a99c0098c32b0e5046db785dd31204ccf5f178296b874c7e4fd525d2969658
     name: web-app
     type: application
@@ -7587,7 +7717,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 26564d32ad371831368f1a4ceb8295965bca3d68665e24d6334aedaa6f9b6fb8
     name: web-app
     type: application
@@ -7601,7 +7732,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 52e1a7f430a2555e675f6fe504f986b2c70ce823e95a6fdbfaf5228225116a6f
     name: web-app
     type: application
@@ -7615,7 +7747,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1ae61a0b3b0f4b57a3137c4e1e9f16d62442c6b8ff97c76784c9e35da67a3b32
     name: web-app
     type: application
@@ -7629,7 +7762,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 73105edb11ac59891aee51c3ed0d640d20bd45b5c21c3f904f90f4ac84f003a6
     name: web-app
     type: application
@@ -7643,7 +7777,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c21fc06be62338329993cbc2e5124fc8226abe012d965fc3ab0951905634d6ae
     name: web-app
     type: application
@@ -7657,7 +7792,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d6109da1a8737973eac5fd4ad2b2e96049f5a40a9e11458e098732efb343d30f
     name: web-app
     type: application
@@ -7671,7 +7807,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7cdf22d87c21d943f3da82676d15cb3c832c8797b8756b7ff127d9121d7cb01d
     name: web-app
     type: application
@@ -7685,7 +7822,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ffce447bfc3d595c91dd190115c4c95d8e8d274b6fef2c9bb614fa43d0b87d7e
     name: web-app
     type: application
@@ -7699,7 +7837,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 88e0d6c3a467a2b1d5506c509c39c34ff6d2f8bface5178896d603c568323ad3
     name: web-app
     type: application
@@ -7713,7 +7852,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 99fad97e9479ee50ae9801fab60bfe9a832aaeb2cabe5eef625d747e0e12ffb5
     name: web-app
     type: application
@@ -7727,7 +7867,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: be446565ce7f3a70aa1b9597c2bf37d762f30440a569fafce2d2f4244daef1f2
     name: web-app
     type: application
@@ -7741,7 +7882,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 369c01045c13848b5edec42f8d5db475743ac63b11e7a7621ac52efaf6d8d0bb
     name: web-app
     type: application
@@ -7755,7 +7897,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2ee26031519beb1f8cd1aa8cd04965009ce003ffb9f6e7acf267b43a35bec756
     name: web-app
     type: application
@@ -7769,7 +7912,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 129605b7890e9cc956961b75e9c3c2cfa88a265136a4c6155ca9d74600fb0f0b
     name: web-app
     type: application
@@ -7783,7 +7927,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0d599e83125e5a1283dd403eb49bba06a92a6b49b2d7582fd14140c61c8f8151
     name: web-app
     type: application
@@ -7797,7 +7942,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8f642ab81ef7dd0d330fad83d20cb5b30bcc6899812193ec5f1b7ac0fd737ad3
     name: web-app
     type: application
@@ -7811,7 +7957,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d02f05526cf5e592ac13ebcd559f80e396e0a10efa013ebcc546832045a82e2d
     name: web-app
     type: application
@@ -7825,7 +7972,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6adced650490176f7940d01650a70ddcaafe7a9081e8ff28c08ff5cf212e08aa
     name: web-app
     type: application
@@ -7839,7 +7987,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b1d74e6b9090fa577f73ff6dcde07798150411cc2f75334b170bc5ba594727bc
     name: web-app
     type: application
@@ -7853,7 +8002,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a7d576bd98825cf4fa4bc7e3c354e8a4fa79af67ea8dee92853747f0a63a10cc
     name: web-app
     type: application
@@ -7867,7 +8017,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 770107d04c1f1b55056dba977a4625be2c799f95ea8d27db58d65f21135e58a4
     name: web-app
     type: application
@@ -7881,7 +8032,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b695d80a008b75cbdcb54813514698e7eb41c72136552fccffad9294dc95a4fa
     name: web-app
     type: application
@@ -7895,7 +8047,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0c6ced530a59c5e2f6050d8b2e4f09a6915da7a24931ff2ede794dbc64616802
     name: web-app
     type: application
@@ -7909,7 +8062,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 478500c2b169fede6edf724b3ef45a703854b21db40e58c0e8e04b11b7307607
     name: web-app
     type: application
@@ -7923,7 +8077,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 995ea4b796daac0218ce32f3040f2304b4879019f24cabd6aa151e1ece5387bb
     name: web-app
     type: application
@@ -7937,7 +8092,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1414f43f7efbcde75ac4d5ea77ab2d7fd4dc717ccad734ad464e15c39c60c75d
     name: web-app
     type: application
@@ -7951,7 +8107,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 37f53608fd4c43279212a8367b31f322a99e2d0e2fccbb400954a9d2d2ba9388
     name: web-app
     type: application
@@ -7965,7 +8122,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ebf681df1ebfb5ea28592ffa0c67f95f38a6137581eea784fa1c8bc98d517855
     name: web-app
     type: application
@@ -7979,7 +8137,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 30f4a873f7855d051b951f0af2ee86f1e72155c66d0f7249f84294b5b42d71a7
     name: web-app
     type: application
@@ -7993,7 +8152,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cf2cd4099eb12b63ba90af919a04a9b772e500a0ebefffe11b464766c769a2ab
     name: web-app
     type: application
@@ -8007,7 +8167,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2faa40ddc3e00115da6dff6d74b5dcd81b10b3b8251ef68eb02bc6c47c62aed0
     name: web-app
     type: application
@@ -8021,7 +8182,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c4f32b25f718a0aff395e7d719056394c2d3c32190bfce31c2022a217a876e6f
     name: web-app
     type: application
@@ -8035,7 +8197,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2731682d01101bda16513f6e42c4ea6d314079173991636a95157c8399cc7e45
     name: web-app
     type: application
@@ -8049,7 +8212,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7e5a08e25ce3db481111d3ee1f898b2337a906b99f464b65154a57502bc3dbc8
     name: web-app
     type: application
@@ -8063,7 +8227,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c85e1ac019c3d796de04f7a3d97ccc8af66a23ff32c989bedd539e795dc3a1b8
     name: web-app
     type: application
@@ -8077,7 +8242,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6e62ae80160080fe813953a9e4fe692dfe06a9678a578d1b77707b3eb0c5d9cf
     name: web-app
     type: application
@@ -8091,7 +8257,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e0a58825b55aa4449785d630651f74d139fd860d3ddfd7ed7a0b205806e85414
     name: web-app
     type: application
@@ -8105,7 +8272,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 989968aad09b563db03ec90614c43d0c69295b0a43ff47059cc618f21c6395bc
     name: web-app
     type: application
@@ -8119,7 +8287,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0816ff52050e1a56fb9640b336d69e10a3acbc8a2a79e6a03c735efd718d9499
     name: web-app
     type: application
@@ -8133,7 +8302,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7ef26eb946a0ba7a5233f264f150e22a4f518d30171559e8308a272ecebb5ec2
     name: web-app
     type: application
@@ -8147,7 +8317,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.34
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 31f59ec67c339cf662b0338940afdca1e75914b05076b9043d05d43c99dab4ad
     name: web-app
     type: application
@@ -8161,7 +8332,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 451f2c9932e5a4025d700425eaba5c9b43944151a03e6b9ecc59751755e86e66
     name: web-app
     type: application
@@ -8175,7 +8347,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8d16a82f4315366ead4cd9e822f08257885f8d7aa9d10275cabf00dd2940ec0f
     name: web-app
     type: application
@@ -8189,7 +8362,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 97d4faeeeb0d7ba62c9ec8ee97c04a79c2347c640953ceab32ea9856166d3a22
     name: web-app
     type: application
@@ -8203,7 +8377,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4e56050cc58dbd708e563148a0af5234fba0a33294c4d22ddf1ce046d3aaf58a
     name: web-app
     type: application
@@ -8217,7 +8392,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: db87fe24cc16358ec4b2f3632d8856a7125c05c95e424413cfc6265563874fd5
     name: web-app
     type: application
@@ -8231,7 +8407,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ce951b7a7ae72b760af62183ab749b35a86497a9c18f73ee9b76050fdcdaba76
     name: web-app
     type: application
@@ -8245,7 +8422,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 38017608fe07817eeedd0ad0035e00da4ec5e7dbc6f2dbb304186f9198b521bc
     name: web-app
     type: application
@@ -8259,7 +8437,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 368394113d37f35ca3b8c0c44f0cbc4ed44348937c450225d82b832dc433d11a
     name: web-app
     type: application
@@ -8273,7 +8452,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1a33e4699649d5edfee67251a98d993df2f07532c01b92f5f775b3f2ed1edd8c
     name: web-app
     type: application
@@ -8287,7 +8467,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 202555dc16997c9f8a054783cd895325c9119a6e171f31f6c6e1f3238fabf6ef
     name: web-app
     type: application
@@ -8301,7 +8482,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2af7d20e663ab825b581a2b617779ab64d6aee1215a2ad930c7e595bf636a950
     name: web-app
     type: application
@@ -8315,7 +8497,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: fa34bfcd16e18530f8cfaeedecd3df5765993982e502d20178ec410e0be2054f
     name: web-app
     type: application
@@ -8329,7 +8512,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1ceed9cd4033bdb98fa43b3de82e63b50261c40cebe1e4ce33f03f04d356a50a
     name: web-app
     type: application
@@ -8343,7 +8527,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 15d1347e39d20494f85afc834d0ae8416b236d042132d9526d51490f2fb451f7
     name: web-app
     type: application
@@ -8357,7 +8542,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 47675b89d9d74b1da787638eef8bb4fc78c923a722e49d8101bba7960033016b
     name: web-app
     type: application
@@ -8371,7 +8557,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 5e72885e946e7b440ccf176d966df38b52304747319596562dc9eb6b0ccb9514
     name: web-app
     type: application
@@ -8385,7 +8572,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.32
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b91badd825823458231c5f1491fe14ee745280ec4dfb6b5c230d59ceb4a389a2
     name: web-app
     type: application
@@ -8399,7 +8587,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.31
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 852613767627eff95306154a56ae6ac26ff0c56e071d85fc2b9776503ef0fa68
     name: web-app
     type: application
@@ -8413,7 +8602,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.31
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 3192f616d6296174b244e86c4ddc4e35681bb10865e45e3936bc7ef110c2e354
     name: web-app
     type: application
@@ -8427,7 +8617,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.31
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a7f0636f01cb3dd1cf95cd5946ec0e33a367830487e707d1a8fc76a8fbede4c9
     name: web-app
     type: application
@@ -8441,7 +8632,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.31
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 4c962fe855317acc55a490b9728675ff2a6e62921cc90e114be5624b86e7690b
     name: web-app
     type: application
@@ -8455,7 +8647,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.31
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d560c141509499eeb06fbf625f3d26d35fb8df9406758b2e31d41f3d85456ecf
     name: web-app
     type: application
@@ -8469,7 +8662,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.24
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 26169b833edd37f0237bfb87e22ff9dfaa5ca770a401d5d54794662006d2cbc6
     name: web-app
     type: application
@@ -8483,7 +8677,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d952853fa2fca50247fbd60d2aa3278c6b5ef4fa7d539bec4148669da418d201
     name: web-app
     type: application
@@ -8497,7 +8692,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 860e48adea1f2f2e4d3553f00362e06930273cae5ffb7e4d1e7cda428628307f
     name: web-app
     type: application
@@ -8511,7 +8707,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b9bd2698ec8f64b1fa693f717e624b03652aa1058791fdfa8200e99c1ead8b36
     name: web-app
     type: application
@@ -8525,7 +8722,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cc6ec5d48885c386f3d7220bd345566a3548a75ce6b7c23e1f0e897b0a31081e
     name: web-app
     type: application
@@ -8539,7 +8737,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6f7a0f61baac94fa6b6d26becdc9aac28a0c3f8f6c41b2d07af7d3156f2e97b0
     name: web-app
     type: application
@@ -8553,7 +8752,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a2c0405b9d024bf92e11abe2209ec078875af27153f5775243fbc24bee521f8d
     name: web-app
     type: application
@@ -8567,7 +8767,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 15c830dda672384555d8e34c6cfdeabb4f21bf56b25c45445ca285f3873361a3
     name: web-app
     type: application
@@ -8581,7 +8782,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2a6b853fae24de3a303db0e822774ef0194fbe753a45af31e101e4722da5e44e
     name: web-app
     type: application
@@ -8595,7 +8797,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 894ed8c7aaf0dee769b076e8c360f29ccdc21c7e9fad00f241917bf48447e69f
     name: web-app
     type: application
@@ -8609,7 +8812,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 5d8eeea41c147e6f457eccc25ada49b34cb5689f16c43ac2fbc40b63628ba2cd
     name: web-app
     type: application
@@ -8623,7 +8827,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: dd6ef1b0972a95c3f85e572c8d87c44b091dd42ac372c074e1548327ac58b563
     name: web-app
     type: application
@@ -8637,7 +8842,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2fb58136587a418aad3bffc03ea47f107e5fb7d28bbb79a57c8df6af341d4a90
     name: web-app
     type: application
@@ -8651,7 +8857,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1c73fb2c64b174415069770161fb1b31fa963393e955173e932b2f5a04941970
     name: web-app
     type: application
@@ -8665,7 +8872,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cbeefeb8c3bedbbad9b1f008461985c910d0311697386d2ed45e65077a6a6a30
     name: web-app
     type: application
@@ -8679,7 +8887,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 24c2b4dee03fcefd931871c800b0c7bf9193c0ae56abaff7d1b76a08a6dc0d0d
     name: web-app
     type: application
@@ -8693,7 +8902,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: fd7ccfdd4fa02719b4ad1d1b16fdaa947aa1acfdf101e28c65be55c75ef893b7
     name: web-app
     type: application
@@ -8707,7 +8917,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ff45f369c0d015f543b31093ec4ab78d8e400c1b323cd25556bd1527efd738cb
     name: web-app
     type: application
@@ -8721,7 +8932,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 1c7d76a570395f21bd24773c404f0f80d9854cc27fc9b78f4398056da0acd6c5
     name: web-app
     type: application
@@ -8735,7 +8947,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a20c92ac6c5dfc5fb5d3219c316405a4a2b63548423abecd58c1cfda2fce453a
     name: web-app
     type: application
@@ -8749,7 +8962,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e0c2cc903300e2e9b69e58e95a4bc7c1c8a1c66055ee0552a1c747e9c87103f6
     name: web-app
     type: application
@@ -8763,7 +8977,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b0e7becbf90859d5abaa65e04ce6eb243ecb2d21e600da8b91aa5044dfd54c2c
     name: web-app
     type: application
@@ -8777,7 +8992,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e417e9ba96a143152d1302f6e8f738c8369ae5e44b95e4e9e2439705a8b64215
     name: web-app
     type: application
@@ -8791,7 +9007,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 5881c5e0dcb2d7a1e819c2a23fb54544129723b4e8ea8920f02e0b958b74b694
     name: web-app
     type: application
@@ -8805,7 +9022,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 476c3485fc7dab12ba9cd49405ee5ba4d39c9485b6f280d59dd76217c7feebd5
     name: web-app
     type: application
@@ -8819,7 +9037,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 43a37cc102ec8bbafec3a2ef0b011ddd0cc926a2ddff7497f4c845994c5ae497
     name: web-app
     type: application
@@ -8833,7 +9052,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 17a5e150b2fe356e79cc31121de35eca4efee2c067cc46335025f3a9f2508d5c
     name: web-app
     type: application
@@ -8847,7 +9067,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: df6fa2f3e92b8a7c338d42d0627cec99d18269f6f36640c1266592c1146dc7f2
     name: web-app
     type: application
@@ -8861,7 +9082,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 869bce68f3d8a7e9a99bce71596b828d79d6a8494094994954153d22eeb95d2a
     name: web-app
     type: application
@@ -8875,7 +9097,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2b62ee48dc642b66ac8dce0b0c556dbca628fb2ff896705897c1b1e2469a51b8
     name: web-app
     type: application
@@ -8889,7 +9112,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: dae4c14ec0393f4b1384c0f43e1bd61bdea0b39d524d5dd49b53051dda47e542
     name: web-app
     type: application
@@ -8903,7 +9127,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b71d3848cf571aee6bd077252a860db6e3349e1de47f6be1b7d1015b69c92586
     name: web-app
     type: application
@@ -8917,7 +9142,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d8564d3995eee547ee3ab7c2051e762a97f70d823b690cb8c7088b8c321a8be1
     name: web-app
     type: application
@@ -8931,7 +9157,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 39ae1214e4dd37cbbfbce9e45e0fcd3d5a52f7333cdad3ab5f1bb08d37338f72
     name: web-app
     type: application
@@ -8945,7 +9172,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 82526235cc21abf2352387f4ac7c13fa1453f1b4d1ea766312f4748c2d3fad37
     name: web-app
     type: application
@@ -8959,7 +9187,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: f4678b1b287d2f976f122cb3d4591e71e22e3342aae0e819c142ab4090c0cba3
     name: web-app
     type: application
@@ -8973,7 +9202,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 2d077012669792444b076692a76fdd191b5d4728bb9d6ebf092be5dd2110ec24
     name: web-app
     type: application
@@ -8987,7 +9217,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 5e9c2a6b17c52d82a7f222c4ff7085c0c9444717f327e081191addc5b1bc72ea
     name: web-app
     type: application
@@ -9001,7 +9232,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0aa6521519aaa5bcbdf118052232a3941740378d59c48775092a21fcc731e82b
     name: web-app
     type: application
@@ -9015,7 +9247,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 733f877c8ab0bcb145e7b9bb30f1a0489bba684270463ebdbc98ad0741f8de72
     name: web-app
     type: application
@@ -9029,7 +9262,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0c86ac76cfd278539beda63c22f5a6df5321013ec18263d3ced09dae271e1a6a
     name: web-app
     type: application
@@ -9043,7 +9277,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8b3d4219cb80eb8563637d565243f23af33fc939ea63930add12679247f1b2bf
     name: web-app
     type: application
@@ -9057,7 +9292,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8132c117d4732fcf712da8e1e74eb31b15c5d6c5a07a683831017d59927b133d
     name: web-app
     type: application
@@ -9071,7 +9307,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 3faf3beb164b46c1f08945812d1902ef1ac50acdcdf77e881ed6634ab195dc3d
     name: web-app
     type: application
@@ -9085,7 +9322,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ee861c86291c58cbce6e24c5c6786a64e2475da127ef75673061d602649740ef
     name: web-app
     type: application
@@ -9099,7 +9337,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8b3d123c739e6fc24808f7e209af99f6efd4292ee9645a9d8e7b56df22c8ed59
     name: web-app
     type: application
@@ -9113,7 +9352,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 542458f31be2c59a2aa01cb5751e01b715e5e34de47ff91e7b0508d9eed702e3
     name: web-app
     type: application
@@ -9127,7 +9367,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: aeffedf536261891ec0797ae46b0d98bd6d7ce1f11a5b4bbf0a55e86f4de66a5
     name: web-app
     type: application
@@ -9141,7 +9382,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c3690c1768bbd5684e9cdadb643fc9f65594174aa25b5d73ab5ca69d59d30daf
     name: web-app
     type: application
@@ -9155,7 +9397,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 97f32cd8b08be057b2da8da2ec6a8e159c977d2a259f5a6323dda49b1e2c1ce2
     name: web-app
     type: application
@@ -9169,7 +9412,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 32ee53a6755f65613e25f124f98ee135cbcb6bbad9ccd294baf29cbf9f42ff5a
     name: web-app
     type: application
@@ -9183,7 +9427,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: bf89b9588de0d3d34c596329470d85640a72c63ed07c31aa72b5c2c169c00033
     name: web-app
     type: application
@@ -9197,7 +9442,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7dbf077c6687eda1941d9e08acefa8c2895e7a27c3d2a375012e53c356db3557
     name: web-app
     type: application
@@ -9211,7 +9457,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7a643da6db52c28d2c2b5869662a6d3c1f3005f0d7e64c7ec1ff749f42e37e9b
     name: web-app
     type: application
@@ -9225,7 +9472,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 39a16fa2590efce1aaaad108fe6221a1511997a85cbaa207af1cb18b1b419861
     name: web-app
     type: application
@@ -9239,7 +9487,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: f21537157c3d4dacc63d606267b13898de6a090c740102834c1a29303c411504
     name: web-app
     type: application
@@ -9253,7 +9502,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cc181a970427ae67a6057eb9587ceaee72bc38bccb4ffbec1ad08d7cf8187df6
     name: web-app
     type: application
@@ -9267,7 +9517,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: de9f15b27b1a750d16be7b1ecdd9acfb455bd38f5c3a19aaa15f83885862d56f
     name: web-app
     type: application
@@ -9281,7 +9532,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: df1f7b09c37a97cff367cbafd21827c879ae1357192708d7ffba279f7ffa7d3b
     name: web-app
     type: application
@@ -9295,7 +9547,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 048176780fef93346fdd84709c6a38d27c6dbe1d54d139674003ff1443ddcc1f
     name: web-app
     type: application
@@ -9309,7 +9562,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 269695e5ff0f0d7cf1d63182e816947028f1e31c12d1f4ccf0c03ccd8bd201da
     name: web-app
     type: application
@@ -9323,7 +9577,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b9ea2c3cbe63ec37447c4c9cc26b16d3e7f22e0e704f9b5dbf3be1fedc67ceaa
     name: web-app
     type: application
@@ -9337,7 +9592,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7110779d5c1638d3ecdd614f050a8ff43ee617e8b91c40cd2c624041a9f9d34d
     name: web-app
     type: application
@@ -9351,7 +9607,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 20e1c16f50a75c05b49df3849f67389e7df10107ff55ca673fa029c1921fe625
     name: web-app
     type: application
@@ -9365,7 +9622,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c4fa4fdb48010a1832c0a50dcab47865ab4e9b1c6154d87e908370f4b22de41f
     name: web-app
     type: application
@@ -9379,7 +9637,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b6761d30cc700a6fb6e6a8fac553fc7911c3cf5687ada49829fd008fd03027df
     name: web-app
     type: application
@@ -9393,7 +9652,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6382ca977418fe820f32bc85b6b4106c4e76a3cbb3dd3d02f1c2051bae1f1c34
     name: web-app
     type: application
@@ -9407,7 +9667,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 24178285eeff0b4e21c2d52fc694b9ee3df22d01c0166c1bd1adbe066244562d
     name: web-app
     type: application
@@ -9421,7 +9682,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7808c786bdc7beafdcc43395a15b670c608e87412e389a7a99f9903c3d20cc24
     name: web-app
     type: application
@@ -9435,7 +9697,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 88934ebf62ee269348494251de4dfd8f1fde9cd9ea82e6e72a2433eaf245b3bd
     name: web-app
     type: application
@@ -9449,7 +9712,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: bd135fdece8e9e5c71142720b38dade9b299adce51c05c227375b742f4680b0c
     name: web-app
     type: application
@@ -9463,7 +9727,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.28
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 57e598d48d22a2b6f3f0f3cfeede435a03d81dd5d29f909bca657d5783a34df3
     name: web-app
     type: application
@@ -9477,7 +9742,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.27
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d0e07a58f084e41ae72a81605f63ae29c32b7e2f5bfcf3764eba50631c343432
     name: web-app
     type: application
@@ -9491,7 +9757,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.26
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9bf9c5edd9c1e4fa6ff7c76c08ce0c0b590404556dd5d7a46ef5e2067793ca8d
     name: web-app
     type: application
@@ -9505,7 +9772,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.26
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7faf5aa7e791be074cab13fe807cb64a31fea2ebf199e3fd2e367a8e3962ff14
     name: web-app
     type: application
@@ -9519,7 +9787,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.26
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 29ed8a96b2594174337eba9b3722400e810109ac485e6831b3e0aebced5b2796
     name: web-app
     type: application
@@ -9533,7 +9802,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.26
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9cfcc52d0aa25a9882378a8f01650ecca381d604c8c0c2211575fb4c2f82a4dc
     name: web-app
     type: application
@@ -9547,7 +9817,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.26
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7c6e92b6d9bc601ae0adbd69f1203432033e4993675a922ac3e15e3ba59733fc
     name: web-app
     type: application
@@ -9561,7 +9832,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.22
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ef1dd439d027618a419107ce64929fe66709ef78aee9884bb4d026a7566ecdb3
     name: web-app
     type: application
@@ -9575,7 +9847,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.22
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: cf09c717ac4c7414f037c67e56639e40794e17a81a094ca59b084708735f8069
     name: web-app
     type: application
@@ -9589,7 +9862,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.22
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a89ebf306be25cd8efdcacc084a83dcc11cfcf81fbce41225146324ab1a2e94f
     name: web-app
     type: application
@@ -9603,7 +9877,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.22
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b042e207a9fcf49220acd4d1924b2afb32b9404d0bb28d1dfe52357bd08bf8fa
     name: web-app
     type: application
@@ -9617,7 +9892,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.21
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 420778022c85b8aab43431f3942a33dc9dd44c6cd1ec85b81bcd61f8fdc30cea
     name: web-app
     type: application
@@ -9631,7 +9907,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.20
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 0f302c37c48b080812a53fe00e1a7107d8b56a08312d38fbaa2e77e57acdee58
     name: web-app
     type: application
@@ -9645,7 +9922,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.19
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 9034a41867ca9ba816775ea6d1b0e49bdb931b18d1bb1d46cde5d6bda4b42976
     name: web-app
     type: application
@@ -9659,7 +9937,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.15
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: b6ab859d83815a1115437c369223d67051c81a50b1104ad5bfbdf7aa437bf4eb
     name: web-app
     type: application
@@ -9673,7 +9952,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.15
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ef8648f4c3161f508f775dd9d35d53fe28d250e57e38810f39abc64a5121a7b0
     name: web-app
     type: application
@@ -9687,7 +9967,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.14
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ed1ce8658bbf4bb90de60ee190a80ff983523b02ca9282565b5acbd8f04bbc0a
     name: web-app
     type: application
@@ -9701,7 +9982,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8b1ac3e67b4444929fa905b8deb1acd5fc47c236364036fe6031a03ea85661f0
     name: web-app
     type: application
@@ -9715,7 +9997,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: f80544bebd23bab1baf6eaf1f7ce1284e747cf8fe5cf7f87f2c6120ca23f7cad
     name: web-app
     type: application
@@ -9729,7 +10012,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 8a4ead1872525850a060a98277fc55e8670581efda452ed920dc45ebddaa1b4c
     name: web-app
     type: application
@@ -9743,7 +10027,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: de90e93cce3290feec306979f15813dd2ef8a647a37e17b749a59b038bc35793
     name: web-app
     type: application
@@ -9757,7 +10042,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 989d7403532f0a5a805e228d5fa001fbc4e3590975d82b2d41d5715d105c5a6c
     name: web-app
     type: application
@@ -9771,7 +10057,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 80043404f64d945bd0fafdb5c87ed9335ad975827b08392bcbcd07a3960bb495
     name: web-app
     type: application
@@ -9785,7 +10072,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: c49e14d3f99a66e77efa0fd74aeee2b4bb756826e97c51c57bc31bacc5893248
     name: web-app
     type: application
@@ -9799,7 +10087,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 6a5cf699b5aaacf1b8c3218b38c00befff5e6cab921cd97c433ca44750cb7ab2
     name: web-app
     type: application
@@ -9813,7 +10102,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.12
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: a399c73bfca4472e107d200bfbdfe374aa5b990275ae1b53d4d8319b42852a85
     name: web-app
     type: application
@@ -9827,7 +10117,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.11
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 85143912d619ca4c0d9e3617d24de9e026bdeddfd957f7087ab3e301fa303edf
     name: web-app
     type: application
@@ -9841,7 +10132,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.9
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 7e9407db5ad79724c9cd286f547f9370aa008b0180ac257d1683c7874c291db7
     name: web-app
     type: application
@@ -9855,7 +10147,8 @@ entries:
       name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.9
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e2a3fd88cd1965b7d3838ad8d7a510b3c66a94b09d9a54e5e5c20be87a947276
     name: web-app
     type: application
@@ -9868,7 +10161,8 @@ entries:
     - name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.9
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 51259905c6cc831322b2314af0d807d2a8b39335145f0c0623db1e6603c08548
     name: web-app
     type: application
@@ -9881,7 +10175,8 @@ entries:
     - name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.9
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: d56a89423ecea43091b65ddf3cce15735c973647eaa4b692b2622a81314dd192
     name: web-app
     type: application
@@ -9894,7 +10189,8 @@ entries:
     - name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.7
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 66dd6b4656e72746e5bd24de5f7fc9f9e91948d06e8b7c2fe03823c9a7598b7d
     name: web-app
     type: application
@@ -9907,7 +10203,8 @@ entries:
     - name: app-iam
       repository: https://pixovr.github.io/helm-charts
       version: 0.0.3
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ffe1ea90df191ba2c2903b36284403bc738c6a2417e25a29c77c03a9b0cc6f4c
     name: web-app
     type: application
@@ -9917,7 +10214,8 @@ entries:
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T16:28:45.629166706Z"
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: 47a9c9895980967604e09acb3ec9274072a2546e730e701c7709742f9ee0587f
     name: web-app
     type: application
@@ -9927,7 +10225,8 @@ entries:
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-10T15:11:14.264576248Z"
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: ba93e28fd5cc4b4dafd0cb53c75703e465831157e326c8a63dc1715ba081b1f9
     name: web-app
     type: application
@@ -9937,11 +10236,12 @@ entries:
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-11-03T21:16:22.455936281Z"
-    description: A Helm chart for deploying web applications or web application micro services
+    description: A Helm chart for deploying web applications or web application micro
+      services
     digest: e8b6ea99a69ff2a872067c95e9022fcd81896ac00e083f38944f6527400bf6f6
     name: web-app
     type: application
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.1/web-app-0.0.1.tgz
     version: 0.0.1
-generated: "2022-11-03T21:16:21.516053237Z"
+generated: "2024-02-16T01:42:43.347278419Z"
