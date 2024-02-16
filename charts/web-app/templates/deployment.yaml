@@ -388,8 +388,10 @@ spec:
         - name: NODE_ENV
           value: {{ upper .Values.lifecycle }}
 
-        - name: APP_URL
+        {{- if .Values.ingress.enabled }}
+        - name: APP_HOST
           value: https://{{- include "full_domain" $ }}
+        {{- end }}
 
         {{- if .Values.sa_json_key.enabled }}
         - name: {{ .Values.sa_json_key.envKey }}

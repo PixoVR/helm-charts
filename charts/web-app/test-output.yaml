@@ -293,8 +293,7 @@ spec:
 
         - name: NODE_ENV
           value: DEV
-
-        - name: APP_URL
+        - name: APP_HOST
           value: https://api.sample.dev.example.com
         - name: GOOGLE_JSON_KEY
           value: /backend/secrets/svc-acct-json-key
