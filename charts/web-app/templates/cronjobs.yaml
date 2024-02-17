@@ -8,7 +8,11 @@ kind: CronJob
 metadata:
   name: '{{ include "cronjob_name" $ }}-{{- .name -}}-cj'
 spec:
-  schedule: "{{- $.Values.cronjob.schedule -}}"
+  {{- if .schedule }}
+  schedule: '{{- .schedule -}}'
+  {{- else }}
+  schedule: '{{- $.Values.cronjob.schedule -}}'
+  {{- end }}
   jobTemplate:
     spec:
       template:

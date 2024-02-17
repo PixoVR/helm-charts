@@ -582,7 +582,7 @@ kind: CronJob
 metadata:
   name: 'dev-sample-web-sample-cj'
 spec:
-  schedule: "0 8 * * *"
+  schedule: '0 14 * * *'
   jobTemplate:
     spec:
       template:
