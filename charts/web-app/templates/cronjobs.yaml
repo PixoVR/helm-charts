@@ -139,6 +139,11 @@ spec:
               value: {{ $.Values.aws.auth.endpoint }}
             {{- end }}
 
+            {{- if $.Values.aws.bucket }}
+            - name: S3_BUCKET_NAME
+              value: {{ $.Values.aws.bucket }}
+            {{- end }}
+
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:

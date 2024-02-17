@@ -682,6 +682,8 @@ spec:
               value: us-east-1
             - name: AWS_ENDPOINT
               value: https://s3
+            - name: S3_BUCKET_NAME
+              value: test-bucket
 
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
