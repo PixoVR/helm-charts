@@ -610,8 +610,6 @@ spec:
             image: 'gcr.io/app-project/sample/dev/web:latest'
             command:
             - /bin/sh
-            args:
-            - echo
 
             imagePullPolicy: IfNotPresent
 

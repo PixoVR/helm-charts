@@ -80,7 +80,6 @@ cronjobs:
     image:
       self: true
       command: ["/bin/sh"]
-      entrypoint: ["echo"]
 
 cronjob:
   enabled: true
