@@ -1,0 +1,194 @@
+{{- if .Values.enabled }}
+
+{{- range .Values.cronjobs }}
+
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: '{{ include "cronjob_name" $ }}-{{- .name -}}-cj'
+spec:
+  schedule: "{{- $.Values.cronjob.schedule -}}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: '{{ include "ksa_name" $ }}'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+
+            {{- if .image.self }}
+            image: '{{ include "image" $ }}'
+            args:
+            {{- toYaml .image.entrypoint | nindent 12 }}
+            {{- else }}
+
+            image: '{{- .image.name -}}:{{- .image.tag -}}'
+
+            {{- if $.Values.deployment.enabled }}
+            args:
+            - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
+            - x-access-token:$(SECRET_KEY)
+            - --ignore-stdin
+            {{- end }}
+
+            {{- end }}
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: {{ required "REQUIRED: memory.request" $.Values.memory.request }}
+                cpu: {{ required "REQUIRED: cpu.request" $.Values.cpu.request }}
+              limits:
+                memory: {{ required "REQUIRED: memory.limit" $.Values.memory.limit }}
+                cpu: {{ required "REQUIRED: cpu.limit" $.Values.cpu.limit }}
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+            {{- if .env }}
+            {{- toYaml .env | nindent 12 }}
+            {{- end }}
+
+            - name: LIFECYCLE
+              value: {{ upper $.Values.lifecycle }}
+
+            {{- if and $.Values.redis.enabled $.Values.redis.auth.enabled }}
+            - name: REDIS_USERNAME
+              value: {{ $.Values.redis.auth.username }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: '{{- $.Release.Name -}}-{{- $.Values.redis.secret_suffix -}}'
+                  key: redis-password
+            {{- end }}
+
+            {{- if $.Values.crunchydb.enabled }}
+            - name: DB_VENDOR
+              value: "postgres"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: port
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: dbname
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: dbname
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: password
+            {{- end }}
+
+            {{- if $.Values.aws.auth.enabled }}
+
+            {{- if $.Values.aws.auth.region }}
+            - name: AWS_REGION
+              value: {{ $.Values.aws.auth.region }}
+            {{- end }}
+
+            {{- if $.Values.aws.auth.endpoint }}
+            - name: AWS_ENDPOINT
+              value: {{ $.Values.aws.auth.endpoint }}
+            {{- end }}
+
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+            {{- end }}
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+
+            {{- if $.Values.google.storage.enabled }}
+
+            {{- range $.Values.google.storage.bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              value: {{ include "microservice_label" $ -}}-{{- .name }}
+            {{- end }}
+
+            {{- range $.Values.google.storage.external_bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              value: {{ include "app_label" $ -}}-{{- .external_service -}}-{{- .name }}
+            {{- end }}
+
+            {{- end }}
+
+            {{- if $.Values.email.enabled }}
+            - name: EMAILER_EMAIL
+              value: {{ $.Values.email.sender }}
+            {{- if $.Values.email.mfa }}
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+            {{- end }}
+            {{- end }}
+
+
+{{- end }}
+
+{{- end }}
+

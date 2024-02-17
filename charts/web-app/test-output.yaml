@@ -576,6 +576,147 @@ spec:
                   name: app-secrets
                   key: email-sender-password
 ---
+# Source: web-app/templates/cronjobs.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'dev-sample-web-sample-cj'
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: 'app-workload'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+            image: 'gcr.io/app-project/sample/dev/web:latest'
+            args:
+            - /bin/sh
+            - echo
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+
+            - name: LIFECYCLE
+              value: DEV
+            - name: REDIS_USERNAME
+              value: default
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: 'test-cache'
+                  key: redis-password
+            - name: DB_VENDOR
+              value: "postgres"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: port
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: dbname
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: dbname
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: password
+            - name: AWS_REGION
+              value: us-east-1
+            - name: AWS_ENDPOINT
+              value: https://s3
+
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: dev-sample-web-public
+            - name: GOOGLE_STORAGE_BUILDS
+              value: dev-sample-web-builds
+            - name: GOOGLE_STORAGE_EXT
+              value: dev-sample-ext-api-ext
+            - name: EMAILER_EMAIL
+              value: pixoplatform@pixovr.com
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress

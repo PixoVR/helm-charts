@@ -74,6 +74,13 @@ healthCheck:
 sql:
   proxy: true
 
+
+cronjobs:
+  - name: sample
+    image:
+      self: true
+      entrypoint: ["/bin/sh", "echo"]
+
 cronjob:
   enabled: true
   external_secrets:
@@ -95,6 +102,8 @@ email:
 aws:
   auth:
     enabled: true
+    region: us-east-1
+    endpoint: https://s3
   cloudfront:
     enabled: true
 
