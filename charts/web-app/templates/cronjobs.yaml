@@ -168,6 +168,9 @@ spec:
 
             {{- if $.Values.google.storage.enabled }}
 
+            - name: GCP_PROJECT_ID
+              value: '{{- include "app_project_id" $ -}}'
+
             {{- range $.Values.google.storage.bucket_list }}
             - name: GOOGLE_STORAGE_{{ .key }}
               value: {{ include "microservice_label" $ -}}-{{- .name }}

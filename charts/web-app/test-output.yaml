@@ -705,6 +705,9 @@ spec:
 
             - name: TMP_PATH
               value: "/tmp"
+
+            - name: GCP_PROJECT_ID
+              value: 'app-project'
             - name: GOOGLE_STORAGE_PUBLIC
               value: dev-sample-web-public
             - name: GOOGLE_STORAGE_BUILDS
