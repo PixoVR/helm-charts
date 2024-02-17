@@ -36,6 +36,8 @@ spec:
 
             {{- if .image.self }}
             image: '{{ include "image" $ }}'
+            command:
+            {{- toYaml .image.command | nindent 12 }}
             args:
             {{- toYaml .image.entrypoint | nindent 12 }}
             {{- else }}

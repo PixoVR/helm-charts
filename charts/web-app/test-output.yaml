@@ -608,8 +608,9 @@ spec:
           containers:
           - name: job
             image: 'gcr.io/app-project/sample/dev/web:latest'
-            args:
+            command:
             - /bin/sh
+            args:
             - echo
 
             imagePullPolicy: IfNotPresent

@@ -79,7 +79,8 @@ cronjobs:
   - name: sample
     image:
       self: true
-      entrypoint: ["/bin/sh", "echo"]
+      command: ["/bin/sh"]
+      entrypoint: ["echo"]
 
 cronjob:
   enabled: true
