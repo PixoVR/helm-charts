@@ -138,7 +138,7 @@ google:
     external_bucket_list:
     - name: ext
       key: EXT
-      external_service: ext-api
+      external_service: tenant-ext-api
   sql:
     enabled: true
     extra_databases:
