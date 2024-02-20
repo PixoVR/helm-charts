@@ -1416,7 +1416,7 @@ metadata:
 spec:
   bucketRef:
     name: us-east-dev-sample-web-builds
-  entity: user-multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
+  entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
   role: READER
 ---
 # Source: web-app/templates/storage-buckets.yaml
@@ -1427,7 +1427,7 @@ metadata:
 spec:
   bucketRef:
     name: us-east-dev-sample-web-builds
-  entity: user-multiplayer-allocator@multiplayer-dev-sa-project.iam.gserviceaccount.com
+  entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
   role: READER
 ---
 # Source: web-app/templates/storage-notifications.yaml

@@ -130,8 +130,8 @@ google:
         isLocked: false
         retentionPeriod: 10
       notifications: true
-      viewing_tenant: multiplayer
-      viewing_service: allocator
+      viewing_tenant: externaltenant
+      viewing_service: externalsvc
       custom_endpoint:
         enabled: true
         prefix: external.service
