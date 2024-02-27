@@ -1108,6 +1108,22 @@ spec:
             name: 'workload-sa'
             namespace: infra-admin
 ---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  labels:
+    namespace: test
+  name: us-east-dev-sample-web-public-bucket-access
+spec:
+  resourceRef:
+    kind: StorageBucket
+    name: us-east-dev-sample-web-public
+  bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - allUsers
+---
 # Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
@@ -1417,19 +1433,6 @@ spec:
   bucketRef:
     name: us-east-dev-sample-web-builds
   entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
-  role: READER
----
-# Source: web-app/templates/storage-buckets.yaml
-apiVersion: storage.cnrm.cloud.google.com/v1beta1
-kind: StorageDefaultObjectAccessControl
-metadata:
-  labels:
-    namespace: test
-  name: us-east-dev-sample-web-public-bucket-access
-spec:
-  bucketRef:
-    name: us-east-dev-sample-web-public
-  entity: allUsers
   role: READER
 ---
 # Source: web-app/templates/storage-buckets.yaml
