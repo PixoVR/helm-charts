@@ -1423,6 +1423,19 @@ spec:
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageDefaultObjectAccessControl
 metadata:
+  labels:
+    namespace: test
+  name: us-east-dev-sample-web-public-bucket-access
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-public
+  entity: allUsers
+  role: READER
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageDefaultObjectAccessControl
+metadata:
   name: us-east-dev-sample-web-builds-default-bucket-access
 spec:
   bucketRef:
