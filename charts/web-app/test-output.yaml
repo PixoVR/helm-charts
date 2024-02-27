@@ -1122,7 +1122,7 @@ spec:
   bindings:
     - role: roles/storage.objectViewer
       members:
-        - allUsers
+        - member: allUsers
 ---
 # Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1

@@ -92,7 +92,7 @@ spec:
   bindings:
     - role: roles/storage.objectViewer
       members:
-        - allUsers
+        - member: allUsers
 
 ---
 {{- end }}
