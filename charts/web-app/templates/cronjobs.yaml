@@ -138,6 +138,22 @@ spec:
                 secretKeyRef:
                   name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
                   key: password
+            {{- else if $.Values.sql.proxy }}
+            - name: DB_VENDOR
+              value: "postgres"
+
+            - name: {{ upper $.Values.db.host_env_key }}
+              value: "{{- $.Values.db.host -}}"
+
+            - name: {{ upper $.Values.db.port_env_key }}
+              value: "{{- $.Values.db.port -}}"
+
+            - name: {{ upper $.Values.db.name_env_key }}
+              value: '{{- include "db_name" $ -}}'
+
+            - name: {{ upper $.Values.db.user_env_key }}
+              value: '{{- include "app_sa" $ -}}'
+
             {{- end }}
 
             {{- if $.Values.aws.auth.enabled }}
@@ -211,6 +227,26 @@ spec:
                   key: email-sender-password
             {{- end }}
             {{- end }}
+
+          {{- if and ($.Values.sql.proxy) (not $.Values.crunchydb.enabled) }}
+          - name: proxy
+            image: "{{ $.Values.db.proxy_version }}"
+            imagePullPolicy: Always
+            command:
+            - /cloud_sql_proxy
+            - -instances={{- include "db_project_id" $ -}}:{{- required "REQUIRED: google.region" $.Values.google.region -}}:{{- include "instance_name" $ }}=tcp:127.0.0.1:5432
+            - -enable_iam_login
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+          {{- end }}
+
 
 
 {{- end }}
