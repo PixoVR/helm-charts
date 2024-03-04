@@ -328,6 +328,14 @@
   {{- end }}
 {{- end }}
 
+{{- define "secrets_prefix" -}}
+  {{- if .Values.external_secrets.remote_prefix }}
+    {{- .Values.external_secrets.remote_prefix -}}-{{- .Values.app_code }}
+  {{- else }}
+    {{- .Values.app_code }}
+  {{- end }}
+{{- end }}
+
 
 {{- define "dockerfile" -}}
   {{- if .Values.debug.enabled }}

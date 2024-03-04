@@ -956,34 +956,34 @@ spec:
 
     - secretKey: auth-key
       remoteRef:
-        key: sample-auth-key
+        key: saudi-sample-auth-key
     - secretKey: email-sender-password
       remoteRef:
-        key: sample-email-sender-password
+        key: saudi-sample-email-sender-password
     - secretKey: external-auth-key
       remoteRef:
-        key: sample-external-auth-key
+        key: saudi-sample-external-auth-key
     - secretKey: aws-id
       remoteRef:
-        key: sample-aws-id
+        key: saudi-sample-aws-id
 
     - secretKey: aws-secret
       remoteRef:
-        key: sample-aws-secret
+        key: saudi-sample-aws-secret
     - secretKey: aws-cf-private-key
       remoteRef:
-        key: sample-aws-cf-private-key
+        key: saudi-sample-aws-cf-private-key
 
     - secretKey: aws-cf-public-key
       remoteRef:
-        key: sample-aws-cf-public-key
+        key: saudi-sample-aws-cf-public-key
 
     - secretKey: aws-cf-domain
       remoteRef:
-        key: sample-aws-cf-domain
+        key: saudi-sample-aws-cf-domain
     - secretKey: svc-acct-json-key
       remoteRef:
-        key: sample-svc-acct-json-key
+        key: saudi-sample-svc-acct-json-key
 ---
 # Source: web-app/templates/frontend-config.yaml
 apiVersion: networking.gke.io/v1beta1

@@ -166,6 +166,7 @@ google:
 
 external_secrets:
   enabled: true
+  remote_prefix: saudi
   secret_store:
     enabled: true
   app_secrets:
