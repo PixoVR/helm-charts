@@ -311,7 +311,7 @@ spec:
         - name: GOOGLE_STORAGE_BUILDS
           value: us-east-dev-sample-web-builds
         - name: GOOGLE_STORAGE_EXT
-          value: dev-tenant-ext-api-ext
+          value: us-east-dev-tenant-ext-api-ext
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
         - name: AWS_ID

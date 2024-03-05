@@ -430,7 +430,11 @@ spec:
 
         {{- range .Values.google.storage.external_bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
+          {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+          value: {{ $.Values.cluster_name -}}-{{- include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- else }}
           value: {{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- end }}
         {{- end }}
 
         {{- end }}
