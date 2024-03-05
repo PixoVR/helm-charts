@@ -196,9 +196,7 @@ google:
     retentionPolicy:
       isLocked: false
       retentionPeriod: 1
-    bucket_list:
-      - name: modules
-        key: MODULES
+    bucket_list: []
   iap:
     enabled: false
     test:
