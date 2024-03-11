@@ -537,10 +537,39 @@ spec:
               key: github-oauth-secret
         {{- end }}
 
-        {{- if .Values.sql.proxy }}
+        {{- if or .Values.crunchydb.enabled .Values.sql.proxy }}
         - name: DB_VENDOR
           value: "postgres"
+        {{- end }}
 
+        {{- if .Values.crunchydb.enabled }}
+        - name: {{ upper .Values.db.host_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: host
+        - name: {{ upper .Values.db.port_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: port
+        - name: {{ upper .Values.db.name_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: dbname
+        - name: {{ upper .Values.db.user_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: user
+        - name: {{ upper .Values.db.password_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: password
+
+        {{- else if .Values.sql.proxy }}
         - name: {{ upper .Values.db.host_env_key }}
           value: "{{- .Values.db.host -}}"
 

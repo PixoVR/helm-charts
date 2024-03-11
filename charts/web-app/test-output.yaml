@@ -371,27 +371,31 @@ spec:
         
         - name: DB_VENDOR
           value: "postgres"
-
         - name: DB_HOST
-          value: "127.0.0.1"
-
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: host
         - name: DB_PORT
-          value: "5432"
-
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: port
         - name: DB_NAME
-          value: 'dev-db'
-
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: dbname
         - name: DB_USER
-          value: 'workload@sa-project.iam'
-
-        - name: DB_DATABASE
-          value: 'dev-db'
-
-        - name: 'DB_DATABASE_EXTRA'
-          value: 'dev-db-extra'
-
-        - name: 'DB_NAME_EXTRA'
-          value: 'dev-db-extra'
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: password
 
         ports:
         - containerPort: 8001

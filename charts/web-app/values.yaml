@@ -293,6 +293,7 @@ db:
   port_env_key: DB_PORT
   name_env_key: DB_NAME
   user_env_key: DB_USER
+  password_env_key: DB_PASSWORD
 
 sendgrid:
   enabled: false
