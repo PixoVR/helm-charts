@@ -27,7 +27,7 @@ spec:
   type: ClusterIP
   selector:
     app: dev-sample-web
-    
+
   ports:
   - name: http
     port: 443

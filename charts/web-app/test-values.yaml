@@ -39,7 +39,7 @@ dynamicHosts:
     tenant: multiplayer
     service: allocator
     protocol: https
-    
+
   - key: MMF_API_HOST
     type: local
     lifecycle: true
@@ -54,6 +54,8 @@ cert_manager:
 
 service:
   internal: false
+  external_dns:
+    enabled: true
   type: ClusterIP
 
 ingress:

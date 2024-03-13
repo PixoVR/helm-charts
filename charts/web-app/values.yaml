@@ -265,6 +265,8 @@ deployment:
 service:
   internal: true
   type: ClusterIP
+  external_dns:
+    enabled: false
   websocket: false
 
 ingress:
