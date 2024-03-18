@@ -1,4 +1,3 @@
-
 lifecycle: dev
 add_lifecycle_to_domain: true
 
@@ -56,6 +55,7 @@ service:
   internal: false
   external_dns:
     enabled: true
+    subdomain: subdomain
   type: ClusterIP
 
 ingress:
@@ -76,21 +76,20 @@ healthCheck:
 sql:
   proxy: true
 
-
 cronjobs:
   - name: sample
     schedule: '0 14 * * *'
     image:
       self: true
-      command: ["/bin/sh"]
+      command: ['/bin/sh']
 
 cronjob:
   enabled: true
   external_secrets:
     enabled: true
     secrets:
-    - secretKey: SOME_SECRET
-      remoteSecretKey: some-secret
+      - secretKey: SOME_SECRET
+        remoteSecretKey: some-secret
 
 env:
   - name: EMAILER_TO
@@ -123,24 +122,24 @@ google:
       isLocked: true
       retentionPeriod: 5
     bucket_list:
-    - name: public
-      key: PUBLIC
-      public: true
-    - name: builds
-      key: BUILDS
-      retentionPolicy:
-        isLocked: false
-        retentionPeriod: 10
-      notifications: true
-      viewing_tenant: externaltenant
-      viewing_service: externalsvc
-      custom_endpoint:
-        enabled: true
-        prefix: external.service
+      - name: public
+        key: PUBLIC
+        public: true
+      - name: builds
+        key: BUILDS
+        retentionPolicy:
+          isLocked: false
+          retentionPeriod: 10
+        notifications: true
+        viewing_tenant: externaltenant
+        viewing_service: externalsvc
+        custom_endpoint:
+          enabled: true
+          prefix: external.service
     external_bucket_list:
-    - name: ext
-      key: EXT
-      external_service: tenant-ext-api
+      - name: ext
+        key: EXT
+        external_service: tenant-ext-api
   sql:
     enabled: true
     extra_databases:
@@ -222,5 +221,3 @@ hpa:
 pixo_service_account:
   enabled: true
   org_id: 20
-
-
