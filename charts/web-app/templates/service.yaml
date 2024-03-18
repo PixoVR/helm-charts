@@ -24,7 +24,11 @@ metadata:
     cloud.google.com/neg: '{"ingress": true}'
     {{- end }}
     {{- if .Values.service.external_dns.enabled }}
+    {{- if .Values.service.external_dns.subdomain }}
+    external-dns.alpha.kubernetes.io/hostname: '{{ .Values.service.external_dns.subdomain }}.{{ include "app_domain" $ -}}.'
+    {{- else }}
     external-dns.alpha.kubernetes.io/hostname: '{{ include "full_domain" $ -}}.'
+    {{- end }}
     {{- end }}
   {{- end }}
 spec:
