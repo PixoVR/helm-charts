@@ -344,9 +344,9 @@ spec:
         - name: {{ .key }}
         {{- if eq .type "local" }}
         {{- if .path }}
-          value: {{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
+          value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
         {{- else }}
-          value: {{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+          value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
         {{- end }}
 
         {{- else if eq .type "remote" }}

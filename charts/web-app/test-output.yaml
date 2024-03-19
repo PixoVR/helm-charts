@@ -284,7 +284,7 @@ spec:
           value: https://multi-central1.multiplayer.dev.example.com/allocator
 
         - name: MMF_API_HOST
-          value: test-matchmaking-matchfunction.test.svc/v1
+          value: http://test-matchmaking-matchfunction.test.svc/v1
 
         - name: LIFECYCLE
           value: DEV
