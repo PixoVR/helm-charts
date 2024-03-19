@@ -312,7 +312,7 @@ spec:
         - name: GOOGLE_STORAGE_BUILDS
           value: us-east-dev-sample-web-builds
         - name: GOOGLE_STORAGE_EXT
-          value: us-east-dev-tenant-ext-api-ext
+          value: pre-us-east-dev-tenant-ext-api-ext
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
         - name: AWS_ID
@@ -572,7 +572,7 @@ spec:
             - name: GOOGLE_STORAGE_BUILDS
               value: dev-sample-web-builds
             - name: GOOGLE_STORAGE_EXT
-              value: dev-sample-tenant-ext-api-ext
+              value: pre-us-east-dev-tenant-ext-api-ext
             - name: EMAILER_EMAIL
               value: pixoplatform@pixovr.com
             - name: EMAILER_PASSWORD
@@ -717,7 +717,7 @@ spec:
             - name: GOOGLE_STORAGE_BUILDS
               value: us-east-dev-sample-web-builds
             - name: GOOGLE_STORAGE_EXT
-              value: dev-sample-tenant-ext-api-ext
+              value: pre-us-east-dev-tenant-ext-api-ext
             - name: EMAILER_EMAIL
               value: pixoplatform@pixovr.com
             - name: EMAILER_PASSWORD

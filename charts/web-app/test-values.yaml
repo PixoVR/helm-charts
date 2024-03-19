@@ -140,6 +140,7 @@ google:
       - name: ext
         key: EXT
         external_service: tenant-ext-api
+        prefix: pre
   sql:
     enabled: true
     extra_databases:

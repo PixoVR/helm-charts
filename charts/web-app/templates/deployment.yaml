@@ -161,7 +161,7 @@ spec:
         securityContext:
           {{- if .Values.debug.enabled }}
           capabilities:
-            add: 
+            add:
             - SYS_PTRACE
           {{- else }}
           allowPrivilegeEscalation: false
@@ -430,10 +430,20 @@ spec:
 
         {{- range .Values.google.storage.external_bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
+          {{- if .prefix }}
+          {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+          value: {{ .prefix -}}-{{ $.Values.cluster_name -}}-{{- include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- else }}
+          value: {{ .prefix -}}-{{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- end }}
+          {{- else }}
+
           {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
           value: {{ $.Values.cluster_name -}}-{{- include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
           {{- else }}
           value: {{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- end }}
+
           {{- end }}
         {{- end }}
 
