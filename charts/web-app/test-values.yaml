@@ -44,6 +44,7 @@ dynamicHosts:
     lifecycle: true
     service: matchmaking-matchfunction
     protocol: http
+    path: v1
 
 subdomain: api
 instance_name: apex-instance
