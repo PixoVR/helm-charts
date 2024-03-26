@@ -403,6 +403,9 @@ spec:
         {{- end }}
 
         {{- if .Values.email.enabled }}
+        - name: SEND_EMAILS
+          value: "true"
+
         - name: EMAILER_EMAIL
           value: {{ .Values.email.sender }}
 
