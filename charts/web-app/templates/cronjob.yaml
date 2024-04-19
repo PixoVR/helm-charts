@@ -66,6 +66,49 @@ spec:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
+            {{- range .Values.dynamicHosts }}
+
+            - name: {{ .key }}
+            {{- if eq .type "local" }}
+            {{- if .path }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
+            {{- else }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+            {{- end }}
+
+            {{- else if eq .type "remote" }}
+
+              {{ $url := include "lifecycle_domain" $ }}
+
+              {{- if .cluster }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- else }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- end }}
+
+            {{- end }}
+
+            {{- end }}
 
             - name: LIFECYCLE
               value: {{ upper .Values.lifecycle }}

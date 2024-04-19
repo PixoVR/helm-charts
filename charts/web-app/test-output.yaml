@@ -548,6 +548,24 @@ spec:
             - name: EMAILER_TO
               value: walker.obrien@pixovr.com
 
+            - name: EXTERNAL_APP_URL
+
+              
+              value: https://multiplayer.dev.example.com
+
+            - name: MATCHMAKER_URL
+
+              
+              value: wss://match.dev.example.com/matchmaking
+
+            - name: ALLOCATE_HOSTNAME
+
+              
+              value: https://multi-central1.multiplayer.dev.example.com/allocator
+
+            - name: MMF_API_HOST
+              value: http://test-matchmaking-matchfunction.test.svc/v1
+
             - name: LIFECYCLE
               value: DEV
             - name: AWS_ACCESS_KEY_ID
