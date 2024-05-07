@@ -35,7 +35,8 @@ db:
 
 sa:
   enabled: false
-  infra_roles: []
+  infra_roles:
+    - iam.serviceAccountUser
   app_roles: []
   user_roles:
     - iam.serviceAccountTokenCreator
