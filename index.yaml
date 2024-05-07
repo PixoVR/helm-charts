@@ -352,6 +352,16 @@ entries:
   argocd-app-deploy:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-05-07T03:52:02.215150723Z"
+    description: Deploys ArgoCD tenant apps
+    digest: 7861dbcf93610d773f8b94ef288d1b259d432b86cc6af4eaeebb32a51f9eeac9
+    name: argocd-app-deploy
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-app-deploy-0.0.98/argocd-app-deploy-0.0.98.tgz
+    version: 0.0.98
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-05-02T19:28:06.03025941Z"
     description: Deploys ArgoCD tenant apps
     digest: 940f92adee7ab402832fbf07e0cfd58368795a52d79bc611c5f671ff74ac726b
@@ -1703,6 +1713,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-image-updater-0.0.1/argocd-image-updater-0.0.1.tgz
     version: 0.0.1
   argocd-platform-init:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-05-07T03:52:02.344380479Z"
+    description: Initializes ArgoCD platform
+    digest: 12099decd44d211d512362d28c79c4a9e635e3b0f6733c802cf35e1885674ca0
+    name: argocd-platform-init
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.155/argocd-platform-init-0.0.155.tgz
+    version: 0.0.155
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2024-05-02T19:28:06.243239537Z"
@@ -3204,6 +3224,16 @@ entries:
     - https://github.com/PixoVR/helm-charts/releases/download/argocd-platform-init-0.0.2/argocd-platform-init-0.0.2.tgz
     version: 0.0.2
   argocd-tenant-app-sets:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-05-07T03:52:02.459210391Z"
+    description: Deploys ArgoCD platform tenants
+    digest: 4cf1d9c2a43a7fbf6cb37ee9d1c4bd49bd51b81bbe86d9a1a4646443271e5e53
+    name: argocd-tenant-app-sets
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/argocd-tenant-app-sets-0.0.113/argocd-tenant-app-sets-0.0.113.tgz
+    version: 0.0.113
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2024-05-02T19:28:06.432305129Z"
@@ -10714,4 +10744,4 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.1/web-app-0.0.1.tgz
     version: 0.0.1
-generated: "2024-05-07T03:50:48.548910336Z"
+generated: "2024-05-07T03:52:02.460665878Z"
