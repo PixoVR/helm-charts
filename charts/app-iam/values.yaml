@@ -51,6 +51,7 @@ app:
     - cloudfunctions.admin
     - compute.admin
     - dns.admin
+    - iam.serviceAccountUser
     - secretmanager.admin
     - storage.admin
     - run.admin
