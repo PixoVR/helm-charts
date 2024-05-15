@@ -252,7 +252,7 @@ spec:
           periodSeconds: 10
         {{- end }}
 
-        {{- $extra_secrets := .Values.external_secrets.app_secrets.extra_secrets }}
+        {{- $extra_secrets := .Values.external_secrets.extra_secrets }}
         {{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
 
         {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
