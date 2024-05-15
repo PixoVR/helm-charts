@@ -83,6 +83,11 @@ spec:
           secret:
             secretName: app-secrets
         {{- end }}
+        {{- if $has_extra_secrets }}
+        - name: extra-app-secrets
+          secret:
+            secretName: extra-app-secrets
+        {{- end }}
         {{- end }}
 
         - name: tmp-dir

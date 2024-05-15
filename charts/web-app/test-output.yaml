@@ -124,6 +124,9 @@ spec:
         - name: app-secrets
           secret:
             secretName: app-secrets
+        - name: extra-app-secrets
+          secret:
+            secretName: extra-app-secrets
 
         - name: tmp-dir
           emptyDir: {}
