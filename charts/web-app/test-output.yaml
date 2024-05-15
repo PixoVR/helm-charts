@@ -198,6 +198,8 @@ spec:
         envFrom:
         - secretRef:
             name: cronjob-secrets
+        - secretRef:
+            name: extra-app-secrets
 
         env:
         - name: USE_GCS
@@ -921,7 +923,7 @@ spec:
   googleServiceAccount: 'app-infra@sa-project.iam.gserviceaccount.com'
 ---
 # Source: web-app/templates/external-secrets.yaml
-apiVersion: external-secrets.io/v1beta1 
+apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: cronjob-secrets
@@ -939,7 +941,25 @@ spec:
       key: some-secret
 ---
 # Source: web-app/templates/external-secrets.yaml
-apiVersion: external-secrets.io/v1beta1 
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: extra-app-secrets
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: extra-app-secrets
+    creationPolicy: Owner
+  data:
+  - secretKey: SOME_APP_SECRET
+    remoteRef:
+      key: some-app-secret
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: github-credentials
@@ -966,7 +986,7 @@ spec:
       key: github-ssh-private-key
 ---
 # Source: web-app/templates/external-secrets.yaml
-apiVersion: external-secrets.io/v1beta1 
+apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: app-secrets
@@ -1025,115 +1045,6 @@ spec:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
 ---
-# Source: web-app/charts/app_iam/templates/app-project-iam.yaml
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
-metadata:
-  name: test-app-policy
-  namespace: infra-admin
-spec:
-  resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: 'replaceme'
-  bindings:
-    - role: roles/artifactregistry.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/cloudbuild.builds.editor
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/cloudfunctions.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/dns.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/secretmanager.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/storage.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/run.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/pubsub.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/cloudsql.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'cnrm-controller-manager-infra-admin'
-            namespace: infra-admin
-    - role: roles/errorreporting.writer
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/logging.logWriter
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/monitoring.metricWriter
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/pubsub.publisher
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/pubsub.subscriber
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/secretmanager.secretAccessor
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
-    - role: roles/storage.admin
-      members:
-      - memberFrom:
-          serviceAccountRef:
-            name: 'workload-sa'
-            namespace: infra-admin
----
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
@@ -1150,7 +1061,7 @@ spec:
       members:
         - member: allUsers
 ---
-# Source: web-app/charts/app_iam/templates/app-account.yaml
+# Source: web-app/charts/app-iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -1168,7 +1079,7 @@ spec:
       members:
       - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
 ---
-# Source: web-app/charts/app_iam/templates/infra-account.yaml
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -1186,7 +1097,7 @@ spec:
       members:
       - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
 ---
-# Source: web-app/charts/app_iam/templates/app-account.yaml
+# Source: web-app/charts/app-iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -1197,7 +1108,7 @@ metadata:
 spec:
   displayName: "test workload service account"
 ---
-# Source: web-app/charts/app_iam/templates/infra-account.yaml
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -1379,7 +1290,7 @@ spec:
   type: CLOUD_IAM_SERVICE_ACCOUNT
 ---
 # Source: web-app/templates/external-secrets.yaml
-apiVersion: external-secrets.io/v1beta1 
+apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
   name: pixo-secret-store

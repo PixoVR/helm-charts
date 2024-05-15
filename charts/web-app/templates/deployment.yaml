@@ -1,7 +1,7 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
 {{- if .Values.deployment.enabled }}
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -252,10 +252,22 @@ spec:
           periodSeconds: 10
         {{- end }}
 
-        {{- if .Values.cronjob.external_secrets.enabled }}
+        {{- $extra_secrets := .Values.external_secrets.app_secrets.extra_secrets }}
+        {{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
+
+        {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
         envFrom:
+
+        {{- if .Values.cronjob.external_secrets.enabled }}
         - secretRef:
             name: cronjob-secrets
+        {{- end }}
+
+        {{- if $has_extra_secrets }}
+        - secretRef:
+            name: extra-app-secrets
+        {{- end }}
+
         {{- end }}
 
         env:

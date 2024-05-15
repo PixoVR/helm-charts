@@ -175,6 +175,9 @@ external_secrets:
   app_secrets:
     enabled: true
     create: true
+    extra_secrets:
+      - secretKey: SOME_APP_SECRET
+        remoteSecretKey: some-app-secret
 
 create_sa: true
 
