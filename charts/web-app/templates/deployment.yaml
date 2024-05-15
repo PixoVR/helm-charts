@@ -1,6 +1,10 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
 {{- if .Values.deployment.enabled }}
+
+{{- $extra_secrets := .Values.external_secrets.extra_secrets }}
+{{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -184,11 +188,19 @@ spec:
 
         volumeMounts:
           {{- if .Values.external_secrets.enabled }}
+
           {{- if .Values.external_secrets.app_secrets.enabled }}
           - mountPath: /backend/secrets
             name: app-secrets
           {{- end }}
+
+          {{- if $has_extra_secrets }}
+          - mountPath: /backend/extra-secrets
+            name: extra-app-secrets
           {{- end }}
+
+          {{- end }}
+
           - mountPath: {{ .Values.deployment.pvc.path }}
             name: db-volume
           - mountPath: /tmp
@@ -251,9 +263,6 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
         {{- end }}
-
-        {{- $extra_secrets := .Values.external_secrets.extra_secrets }}
-        {{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
 
         {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
         envFrom:

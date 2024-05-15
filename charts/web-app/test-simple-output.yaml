@@ -112,6 +112,7 @@ spec:
             cpu: 0.25
 
         volumeMounts:
+
           - mountPath: /var/sqlite
             name: db-volume
           - mountPath: /tmp

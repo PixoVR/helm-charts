@@ -172,6 +172,9 @@ spec:
         volumeMounts:
           - mountPath: /backend/secrets
             name: app-secrets
+          - mountPath: /backend/extra-secrets
+            name: extra-app-secrets
+
           - mountPath: /var/db
             name: db-volume
           - mountPath: /tmp
