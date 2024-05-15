@@ -9,7 +9,7 @@ metadata:
     tier: app
     purpose: deploy
     deployment: helm
-    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }}
 spec:
   generators:
   - matrix:
@@ -43,7 +43,7 @@ spec:
         purpose: deploy
         app: {{ .Values.app_name }}
         service: '{{ "{{ path.basename }}" }}'
-        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }}
       annotations:
         argocd-image-updater.argoproj.io/image-list: '{{ "{{ path.basename }}" }}=gcr.io/{{- required "app_project_id" .Values.app_project_id -}}/{{- .Values.app_name -}}/{{- .Values.lifecycle }}/{{ "{{ path.basename }}" }}'
         argocd-image-updater.argoproj.io/write-back-method: git
@@ -55,7 +55,7 @@ spec:
         {{- end }}
         {{- end }}
 
-        argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.pull-secret: pullsecret:argocd/gcr-credentials 
+        argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.pull-secret: pullsecret:argocd/gcr-credentials
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.force-update: "true"
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.update-strategy: latest
         argocd-image-updater.argoproj.io/{{ "{{ path.basename }}" }}.helm.image-tag: {{ .Values.helm_image_alias }}
@@ -89,6 +89,26 @@ spec:
             - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
             - 'clusters/{{ "{{ nameNormalized }}" }}.yaml'
           values: |
+            {{- if .Values.multi_cluster }}
+            cpl_cluster_name: {{ .Values.cpl_cluster_name }}
+            cluster_name: {{ "{{ nameNormalized }}" }}
+            {{- end }}
+            multi_cluster: {{ .Values.multi_cluster }}
+            github_org: {{ .Values.github_org }}
+            app_project_id: {{ required "app_project_id" .Values.app_project_id }}
+            db_project_id: {{ required "db_project_id" .Values.db_project_id }}
+            sa_project_id: {{ required "sa_project_id" .Values.sa_project_id }}
+            gke_project_id: {{ required "gke_project_id" .Values.gke_project_id }}
+            domain: '{{ required "app_domain" .Values.app_domain }}'
+            lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }}
+            app_code: {{ .Values.app_name }}
+            microservice_name: '{{ "{{ path.basename }}" }}'
+            sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
+            infra:
+              sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
+            ksa_name: "{{- .Values.app_name -}}-workload"
+            app_iam:
+              enabled: false
             {{ .Values.deploy_chart_name }}:
               {{- if .Values.multi_cluster }}
               cpl_cluster_name: {{ .Values.cpl_cluster_name }}
@@ -101,14 +121,14 @@ spec:
               sa_project_id: {{ required "sa_project_id" .Values.sa_project_id }}
               gke_project_id: {{ required "gke_project_id" .Values.gke_project_id }}
               domain: '{{ required "app_domain" .Values.app_domain }}'
-              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+              lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }}
               app_code: {{ .Values.app_name }}
               microservice_name: '{{ "{{ path.basename }}" }}'
               sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
               infra:
                 sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-infra"
               ksa_name: "{{- .Values.app_name -}}-workload"
-              app_iam: 
+              app_iam:
                 enabled: false
       destination:
         server: '{{ "{{ server }}" }}'
