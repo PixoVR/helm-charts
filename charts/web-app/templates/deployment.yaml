@@ -195,7 +195,7 @@ spec:
           {{- end }}
 
           {{- if $has_extra_secrets }}
-          - mountPath: /backend/extra-secrets
+          - mountPath: /mnt/extra-secrets
             name: extra-app-secrets
           {{- end }}
 
@@ -288,6 +288,13 @@ spec:
           value: '{{ include "full_domain" $ }}'
         - name: PORT
           value: "{{ .Values.containerPort }}"
+
+        {{- if .Values.external_secrets.enabled }}
+        {{- if $has_extra_secrets }}
+        - name: EXTRA_SECRETS_PATH
+          value: "/mnt/extra-secrets"
+        {{- end }}
+        {{- end }}
 
         {{- if and .Values.redis.enabled .Values.redis.auth.enabled }}
         - name: REDIS_USERNAME
