@@ -80,6 +80,12 @@ sql:
 cronjobs:
   - name: sample
     schedule: '0 14 * * *'
+    memory:
+      request: 128Mi
+      limit: 256Mi
+    cpu:
+      request: .1
+      limit: .25
     image:
       self: true
       command: ['/bin/sh']
