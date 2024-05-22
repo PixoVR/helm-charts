@@ -42,7 +42,7 @@ metadata:
   name: 'dev-sample-web'
   namespace: test
   annotations:
-    admission.datadoghq.com/js-lib.version: ""
+    admission.datadoghq.com/js-lib.version: "gcr.io/datadoghq/dd-lib-js-init"
   labels:
     lifecycle: 'dev'
     namespace: test

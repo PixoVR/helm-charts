@@ -5,6 +5,10 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: '{{ include "cronjob_name" $ }}-cronjob'
+  annotations:
+    {{- if and .Values.datadog.enabled .Values.node }}
+    admission.datadoghq.com/js-lib.version: "gcr.io/datadoghq/dd-lib-js-init"
+    {{- end }}
   labels:
     lifecycle: '{{- include "lifecycle" $ -}}'
     namespace: {{ .Release.Namespace }}

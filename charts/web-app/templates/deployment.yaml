@@ -12,14 +12,13 @@ metadata:
   name: '{{ include "deployment_name" $ }}'
   namespace: {{ .Release.Namespace }}
   annotations:
-  {{- if .Values.datadog.enabled }}
-  {{- if .Values.node }}
-    admission.datadoghq.com/js-lib.version: ""
-  {{- end }}
-  {{- end }}
-  {{- if .Values.pixo_service_account.enabled }}
+    {{- if and .Values.datadog.enabled .Values.node }}
+    admission.datadoghq.com/js-lib.version: "gcr.io/datadoghq/dd-lib-js-init"
+    {{- end }}
+
+    {{- if .Values.pixo_service_account.enabled }}
     platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
-  {{- end }}
+    {{- end }}
   labels:
     lifecycle: '{{- include "lifecycle" $ -}}'
     namespace: {{ .Release.Namespace }}
