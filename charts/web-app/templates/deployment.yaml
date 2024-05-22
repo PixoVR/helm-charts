@@ -11,8 +11,13 @@ kind: Deployment
 metadata:
   name: '{{ include "deployment_name" $ }}'
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.pixo_service_account.enabled }}
   annotations:
+  {{- if .Values.datadog.enabled }}
+  {{- if .Values.node }}
+    admission.datadoghq.com/js-lib.version: ""
+  {{- end }}
+  {{- end }}
+  {{- if .Values.pixo_service_account.enabled }}
     platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
   {{- end }}
   labels:
@@ -25,6 +30,9 @@ metadata:
     tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
     tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-deploy'
     tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
+    {{- if .Values.node }}
+    admission.datadoghq.com/enabled: "true"
+    {{- end }}
     {{- end }}
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
@@ -319,6 +327,15 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels['tags.datadoghq.com/version']
+
+        {{- if .Values.node }}
+        - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+        - name: DD_LOGS_INJECTION
+          value: "true"
+        {{- end }}
         {{- end }}
 
         {{- if .Values.external_secrets.enabled }}

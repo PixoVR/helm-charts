@@ -13,3 +13,4 @@ domain: simple.com
 
 subdomain: api
 
+node: true

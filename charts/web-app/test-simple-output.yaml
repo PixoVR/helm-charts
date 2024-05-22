@@ -41,6 +41,7 @@ kind: Deployment
 metadata:
   name: 'dev-sample-web'
   namespace: test
+  annotations:
   labels:
     lifecycle: 'dev'
     namespace: test
@@ -87,6 +88,8 @@ spec:
           emptyDir: {}
         - name: var-tmp-dir
           emptyDir: {}
+        - name: npm-dir
+          emptyDir: {}
 
         - name: db-volume
           emptyDir: {}
@@ -124,6 +127,8 @@ spec:
             name: usr-tmp-dir
           - mountPath: /var/tmp
             name: var-tmp-dir
+          - name: npm-dir
+            mountPath: /.npm
         livenessProbe:
           httpGet:
             path: /
