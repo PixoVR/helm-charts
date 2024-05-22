@@ -23,7 +23,7 @@ metadata:
     tier: application
     {{- if .Values.datadog.enabled }}
     tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}'
+    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-deploy'
     tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
     {{- end }}
 spec:
@@ -44,7 +44,7 @@ spec:
         tier: application
         {{- if .Values.datadog.enabled }}
         tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-        tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}'
+        tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-deploy'
         tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
         {{- end }}
       annotations:
@@ -90,13 +90,6 @@ spec:
       {{- end }}
 
       volumes:
-        {{- if .Values.datadog.enabled }}
-        - name: apmsocketpath
-          hostPath:
-            path: /var/run/datadog/
-
-        {{- end }}
-
         {{- if .Values.external_secrets.enabled }}
         {{- if .Values.external_secrets.app_secrets.enabled }}
         - name: app-secrets
@@ -223,11 +216,6 @@ spec:
             name: extra-app-secrets
           {{- end }}
 
-          {{- end }}
-
-          {{- if .Values.datadog.enabled }}
-          - name: apmsocketpath
-            mountPath: /var/run/datadog
           {{- end }}
 
           - mountPath: {{ .Values.deployment.pvc.path }}

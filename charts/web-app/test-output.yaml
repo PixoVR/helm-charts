@@ -60,7 +60,8 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: dev-sample-web
+    app: sample
+    name: web
 
   ports:
   - name: http
@@ -87,7 +88,7 @@ metadata:
     name: web
     tier: application
     tags.datadoghq.com/env: 'dev'
-    tags.datadoghq.com/service: 'sample-web'
+    tags.datadoghq.com/service: 'sample-web-deploy'
     tags.datadoghq.com/version: 'latest'
 spec:
   replicas: 1
@@ -95,7 +96,8 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: 'dev-sample-web'
+      app: sample
+      name: web
   template:
     metadata:
       labels:
@@ -105,11 +107,10 @@ spec:
         name: web
         tier: application
         tags.datadoghq.com/env: 'dev'
-        tags.datadoghq.com/service: 'sample-web'
+        tags.datadoghq.com/service: 'sample-web-deploy'
         tags.datadoghq.com/version: 'latest'
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        linkerd.io/inject: enabled
         container.apparmor.security.beta.kubernetes.io/app: runtime/default
         container.seccomp.security.alpha.kubernetes.io/app: runtime/default
         container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
@@ -129,9 +130,6 @@ spec:
           - 150
 
       volumes:
-        - name: apmsocketpath
-          hostPath:
-            path: /var/run/datadog/
         - name: app-secrets
           secret:
             secretName: app-secrets
@@ -188,8 +186,6 @@ spec:
             name: app-secrets
           - mountPath: /mnt/extra-secrets
             name: extra-app-secrets
-          - name: apmsocketpath
-            mountPath: /var/run/datadog
 
           - mountPath: /var/db
             name: db-volume
@@ -525,11 +521,30 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: 'dev-sample-web-cronjob'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+    tags.datadoghq.com/env: 'dev'
+    tags.datadoghq.com/service: 'sample-web-cj'
+    tags.datadoghq.com/version: 'latest'
 spec:
   schedule: "0 8 * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+            tags.datadoghq.com/env: 'dev'
+            tags.datadoghq.com/service: 'sample-web-cj'
+            tags.datadoghq.com/version: 'latest'
         spec:
           serviceAccountName: 'app-workload'
           restartPolicy: Never
@@ -642,11 +657,30 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: 'dev-sample-web-sample-cj'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+    tags.datadoghq.com/env: 'dev'
+    tags.datadoghq.com/service: 'sample-web-sample-cj'
+    tags.datadoghq.com/version: 'latest'
 spec:
   schedule: '0 14 * * *'
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+            tags.datadoghq.com/env: 'dev'
+            tags.datadoghq.com/service: 'sample-web-sample-cj'
+            tags.datadoghq.com/version: 'latest'
         spec:
           serviceAccountName: 'app-workload'
           restartPolicy: Never
@@ -1173,9 +1207,6 @@ spec:
   postgresVersion: 14
   instances:
     - name: instance1
-      metadata:
-        annotations:
-          linkerd.io/inject: enabled
       dataVolumeClaimSpec:
         accessModes:
         - "ReadWriteOnce"

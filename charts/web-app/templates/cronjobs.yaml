@@ -6,6 +6,17 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: '{{ include "cronjob_name" $ }}-{{- .name -}}-cj'
+  labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
+    namespace: {{ $.Release.Namespace }}
+    app: {{ $.Values.app_code }}
+    name: {{ $.Values.microservice_name }}
+    tier: application
+    {{- if $.Values.datadog.enabled }}
+    tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
+    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-{{- .name -}}-cj'
+    tags.datadoghq.com/version: '{{- $.Values.image.tag -}}'
+    {{- end }}
 spec:
   {{- if .schedule }}
   schedule: '{{- .schedule -}}'
@@ -15,6 +26,18 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            lifecycle: '{{- include "lifecycle" $ -}}'
+            namespace: {{ $.Release.Namespace }}
+            app: {{ $.Values.app_code }}
+            name: {{ $.Values.microservice_name }}
+            tier: application
+            {{- if $.Values.datadog.enabled }}
+            tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
+            tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-{{- .name -}}-cj'
+            tags.datadoghq.com/version: '{{- $.Values.image.tag -}}'
+            {{- end }}
         spec:
           serviceAccountName: '{{ include "ksa_name" $ }}'
           restartPolicy: Never
