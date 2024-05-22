@@ -32,7 +32,8 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: '{{ include "deployment_name" $ }}'
+      app: {{ .Values.app_code }}
+      name: {{ .Values.microservice_name }}
   template:
     metadata:
       labels:

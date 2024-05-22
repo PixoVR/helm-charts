@@ -1,7 +1,7 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
 {{- if .Values.deployment.enabled }}
-
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -38,7 +38,8 @@ spec:
   type: {{ .Values.service.type }}
   {{- end }}
   selector:
-    app: {{ include "deployment_name" $ }}
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
 
   ports:
   - name: http
