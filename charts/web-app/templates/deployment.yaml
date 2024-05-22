@@ -330,9 +330,9 @@ spec:
 
         {{- if .Values.node }}
         - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         - name: DD_LOGS_INJECTION
           value: "true"
         {{- end }}

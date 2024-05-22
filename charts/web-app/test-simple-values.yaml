@@ -14,3 +14,5 @@ domain: simple.com
 subdomain: api
 
 node: true
+datadog:
+  enabled: true

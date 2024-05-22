@@ -42,12 +42,17 @@ metadata:
   name: 'dev-sample-web'
   namespace: test
   annotations:
+    admission.datadoghq.com/js-lib.version: ""
   labels:
     lifecycle: 'dev'
     namespace: test
     app: sample
     name: web
     tier: application
+    tags.datadoghq.com/env: 'dev'
+    tags.datadoghq.com/service: 'sample-web-deploy'
+    tags.datadoghq.com/version: 'latest'
+    admission.datadoghq.com/enabled: "true"
 spec:
   replicas: 1
   strategy:
@@ -64,6 +69,9 @@ spec:
         app: sample
         name: web
         tier: application
+        tags.datadoghq.com/env: 'dev'
+        tags.datadoghq.com/service: 'sample-web-deploy'
+        tags.datadoghq.com/version: 'latest'
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         container.apparmor.security.beta.kubernetes.io/app: runtime/default
@@ -152,6 +160,24 @@ spec:
           value: 'api.sample.dev.simple.com'
         - name: PORT
           value: "80"
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_LOGS_INJECTION
+          value: "true"
 
         - name: TMP_PATH
           value: "/var/tmp"
