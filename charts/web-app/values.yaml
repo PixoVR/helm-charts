@@ -38,7 +38,7 @@ infra:
 external_auth: false
 
 linkerd:
-  enabled: true
+  enabled: false
 
 hpa:
   enabled: false
