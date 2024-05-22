@@ -16,9 +16,16 @@ metadata:
     platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
   {{- end }}
   labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
     namespace: {{ .Release.Namespace }}
+    app: {{ .Values.app_code }}
     name: {{ .Values.microservice_name }}
-    tier: backend
+    tier: application
+    {{- if .Values.datadog.enabled }}
+    tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
+    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}'
+    tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
+    {{- end }}
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
   strategy:
@@ -28,6 +35,17 @@ spec:
       app: '{{ include "deployment_name" $ }}'
   template:
     metadata:
+      labels:
+        lifecycle: '{{- include "lifecycle" $ -}}'
+        namespace: {{ .Release.Namespace }}
+        app: {{ .Values.app_code }}
+        name: {{ .Values.microservice_name }}
+        tier: application
+        {{- if .Values.datadog.enabled }}
+        tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
+        tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}'
+        tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
+        {{- end }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         {{- if .Values.linkerd.enabled }}
@@ -49,12 +67,6 @@ spec:
         {{- end }}
 
         {{- end }}
-
-      labels:
-        app: '{{ include "deployment_name" $ }}'
-        namespace: {{ .Release.Namespace }}
-        name: {{ .Values.microservice_name }}
-        tier: backend
     spec:
       {{- if .Values.toleration }}
       tolerations:
@@ -77,6 +89,13 @@ spec:
       {{- end }}
 
       volumes:
+        {{- if .Values.datadog.enabled }}
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
+
+        {{- end }}
+
         {{- if .Values.external_secrets.enabled }}
         {{- if .Values.external_secrets.app_secrets.enabled }}
         - name: app-secrets
@@ -193,7 +212,6 @@ spec:
 
         volumeMounts:
           {{- if .Values.external_secrets.enabled }}
-
           {{- if .Values.external_secrets.app_secrets.enabled }}
           - mountPath: /backend/secrets
             name: app-secrets
@@ -204,6 +222,11 @@ spec:
             name: extra-app-secrets
           {{- end }}
 
+          {{- end }}
+
+          {{- if .Values.datadog.enabled }}
+          - name: apmsocketpath
+            mountPath: /var/run/datadog
           {{- end }}
 
           - mountPath: {{ .Values.deployment.pvc.path }}
@@ -293,6 +316,21 @@ spec:
           value: '{{ include "full_domain" $ }}'
         - name: PORT
           value: "{{ .Values.containerPort }}"
+
+        {{- if .Values.datadog.enabled }}
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
+        {{- end }}
 
         {{- if .Values.external_secrets.enabled }}
         {{- if $has_extra_secrets }}

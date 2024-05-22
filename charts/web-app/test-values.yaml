@@ -229,6 +229,9 @@ redis:
 hpa:
   enabled: true
 
+datadog:
+  enabled: true
+
 pixo_service_account:
   enabled: true
   org_id: 20

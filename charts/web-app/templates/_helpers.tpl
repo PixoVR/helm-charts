@@ -61,7 +61,7 @@
 
 {{- define "branch" -}}
   {{- if .Values.branch }}
-    {{- .Values.branch }} 
+    {{- .Values.branch }}
   {{- else }}
     {{- if eq .Values.lifecycle "prod" }}
       {{- .Values.default_branch }}
@@ -77,8 +77,13 @@
 {{- end }}
 
 
+{{- define "app_microservice_name" -}}
+  {{- required "REQUIRED: app_code" .Values.app_code -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
+{{- end }}
+
+
 {{- define "microservice_label" -}}
-  {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-{{ required "REQUIRED: microservice_name" .Values.microservice_name }}
+  {{- include "lifecycle" $ -}}-{{- include "app_microservice_name" $ }}
 {{- end }}
 
 

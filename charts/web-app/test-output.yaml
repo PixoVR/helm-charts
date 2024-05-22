@@ -81,9 +81,14 @@ metadata:
   annotations:
     platform.pixovr.com/service-account-name: 'dev-sample-web-service'
   labels:
+    lifecycle: 'dev'
     namespace: test
+    app: sample
     name: web
-    tier: backend
+    tier: application
+    tags.datadoghq.com/env: 'dev'
+    tags.datadoghq.com/service: 'sample-web'
+    tags.datadoghq.com/version: 'latest'
 spec:
   replicas: 1
   strategy:
@@ -93,6 +98,15 @@ spec:
       app: 'dev-sample-web'
   template:
     metadata:
+      labels:
+        lifecycle: 'dev'
+        namespace: test
+        app: sample
+        name: web
+        tier: application
+        tags.datadoghq.com/env: 'dev'
+        tags.datadoghq.com/service: 'sample-web'
+        tags.datadoghq.com/version: 'latest'
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         linkerd.io/inject: enabled
@@ -102,12 +116,6 @@ spec:
         container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
         container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
         container.seccomp.security.alpha.kubernetes.io/clamav: runtime/default
-
-      labels:
-        app: 'dev-sample-web'
-        namespace: test
-        name: web
-        tier: backend
     spec:
 
       hostIPC: false
@@ -121,6 +129,9 @@ spec:
           - 150
 
       volumes:
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
         - name: app-secrets
           secret:
             secretName: app-secrets
@@ -177,6 +188,8 @@ spec:
             name: app-secrets
           - mountPath: /mnt/extra-secrets
             name: extra-app-secrets
+          - name: apmsocketpath
+            mountPath: /var/run/datadog
 
           - mountPath: /var/db
             name: db-volume
@@ -216,6 +229,18 @@ spec:
           value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
         - name: EXTRA_SECRETS_PATH
           value: "/mnt/extra-secrets"
         - name: REDIS_USERNAME

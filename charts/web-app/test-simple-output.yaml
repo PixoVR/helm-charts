@@ -41,9 +41,11 @@ metadata:
   name: 'dev-sample-web'
   namespace: test
   labels:
+    lifecycle: 'dev'
     namespace: test
+    app: sample
     name: web
-    tier: backend
+    tier: application
 spec:
   replicas: 1
   strategy:
@@ -53,17 +55,17 @@ spec:
       app: 'dev-sample-web'
   template:
     metadata:
+      labels:
+        lifecycle: 'dev'
+        namespace: test
+        app: sample
+        name: web
+        tier: application
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         linkerd.io/inject: enabled
         container.apparmor.security.beta.kubernetes.io/app: runtime/default
         container.seccomp.security.alpha.kubernetes.io/app: runtime/default
-
-      labels:
-        app: 'dev-sample-web'
-        namespace: test
-        name: web
-        tier: backend
     spec:
 
       hostIPC: false

@@ -335,6 +335,9 @@ redis:
     username: default
   secret_suffix: cache
 
+datadog:
+  enabled: false
+
 pixo_service_account:
   enabled: false
   name: ""
