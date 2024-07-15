@@ -49,6 +49,7 @@ app:
     - artifactregistry.admin
     - cloudbuild.builds.editor
     - cloudfunctions.admin
+    - cloudkms.admin
     - compute.admin
     - dns.admin
     - iam.serviceAccountUser
