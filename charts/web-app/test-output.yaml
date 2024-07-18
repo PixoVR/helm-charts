@@ -225,6 +225,12 @@ spec:
           value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
+        - name: GCP_KMS_KEY_REF
+          value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+        - name: GCP_KMS_KEYRING_NAME
+          value: 'dev-sample-web-keyring'
+        - name: GCP_KMS_KEY_NAME
+          value: 'dev-sample-web-key'
         - name: DD_ENV
           valueFrom:
             fieldRef:
@@ -598,6 +604,12 @@ spec:
             env:
             - name: EMAILER_TO
               value: walker.obrien@pixovr.com
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-web-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-web-key'
 
             - name: EXTERNAL_APP_URL
 
@@ -747,6 +759,12 @@ spec:
 
             - name: LIFECYCLE
               value: DEV
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-web-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-web-key'
             - name: REDIS_USERNAME
               value: default
             - name: REDIS_PASSWORD
@@ -1211,6 +1229,28 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test infra admin service account"
+---
+# Source: web-app/templates/kms.yaml
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: 'dev-sample-web-key'
+  annotations:
+    cnrm.cloud.google.com/project-id: 'app-project'
+spec:
+  keyRingRef:
+    name: 'dev-sample-web-keyring'
+  purpose: 'ENCRYPT_DECRYPT'
+---
+# Source: web-app/templates/kms.yaml
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: 'dev-sample-web-keyring'
+  annotations:
+    cnrm.cloud.google.com/project-id: 'app-project'
+spec:
+  location: 'global'
 ---
 # Source: web-app/templates/pixo-service-account.yaml
 apiVersion: platform.pixovr.com/v1

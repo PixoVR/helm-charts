@@ -121,6 +121,8 @@ google:
   config_connector_context: true
   cloudbuild:
     gke: true
+  kms:
+    enabled: true
   storage:
     enabled: true
     create: true

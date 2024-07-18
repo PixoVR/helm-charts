@@ -202,6 +202,7 @@
   {{- include "registry" . -}}:{{- .Values.image.tag }}
 {{- end -}}
 
+
 {{- define "cron_image" -}}
   {{- if .Values.deployment.enabled }}
     {{- .Values.cronjob.image.name }}:{{ .Values.cronjob.image.tag }}
@@ -211,7 +212,6 @@
 {{- end -}}
 
 
-
 {{- define "db_name" -}}
   {{- if $.Values.db_name }}
     {{- include "lifecycle" $ -}}-{{- .Values.db_name -}}-db
@@ -219,6 +219,21 @@
     {{- include "lifecycle" $ -}}-db
   {{- end }}
 {{- end -}}
+
+
+{{- define "kms_keyring_name" -}}
+  {{- include "microservice_label" $ -}}-keyring
+{{- end -}}
+
+
+{{- define "kms_key_name" -}}
+  {{- include "microservice_label" $ -}}-key
+{{- end -}}
+
+
+{{- define "kms_key_ref" -}}
+ projects/{{- include "app_project_id" $ -}}/locations/{{- .Values.google.kms.ring.location -}}/keyRings/{{- include "kms_keyring_name" $ -}}/cryptoKeys/{{- include "kms_key_name" $ -}}
+{{- end }}
 
 
 {{- define "instance_name_suffix" -}}

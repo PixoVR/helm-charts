@@ -313,6 +313,15 @@ spec:
         - name: PORT
           value: "{{ .Values.containerPort }}"
 
+        {{- if .Values.google.kms.enabled }}
+        - name: GCP_KMS_KEY_REF
+          value: '{{ include "kms_key_ref" $ }}'
+        - name: GCP_KMS_KEYRING_NAME
+          value: '{{ include "kms_keyring_name" $ }}'
+        - name: GCP_KMS_KEY_NAME
+          value: '{{ include "kms_key_name" $ }}'
+        {{- end }}
+
         {{- if .Values.datadog.enabled }}
         - name: DD_ENV
           valueFrom:

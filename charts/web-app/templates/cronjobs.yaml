@@ -121,6 +121,15 @@ spec:
             - name: LIFECYCLE
               value: {{ upper $.Values.lifecycle }}
 
+            {{- if $.Values.google.kms.enabled }}
+            - name: GCP_KMS_KEY_REF
+              value: '{{ include "kms_key_ref" $ }}'
+            - name: GCP_KMS_KEYRING_NAME
+              value: '{{ include "kms_keyring_name" $ }}'
+            - name: GCP_KMS_KEY_NAME
+              value: '{{ include "kms_key_name" $ }}'
+            {{- end }}
+
             {{- if and $.Values.redis.enabled $.Values.redis.auth.enabled }}
             - name: REDIS_USERNAME
               value: {{ $.Values.redis.auth.username }}

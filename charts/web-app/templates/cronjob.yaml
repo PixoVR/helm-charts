@@ -93,6 +93,16 @@ spec:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
+
+            {{- if .Values.google.kms.enabled }}
+            - name: GCP_KMS_KEY_REF
+              value: '{{ include "kms_key_ref" $ }}'
+            - name: GCP_KMS_KEYRING_NAME
+              value: '{{ include "kms_keyring_name" $ }}'
+            - name: GCP_KMS_KEY_NAME
+              value: '{{ include "kms_key_name" $ }}'
+            {{- end }}
+
             {{- range .Values.dynamicHosts }}
 
             - name: {{ .key }}

@@ -140,6 +140,12 @@ google:
     gke: false
   create_registry: false
   create_monitoring_suite: false
+  kms:
+    enabled: false
+    ring:
+      location: global
+    key:
+      purpose: ENCRYPT_DECRYPT
   notification_channel: ""
   registry: gcr.io
   pubsub:
