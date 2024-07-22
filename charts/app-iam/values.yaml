@@ -58,6 +58,8 @@ app:
     - run.admin
     - pubsub.admin
   app_roles:
+    - cloudkms.cryptoKeyEncrypter
+    - cloudkms.cryptoKeyDecrypter
     - errorreporting.writer
     - iam.serviceAccountTokenCreator
     - logging.logWriter
