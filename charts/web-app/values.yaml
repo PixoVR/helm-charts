@@ -142,6 +142,7 @@ google:
   create_monitoring_suite: false
   kms:
     enabled: false
+    create: true
     ring:
       location: global
     key:
@@ -340,9 +341,6 @@ redis:
     enabled: true
     username: default
   secret_suffix: cache
-
-datadog:
-  enabled: false
 
 pixo_service_account:
   enabled: false

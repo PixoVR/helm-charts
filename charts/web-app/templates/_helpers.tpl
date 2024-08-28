@@ -221,13 +221,22 @@
 {{- end -}}
 
 
+{{- define "kms_owner_service_label" -}}
+  {{- if .Values.google.kms.owner }}
+    {{- include "lifecycle" $ -}}-{{- required "REQUIRED: app_code" .Values.app_code -}}-{{- .Values.google.kms.owner }}
+  {{- else }}
+    {{- include "microservice_label" $ }}
+  {{- end }}
+{{- end -}}
+
+
 {{- define "kms_keyring_name" -}}
-  {{- include "microservice_label" $ -}}-keyring
+  {{- include "kms_owner_service_label" $ -}}-keyring
 {{- end -}}
 
 
 {{- define "kms_key_name" -}}
-  {{- include "microservice_label" $ -}}-key
+  {{- include "kms_owner_service_label" $ -}}-key
 {{- end -}}
 
 

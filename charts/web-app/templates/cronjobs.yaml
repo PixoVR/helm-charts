@@ -6,21 +6,12 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: '{{ include "cronjob_name" $ }}-{{- .name -}}-cj'
-  annotations:
-    {{- if and $.Values.datadog.enabled $.Values.node }}
-    admission.datadoghq.com/js-lib.version: "gcr.io/datadoghq/dd-lib-js-init"
-    {{- end }}
   labels:
     lifecycle: '{{- include "lifecycle" $ -}}'
     namespace: {{ $.Release.Namespace }}
     app: {{ $.Values.app_code }}
     name: {{ $.Values.microservice_name }}
     tier: application
-    {{- if $.Values.datadog.enabled }}
-    tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-{{- .name -}}-cj'
-    tags.datadoghq.com/version: '{{- $.Values.image.tag -}}'
-    {{- end }}
 spec:
   {{- if .schedule }}
   schedule: '{{- .schedule -}}'
@@ -37,11 +28,6 @@ spec:
             app: {{ $.Values.app_code }}
             name: {{ $.Values.microservice_name }}
             tier: application
-            {{- if $.Values.datadog.enabled }}
-            tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-            tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-{{- .name -}}-cj'
-            tags.datadoghq.com/version: '{{- $.Values.image.tag -}}'
-            {{- end }}
         spec:
           serviceAccountName: '{{ include "ksa_name" $ }}'
           restartPolicy: Never
@@ -138,30 +124,6 @@ spec:
                 secretKeyRef:
                   name: '{{- $.Release.Name -}}-{{- $.Values.redis.secret_suffix -}}'
                   key: redis-password
-            {{- end }}
-
-            {{- if $.Values.datadog.enabled }}
-            - name: DD_ENV
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/env']
-            - name: DD_SERVICE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/service']
-            - name: DD_VERSION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/version']
-
-            {{- if $.Values.node }}
-            - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: DD_LOGS_INJECTION
-              value: "true"
-            {{- end }}
             {{- end }}
 
             {{- if $.Values.crunchydb.enabled }}

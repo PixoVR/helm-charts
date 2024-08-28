@@ -14,5 +14,8 @@ domain: simple.com
 subdomain: api
 
 node: true
-datadog:
-  enabled: true
+
+google:
+  kms:
+    enabled: true
+    owner: other

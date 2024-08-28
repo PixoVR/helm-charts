@@ -12,10 +12,6 @@ metadata:
   name: '{{ include "deployment_name" $ }}'
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if and .Values.datadog.enabled .Values.node }}
-    admission.datadoghq.com/js-lib.version: "gcr.io/datadoghq/dd-lib-js-init"
-    {{- end }}
-
     {{- if .Values.pixo_service_account.enabled }}
     platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
     {{- end }}
@@ -25,14 +21,6 @@ metadata:
     app: {{ .Values.app_code }}
     name: {{ .Values.microservice_name }}
     tier: application
-    {{- if .Values.datadog.enabled }}
-    tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-    tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-deploy'
-    tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
-    {{- if .Values.node }}
-    admission.datadoghq.com/enabled: "true"
-    {{- end }}
-    {{- end }}
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
   strategy:
@@ -49,11 +37,6 @@ spec:
         app: {{ .Values.app_code }}
         name: {{ .Values.microservice_name }}
         tier: application
-        {{- if .Values.datadog.enabled }}
-        tags.datadoghq.com/env: '{{- include "lifecycle" $ -}}'
-        tags.datadoghq.com/service: '{{- include "app_microservice_name" $ -}}-deploy'
-        tags.datadoghq.com/version: '{{- .Values.image.tag -}}'
-        {{- end }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         {{- if .Values.linkerd.enabled }}
@@ -320,30 +303,6 @@ spec:
           value: '{{ include "kms_keyring_name" $ }}'
         - name: GCP_KMS_KEY_NAME
           value: '{{ include "kms_key_name" $ }}'
-        {{- end }}
-
-        {{- if .Values.datadog.enabled }}
-        - name: DD_ENV
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/env']
-        - name: DD_SERVICE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/service']
-        - name: DD_VERSION
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/version']
-
-        {{- if .Values.node }}
-        - name: DD_AGENT_HOST
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-        - name: DD_LOGS_INJECTION
-          value: "true"
-        {{- end }}
         {{- end }}
 
         {{- if .Values.external_secrets.enabled }}

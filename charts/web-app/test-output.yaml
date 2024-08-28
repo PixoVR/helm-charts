@@ -87,9 +87,6 @@ metadata:
     app: sample
     name: web
     tier: application
-    tags.datadoghq.com/env: 'dev'
-    tags.datadoghq.com/service: 'sample-web-deploy'
-    tags.datadoghq.com/version: 'latest'
 spec:
   replicas: 1
   strategy:
@@ -106,9 +103,6 @@ spec:
         app: sample
         name: web
         tier: application
-        tags.datadoghq.com/env: 'dev'
-        tags.datadoghq.com/service: 'sample-web-deploy'
-        tags.datadoghq.com/version: 'latest'
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         container.apparmor.security.beta.kubernetes.io/app: runtime/default
@@ -231,18 +225,6 @@ spec:
           value: 'dev-sample-web-keyring'
         - name: GCP_KMS_KEY_NAME
           value: 'dev-sample-web-key'
-        - name: DD_ENV
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/env']
-        - name: DD_SERVICE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/service']
-        - name: DD_VERSION
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tags.datadoghq.com/version']
         - name: EXTRA_SECRETS_PATH
           value: "/mnt/extra-secrets"
         - name: REDIS_USERNAME
@@ -527,16 +509,12 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: 'dev-sample-web-cronjob'
-  annotations:
   labels:
     lifecycle: 'dev'
     namespace: test
     app: sample
     name: web
     tier: application
-    tags.datadoghq.com/env: 'dev'
-    tags.datadoghq.com/service: 'sample-web-cj'
-    tags.datadoghq.com/version: 'latest'
 spec:
   schedule: "0 8 * * *"
   jobTemplate:
@@ -549,9 +527,6 @@ spec:
             app: sample
             name: web
             tier: application
-            tags.datadoghq.com/env: 'dev'
-            tags.datadoghq.com/service: 'sample-web-cj'
-            tags.datadoghq.com/version: 'latest'
         spec:
           serviceAccountName: 'app-workload'
           restartPolicy: Never
@@ -631,18 +606,6 @@ spec:
 
             - name: LIFECYCLE
               value: DEV
-            - name: DD_ENV
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/env']
-            - name: DD_SERVICE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/service']
-            - name: DD_VERSION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/version']
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -682,16 +645,12 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: 'dev-sample-web-sample-cj'
-  annotations:
   labels:
     lifecycle: 'dev'
     namespace: test
     app: sample
     name: web
     tier: application
-    tags.datadoghq.com/env: 'dev'
-    tags.datadoghq.com/service: 'sample-web-sample-cj'
-    tags.datadoghq.com/version: 'latest'
 spec:
   schedule: '0 14 * * *'
   jobTemplate:
@@ -704,9 +663,6 @@ spec:
             app: sample
             name: web
             tier: application
-            tags.datadoghq.com/env: 'dev'
-            tags.datadoghq.com/service: 'sample-web-sample-cj'
-            tags.datadoghq.com/version: 'latest'
         spec:
           serviceAccountName: 'app-workload'
           restartPolicy: Never
@@ -772,18 +728,6 @@ spec:
                 secretKeyRef:
                   name: 'test-cache'
                   key: redis-password
-            - name: DD_ENV
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/env']
-            - name: DD_SERVICE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/service']
-            - name: DD_VERSION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/version']
             - name: DB_VENDOR
               value: "postgres"
             - name: DB_HOST
