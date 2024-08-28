@@ -142,7 +142,6 @@ google:
   create_monitoring_suite: false
   kms:
     enabled: false
-    create: true
     ring:
       location: global
     key:
