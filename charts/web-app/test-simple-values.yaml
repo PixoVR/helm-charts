@@ -19,3 +19,11 @@ google:
   kms:
     enabled: true
     owner: other
+
+cronjobs:
+  - name: simple
+    schedule: '0 14 * * *'
+    image:
+      self: true
+      command: ['/bin/sh']
+

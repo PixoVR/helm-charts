@@ -188,6 +188,97 @@ spec:
         - containerPort: 80
           name: app-port
 ---
+# Source: web-app/templates/cronjobs.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'dev-sample-web-simple-cj'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  schedule: '0 14 * * *'
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+        spec:
+          serviceAccountName: 'app-workload'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+            image: 'gcr.io/app-project/sample/dev/web:latest'
+            command:
+            - /bin/sh
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+
+            - name: LIFECYCLE
+              value: DEV
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-other-keyring/cryptoKeys/dev-sample-other-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-other-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-other-key'
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
