@@ -80,11 +80,27 @@ spec:
 
             resources:
               requests:
+                {{- if .memory.request }}
                 memory: {{ required "REQUIRED: .memory.request" .memory.request }}
+                {{- else }}
+                memory: {{ required "REQUIRED: memory.request" $.Values.memory.request }}
+                {{- end }}
+                {{- if .cpu.request }}
                 cpu: {{ required "REQUIRED: .cpu.request" .cpu.request }}
+                {{- else }}
+                cpu: {{ required "REQUIRED: cpu.request" $.Values.cpu.request }}
+                {{- end }}
               limits:
+                {{- if .memory.limit }}
                 memory: {{ required "REQUIRED: .memory.limit" .memory.limit }}
+                {{- else }}
+                memory: {{ required "REQUIRED: memory.limit" $.Values.memory.limit }}
+                {{- end }}
+                {{- if .cpu.limit }}
                 cpu: {{ required "REQUIRED: .cpu.limit" .cpu.limit }}
+                {{- else }}
+                cpu: {{ required "REQUIRED: cpu.limit" $.Values.cpu.limit }}
+                {{- end }}
 
             volumeMounts:
             - mountPath: /tmp
