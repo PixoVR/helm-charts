@@ -80,6 +80,11 @@ sql:
 cronjobs:
   - name: sample
     schedule: '0 14 * * *'
+    secretMounts:
+      - name: service-auth
+        prefix: true
+        key: password
+        env: PASSWORD
     memory:
       request: 128Mi
       limit: 256Mi

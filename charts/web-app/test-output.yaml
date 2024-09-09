@@ -715,6 +715,11 @@ spec:
 
             - name: LIFECYCLE
               value: DEV
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: 'dev-sample-web-service-auth'
+                  key: 'password'
             - name: GCP_KMS_KEY_REF
               value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
             - name: GCP_KMS_KEYRING_NAME

@@ -123,6 +123,18 @@ spec:
             - name: LIFECYCLE
               value: {{ upper $.Values.lifecycle }}
 
+            {{- range .secretMounts }}
+            - name: {{ .env }}
+              valueFrom:
+                secretKeyRef:
+                  {{- if .prefix }}
+                  name: '{{ include "microservice_label" $ -}}-{{- .name -}}'
+                  {{- else }}
+                  name: '{{- .name -}}'
+                  {{- end }}
+                  key: '{{- .key -}}'
+            {{- end }}
+
             {{- if $.Values.google.kms.enabled }}
             - name: GCP_KMS_KEY_REF
               value: '{{ include "kms_key_ref" $ }}'
