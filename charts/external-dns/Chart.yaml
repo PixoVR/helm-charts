@@ -6,9 +6,9 @@ version: 0.0.33
 
 dependencies:
 - name: external-dns
-  version: 1.13.1
+  version: 1.15.0
   repository: https://kubernetes-sigs.github.io/external-dns 
 - name: app-iam
-  version: 0.0.28
+  version: 0.0.40
   repository: "https://pixovr.github.io/helm-charts"
   alias: app_iam
