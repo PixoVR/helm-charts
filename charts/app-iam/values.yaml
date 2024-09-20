@@ -53,10 +53,12 @@ app:
     - compute.admin
     - dns.admin
     - iam.serviceAccountUser
+    - monitoring.alertPolicyEditor
+    - monitoring.notificationChannelEditor
+    - pubsub.admin
     - secretmanager.admin
     - storage.admin
     - run.admin
-    - pubsub.admin
   app_roles:
     - cloudkms.cryptoKeyEncrypter
     - cloudkms.cryptoKeyDecrypter
