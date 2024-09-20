@@ -296,7 +296,7 @@ db:
   host: "127.0.0.1"
   port: "5432"
   password: fakepassword
-  proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.32.0
+  proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.37.0
   host_env_key: DB_HOST
   port_env_key: DB_PORT
   name_env_key: DB_NAME

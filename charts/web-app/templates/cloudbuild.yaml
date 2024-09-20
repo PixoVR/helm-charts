@@ -100,44 +100,6 @@ spec:
 
 ---
 
-{{- if false }}
-
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecret
-metadata:
-  name: {{ include "submodule_secret_name" $ }}
-  annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
-  labels:
-    namespace: {{ .Release.Namespace }}
-spec:
-  replication:
-    userManaged:
-      replicas:
-      - location: us-central1
-      - location: us-east4
----
-
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecretVersion
-metadata:
-  name: {{ include "submodule_secret_version_name" $ }}
-  annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
-  labels:
-    namespace: {{ .Release.Namespace }}
-spec:
-  enabled: true
-  secretData:
-    valueFrom:
-      secretKeyRef:
-        key: app-secrets
-        name: {{ include "submodule_secret_name" $ }}
-  secretRef:
-    name: {{ include "submodule_secret_name" $ }}
-
-{{- end }}
-
 {{- end }}
 {{- end }}
 {{- end }}
