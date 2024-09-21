@@ -123,6 +123,9 @@ spec:
             - name: LIFECYCLE
               value: {{ upper $.Values.lifecycle }}
 
+            - name: NAMESPACE
+              value: {{ $.Release.Namespace }}
+
             {{- range .secretMounts }}
             - name: {{ .env }}
               valueFrom:
