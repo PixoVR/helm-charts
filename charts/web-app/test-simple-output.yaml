@@ -263,6 +263,9 @@ spec:
 
             - name: LIFECYCLE
               value: DEV
+
+            - name: NAMESPACE
+              value: test
             - name: GCP_KMS_KEY_REF
               value: 'projects/app-project/locations/global/keyRings/dev-sample-other-keyring/cryptoKeys/dev-sample-other-key'
             - name: GCP_KMS_KEYRING_NAME

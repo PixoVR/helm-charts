@@ -426,7 +426,7 @@ spec:
         - containerPort: 2022
           name: sftpgo
       - name: proxy
-        image: "gcr.io/cloudsql-docker/gce-proxy:1.32.0"
+        image: "gcr.io/cloudsql-docker/gce-proxy:1.37.0"
         imagePullPolicy: Always
         command:
         - /cloud_sql_proxy
@@ -713,8 +713,29 @@ spec:
 
             env:
 
+            - name: EXTERNAL_APP_URL
+
+              
+              value: https://multiplayer.dev.example.com
+
+            - name: MATCHMAKER_URL
+
+              
+              value: wss://match.dev.example.com/matchmaking
+
+            - name: ALLOCATE_HOSTNAME
+
+              
+              value: https://multi-central1.multiplayer.dev.example.com/allocator
+
+            - name: MMF_API_HOST
+              value: http://test-matchmaking-matchfunction.test.svc/v1
+
             - name: LIFECYCLE
               value: DEV
+
+            - name: NAMESPACE
+              value: test
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
