@@ -200,6 +200,7 @@ google:
         - "X-Access-Token"
         - 'X-Goog-Resumable'
     retentionPolicy:
+      enabled: true
       isLocked: false
       retentionPeriod: 1
     bucket_list: []

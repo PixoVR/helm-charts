@@ -24,7 +24,7 @@ spec:
   retentionPolicy:
     isLocked: {{ .retentionPolicy.isLocked }}
     retentionPeriod: {{ .retentionPolicy.retentionPeriod }}
-  {{- else if $.Values.google.storage.retentionPolicy }}
+  {{- else if $.Values.google.storage.retentionPolicy.enabled }}
   retentionPolicy:
     isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
     retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}

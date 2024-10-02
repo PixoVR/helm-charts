@@ -181,6 +181,8 @@ spec:
           value: DEV
         - name: APP_HOST
           value: https://api.sample.dev.simple.com
+        - name: GOOGLE_STORAGE_PUBLIC
+          value: dev-sample-web-public
 
         
 
@@ -281,6 +283,11 @@ spec:
 
             - name: TMP_PATH
               value: "/tmp"
+
+            - name: GCP_PROJECT_ID
+              value: 'app-project'
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: dev-sample-web-public
 ---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
@@ -385,6 +392,22 @@ spec:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
 ---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  labels:
+    namespace: test
+  name: dev-sample-web-public-bucket-access
+spec:
+  resourceRef:
+    kind: StorageBucket
+    name: dev-sample-web-public
+  bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - member: allUsers
+---
 # Source: web-app/charts/app-iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
@@ -457,3 +480,37 @@ metadata:
 spec:
   domains:
     - api.sample.dev.simple.com
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: dev-sample-web-public
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+
+  cors:
+    - origin: ["http://localhost", https://sample.dev.simple.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    namespace: test
+  name: dev-sample-web-public-bucket-access
+spec:
+  bucketRef:
+    name: dev-sample-web-public
+  entity: allUsers
+  role: READER

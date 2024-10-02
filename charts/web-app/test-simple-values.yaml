@@ -19,6 +19,15 @@ google:
   kms:
     enabled: true
     owner: other
+  storage:
+    enabled: true
+    create: true
+    bucket_list:
+      - name: public
+        key: PUBLIC
+        public: true
+    retentionPolicy:
+      enabled: false
 
 cronjobs:
   - name: simple
