@@ -545,6 +545,9 @@ spec:
           volumes:
           - name: tmp-dir
             emptyDir: {}
+          - name: extra-app-secrets
+            secret:
+              secretName: extra-app-secrets
 
           containers:
           - name: job
@@ -562,6 +565,8 @@ spec:
             volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+            - mountPath: /mnt/extra-secrets
+              name: extra-app-secrets
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -575,6 +580,11 @@ spec:
             - dev-sample-web.test.svc:443/
             - x-access-token:$(SECRET_KEY)
             - --ignore-stdin
+            envFrom:
+            - secretRef:
+                name: cronjob-secrets
+            - secretRef:
+                name: extra-app-secrets
 
             env:
             - name: EMAILER_TO
@@ -585,6 +595,8 @@ spec:
               value: 'dev-sample-web-keyring'
             - name: GCP_KMS_KEY_NAME
               value: 'dev-sample-web-key'
+            - name: EXTRA_SECRETS_PATH
+              value: "/mnt/extra-secrets"
 
             - name: EXTERNAL_APP_URL
 
