@@ -1,5 +1,8 @@
 {{- if .Values.enabled }}
 {{- if .Values.cronjob.enabled }}
+
+{{- $extra_secrets := .Values.external_secrets.extra_secrets }}
+{{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -41,6 +44,13 @@ spec:
           volumes:
           - name: tmp-dir
             emptyDir: {}
+          {{- if .Values.external_secrets.enabled }}
+          {{- if $has_extra_secrets }}
+          - name: extra-app-secrets
+            secret:
+              secretName: extra-app-secrets
+          {{- end }}
+          {{- end }}
 
           containers:
           - name: job
@@ -58,6 +68,12 @@ spec:
             volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+            {{- if .Values.external_secrets.enabled }}
+            {{- if $has_extra_secrets }}
+            - mountPath: /mnt/extra-secrets
+              name: extra-app-secrets
+            {{- end }}
+            {{- end }}
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -75,6 +91,21 @@ spec:
             - --ignore-stdin
             {{- end }}
 
+            {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
+            envFrom:
+
+            {{- if .Values.cronjob.external_secrets.enabled }}
+            - secretRef:
+                name: cronjob-secrets
+            {{- end }}
+
+            {{- if $has_extra_secrets }}
+            - secretRef:
+                name: extra-app-secrets
+            {{- end }}
+
+            {{- end }}
+
             env:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
@@ -87,6 +118,13 @@ spec:
               value: '{{ include "kms_keyring_name" $ }}'
             - name: GCP_KMS_KEY_NAME
               value: '{{ include "kms_key_name" $ }}'
+            {{- end }}
+
+            {{- if .Values.external_secrets.enabled }}
+            {{- if $has_extra_secrets }}
+            - name: EXTRA_SECRETS_PATH
+              value: "/mnt/extra-secrets"
+            {{- end }}
             {{- end }}
 
             {{- range .Values.dynamicHosts }}

@@ -79,7 +79,7 @@ sql:
 
 cronjobs:
   - name: sample
-    schedule: '0 14 * * *'
+    schedule: "0 14 * * *"
     secretMounts:
       - name: service-auth
         prefix: true
@@ -93,7 +93,7 @@ cronjobs:
       limit: .25
     image:
       self: true
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
 
 cronjob:
   enabled: true
@@ -110,8 +110,8 @@ env:
 email:
   enabled: true
   mfa: true
-  sender: 'pixoplatform@pixovr.com'
-  bcc: 'newuser@pixovr.com'
+  sender: "pixoplatform@pixovr.com"
+  bcc: "newuser@pixovr.com"
 
 aws:
   bucket: test-bucket
@@ -239,4 +239,3 @@ hpa:
 pixo_service_account:
   enabled: true
   org_id: 20
-
