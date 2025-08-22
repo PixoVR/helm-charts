@@ -7,6 +7,15 @@ metadata:
   name: {{ .Release.Name -}}-backendconfig
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.loadbalancer.timeoutSec }}
+  timeoutSec: {{ .Values.loadbalancer.timeoutSec }}
+  {{- end }}
+  
+  {{- if .Values.loadbalancer.connectionDraining.drainingTimeoutSec }}
+  connectionDraining:
+    drainingTimeoutSec: {{ .Values.loadbalancer.connectionDraining.drainingTimeoutSec }}
+  {{- end }}
+
   healthCheck:
     checkIntervalSec: 30
     port: {{ .Values.containerPort }}
