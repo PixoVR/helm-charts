@@ -94,6 +94,11 @@ google:
 security_policy: apex-policy
 ssl_policy: tls-policy
 
+loadbalancer:
+  timeoutSec: 60
+  connectionDraining:
+    drainingTimeoutSec: 300
+
 oauth:
   google:
     enabled: false
