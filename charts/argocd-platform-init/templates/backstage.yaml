@@ -1,0 +1,36 @@
+{{ if .Values.backstage.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  annotations:
+    argocd.argoproj.io/sync-wave: "-30"
+    argocd-image-updater.argoproj.io/image-list: {{ .Values.backstage.image_list }}
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+
+    argocd-image-updater.argoproj.io/backend.pull-secret: pullsecret:argocd/gcr-credentials 
+    argocd-image-updater.argoproj.io/backend.force-update: "true"
+    argocd-image-updater.argoproj.io/backend.update-strategy: latest
+
+  labels:
+    tier: platform
+    deployment: helm
+spec:
+  project: cluster-addons
+  source:
+    helm:
+      ignoreMissingValueFiles: true
+      valueFiles:
+        - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
+    repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+    targetRevision: {{ .Values.revision }}
+    path: {{ .Values.backstage.chart_path }}
+  destination:
+    server: {{ .Values.destination_server }}
+    namespace: backstage
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+{{- end }}

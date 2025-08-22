@@ -1,0 +1,48 @@
+{{ if .Values.tenants.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tenants-init
+  annotations:
+    argocd.argoproj.io/sync-wave: "-50"
+  labels:
+    tier: tenants
+    deployment: helm
+spec:
+  project: {{ .Values.argocd_cpl_project }}
+  source:
+    repoURL: {{ .Values.tenants.chart.repoURL }}
+    targetRevision: {{ .Values.tenants.chart.version }}
+    chart: {{ .Values.tenants.chart.name }}
+    helm:
+      releaseName: tenants-init
+      ignoreMissingValueFiles: true
+      valueFiles:
+        - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
+      values: |
+        parent_folder_id: {{ .Values.parent_folder_id }}
+        cpl_cluster_name: {{ .Values.cpl_cluster_name }}
+        github_org: {{ .Values.github_org }}
+        domain: {{ .Values.domain }}
+        repo_name: {{ .Values.repo_name }}
+        fullname: tenants-app-sets
+        revision: {{ .Values.revision }}
+        target_revision: {{ .Values.target_revision }}
+        lifecycle: {{ .Values.lifecycle }}
+        sa_project_id: {{ .Values.sa_project_id }}
+        gke_project_id: {{ .Values.gke_project_id }}
+        apps:
+          ingress:
+            enabled: {{ .Values.tenants.ingress.enabled }}
+            https: {{ .Values.tenants.ingress.https }}
+        image_updater:
+          use_new_branch: {{ .Values.image_updater.use_new_branch }}
+  destination:
+    server: {{ .Values.cpl_server }}
+    namespace: {{ .Values.argocd_namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+{{- end }}

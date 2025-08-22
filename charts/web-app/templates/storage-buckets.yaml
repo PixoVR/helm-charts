@@ -7,22 +7,146 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
-  name: {{ include "app_label" $ -}}-{{- .name }}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name }}
+  {{- end }}
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" $ }}
     cnrm.cloud.google.com/force-destroy: "false"
   labels:
     namespace: {{ $.Release.Namespace }}
 spec:
   location: {{ required "REQUIRED: google.region" $.Values.google.region }}
-  # cors:
-  #   - origin: ["https://{{- include "subdomain" $ -}}"]
-  #     responseHeader: ["Content-Type"]
-  #     method: ["*"]
-  #     maxAgeSeconds: 3600
-  uniformBucketLevelAccess: true
+
+  {{- if .retentionPolicy }}
+  retentionPolicy:
+    isLocked: {{ .retentionPolicy.isLocked }}
+    retentionPeriod: {{ .retentionPolicy.retentionPeriod }}
+  {{- else if $.Values.google.storage.retentionPolicy.enabled }}
+  retentionPolicy:
+    isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
+    retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
+  {{- end }}
+
+  cors:
+    {{- if $.Values.google.storage.cors.allow_all }}
+    - origin: ["*"]
+      method: ["*"]
+    {{- else }}
+    {{- if eq $.Values.lifecycle "dev" }}
+    - origin: ["http://localhost", https://{{- include "app_domain" $ }}"]
+    {{- else }}
+    - origin: ["https://{{- include "app_domain" $ }}"]
+    {{- end }}
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+    {{- end }}
+      responseHeader: {{ $.Values.google.storage.cors.headers }}
+      maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
+
+  uniformBucketLevelAccess: false
 
 ---
+
+{{- if .public }}
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    namespace: {{ $.Release.Namespace }}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}-bucket-access
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-bucket-access
+  {{- end }}
+spec:
+  bucketRef:
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
+  entity: allUsers
+  role: READER
+
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  labels:
+    namespace: {{ $.Release.Namespace }}
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}-bucket-access
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-bucket-access
+  {{- end }}
+spec:
+  resourceRef:
+    kind: StorageBucket
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
+  bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - member: allUsers
+
+---
+{{- end }}
+
+{{- if .viewing_tenant }}
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}-tenant-bucket-access
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-tenant-bucket-access
+  {{- end }}
+spec:
+  bucketRef:
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
+  entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
+  {{- if .viewing_role }}
+  role: {{ .viewing_role }}
+  {{- else }}
+  role: READER
+  {{- end }}
+
+---
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageDefaultObjectAccessControl
+metadata:
+  {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+  name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}-default-bucket-access
+  {{- else }}
+  name: {{ include "microservice_label" $ -}}-{{- .name -}}-default-bucket-access
+  {{- end }}
+spec:
+  bucketRef:
+    {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+    name: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+    {{- else }}
+    name: {{ include "microservice_label" $ -}}-{{- .name }}
+    {{- end }}
+  entity: user-{{ .viewing_tenant -}}-{{- .viewing_service -}}@{{- .viewing_tenant -}}-{{- $.Values.lifecycle -}}-sa-project.iam.gserviceaccount.com
+  {{- if .viewing_role }}
+  role: {{ .viewing_role }}
+  {{- else }}
+  role: READER
+  {{- end }}
+
+---
+{{- end }}
 
 {{- end }}
 

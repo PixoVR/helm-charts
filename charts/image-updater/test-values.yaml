@@ -1,0 +1,6 @@
+
+
+app_iam:
+  sa_project_id: test-project-id
+  gke_project_id: test-project-id
+  app_project_id: test-project-id

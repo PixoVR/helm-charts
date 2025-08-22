@@ -1,0 +1,241 @@
+lifecycle: dev
+add_lifecycle_to_domain: true
+
+cpl_cluster_name: us-central
+cluster_name: us-east
+
+sa_project_id: sa-project
+app_project_id: app-project
+db_project_id: db-project
+gke_project_id: gke-project
+domain: example.com
+
+github:
+  credentials:
+    enabled: true
+    https:
+      enabled: true
+    pat:
+      enabled: true
+    ssh:
+      enabled: true
+
+dynamicHosts:
+  - key: EXTERNAL_APP_URL
+    type: remote
+    tenant: multiplayer
+    protocol: https
+
+  - key: MATCHMAKER_URL
+    type: remote
+    service: matchmaking
+    tenant: match
+    protocol: wss
+
+  - key: ALLOCATE_HOSTNAME
+    type: remote
+    cluster: multi-central1
+    tenant: multiplayer
+    service: allocator
+    protocol: https
+
+  - key: MMF_API_HOST
+    type: local
+    lifecycle: true
+    service: matchmaking-matchfunction
+    protocol: http
+    path: v1
+
+subdomain: api
+instance_name: apex-instance
+
+cert_manager:
+  enabled: true
+
+service:
+  internal: false
+  external_dns:
+    enabled: true
+    subdomain: subdomain
+  type: ClusterIP
+
+ingress:
+  # is_secondary: true
+  nginx: true
+  cert: false
+  is_primary_ingress: true
+  secondary_list:
+    - name: api
+    - name: goapi
+      path: modules
+
+repo_name: apex-api
+containerPort: 8001
+healthCheck:
+  path: /health/
+
+sql:
+  proxy: true
+
+cronjobs:
+  - name: sample
+    schedule: "0 14 * * *"
+    secretMounts:
+      - name: service-auth
+        prefix: true
+        key: password
+        env: PASSWORD
+    memory:
+      request: 128Mi
+      limit: 256Mi
+    cpu:
+      request: .1
+      limit: .25
+    image:
+      self: true
+      command: ["/bin/sh"]
+
+cronjob:
+  enabled: true
+  external_secrets:
+    enabled: true
+    secrets:
+      - secretKey: SOME_SECRET
+        remoteSecretKey: some-secret
+
+env:
+  - name: EMAILER_TO
+    value: walker.obrien@pixovr.com
+
+email:
+  enabled: true
+  mfa: true
+  sender: "pixoplatform@pixovr.com"
+  bcc: "newuser@pixovr.com"
+
+aws:
+  bucket: test-bucket
+  auth:
+    enabled: true
+    region: us-east-1
+    endpoint: https://s3
+  cloudfront:
+    enabled: true
+
+google:
+  config_connector_context: true
+  cloudbuild:
+    gke: true
+  kms:
+    enabled: true
+  storage:
+    enabled: true
+    create: true
+    notifications: true
+    retentionPolicy:
+      isLocked: true
+      retentionPeriod: 5
+    bucket_list:
+      - name: public
+        key: PUBLIC
+        public: true
+      - name: builds
+        key: BUILDS
+        retentionPolicy:
+          isLocked: false
+          retentionPeriod: 10
+        notifications: true
+        viewing_tenant: externaltenant
+        viewing_service: externalsvc
+        custom_endpoint:
+          enabled: true
+          prefix: external.service
+    external_bucket_list:
+      - name: ext
+        key: EXT
+        external_service: tenant-ext-api
+        prefix: pre
+  sql:
+    enabled: true
+    extra_databases:
+      - name: extra
+
+  pubsub:
+    enabled: true
+    schemas:
+      - name: grpc
+        type: PROTOCOL_BUFFER
+      - name: json
+        type: JSON
+    topics:
+      - name: create-foo
+        subscriptions:
+          - name: create-foo
+            push:
+              region: multi-central1
+              tenant: multiplayer
+              subdomain: allocator
+              endpoint: triggers
+        schema:
+          name: json
+          encoding: JSON
+
+external_secrets:
+  enabled: true
+  remote_prefix: saudi
+  secret_store:
+    enabled: true
+  app_secrets:
+    enabled: true
+    create: true
+  extra_secrets:
+    - secretKey: SOME_APP_SECRET
+      remoteSecretKey: some-app-secret
+
+create_sa: true
+
+external_auth: true
+
+submodules:
+  enabled: true
+
+clamav:
+  enabled: true
+
+extraPorts:
+  - containerPort: 2022
+    hostPort: 22
+    name: sftpgo
+    exposeInService: true
+    exposeInIngress: true
+    ingressPath: /server
+
+deployment:
+  pvc:
+    enabled: true
+    path: /var/db
+
+sa_json_key:
+  enabled: true
+  envKey: GOOGLE_JSON_KEY
+
+api_tenant_name: apex
+
+cache:
+  enabled: true
+
+crunchydb:
+  enabled: true
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+  secret_suffix: cache
+
+hpa:
+  enabled: true
+
+pixo_service_account:
+  enabled: true
+  org_id: 20

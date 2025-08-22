@@ -1,0 +1,73 @@
+---
+
+app_iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  app_project_id: ''
+  sa_name: external-secrets
+  add_bindings: true
+  folder:
+    app_roles:
+      - secretmanager.secretAccessor
+  app:
+    ksa_name: external-secrets
+    namespace: external-secrets
+
+
+external-secrets:
+  resources:
+    requests:
+      cpu: ".01"
+      memory: 32Mi
+    limits:
+      cpu: ".05"
+      memory: 64Mi
+
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+
+  certController:
+    resources:
+      requests:
+        cpu: ".01"
+        memory: 64Mi
+      limits:
+        cpu: ".05"
+        memory: 128Mi
+
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+
+
+  webhook:
+    resources:
+      requests:
+        cpu: ".001"
+        memory: 32Mi
+      limits:
+        cpu: ".01"
+        memory: 64Mi
+
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+
+

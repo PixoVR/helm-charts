@@ -1,6 +1,7 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
-
+{{- if .Values.deployment.enabled }}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -13,17 +14,50 @@ metadata:
   {{- if not .Values.local }}
   annotations:
     cloud.google.com/backend-config: '{"default": "{{- .Release.Name -}}-backendconfig"}'
+    {{- if .Values.ingress.nginx }}
+    kubernetes.io/ingress.class: "nginx"
+    {{- if .Values.service.internal }}
+    networking.gke.io/load-balancer-type: "Internal"
+    {{- end }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    {{- else }}
+    cloud.google.com/neg: '{"ingress": true}'
+    {{- end }}
+    {{- if .Values.service.external_dns.enabled }}
+    {{- if .Values.service.external_dns.subdomain }}
+    external-dns.alpha.kubernetes.io/hostname: '{{ .Values.service.external_dns.subdomain }}.{{ include "app_domain" $ -}}.'
+    {{- else }}
+    external-dns.alpha.kubernetes.io/hostname: '{{ include "full_domain" $ -}}.'
+    {{- end }}
+    {{- end }}
   {{- end }}
 spec:
-  type: ClusterIP
+  {{- if .Values.ingress.nginx }}
+  type: LoadBalancer
+  {{- else }}
+  type: {{ .Values.service.type }}
+  {{- end }}
   selector:
-    app: {{ include "deployment_name" $ }}
-    
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
+
   ports:
   - name: http
     port: 443
     protocol: TCP
     targetPort: {{ .Values.containerPort }}
 
+  {{- range .Values.extraPorts }}
+
+  {{- if .exposeInService }}
+  - name: {{ .name }}
+    port: {{ .hostPort }}
+    protocol: TCP
+    targetPort: {{ .containerPort }}
+  {{- end }}
+
+  {{- end }}
+
+{{- end }}
 {{- end }}
 {{- end }}

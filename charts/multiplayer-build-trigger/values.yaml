@@ -1,0 +1,30 @@
+
+
+webhook:
+  active: true
+  insecure: false
+  endpoint: /build
+  port: 12000
+  event: '*'
+  secret:
+    name: app-secrets
+    key: auth-key
+
+trigger_url: ''
+
+frontendconfig_name: ''
+backendconfig_name: event-source-backendconfig
+
+trigger_id: ''
+module_id: ''
+
+revision: main
+dockerfile: Server/Dockerfile
+context: .
+config: Config/DefaultGame.ini
+
+github_credentials:
+  enabled: true
+  secret_name: github-credentials
+  access_token_key_name: github-access-token
+

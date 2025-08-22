@@ -1,20 +1,20 @@
-{{- if and (.Values.enabled) (.Values.use_pd) }}
+{{- if and (.Values.enabled) (.Values.deployment.pvc.enabled) }}
 {{- if .Values.deploy_app }}
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: gce-pvc
+  name: '{{- include "pvc_name" $ -}}'
   namespace: {{ .Release.Namespace }}
   labels:
     namespace: {{ .Release.Namespace }}
-    backstage.io/kubernetes-id: {{ .Values.app_code }}
 spec:
+  storageClassName: {{ .Values.deployment.pvc.storage_class_name }}
   accessModes:
-    - ReadWriteOnce
+    - {{ required "REQUIRED: deployment.pvc.access_mode" .Values.deployment.pvc.access_mode }}
   resources:
     requests:
-      storage: {{ required "REQUIRED: disk_size" .Values.disk_size }}
+      storage: {{ required "REQUIRED: deployment.pvc.disk_size" .Values.deployment.pvc.disk_size }}
 
 {{- end }}
 {{- end }}

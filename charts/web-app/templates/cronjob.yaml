@@ -1,0 +1,232 @@
+{{- if .Values.enabled }}
+{{- if .Values.cronjob.enabled }}
+
+{{- $extra_secrets := .Values.external_secrets.extra_secrets }}
+{{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: '{{ include "cronjob_name" $ }}-cronjob'
+  labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
+    namespace: {{ .Release.Namespace }}
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
+    tier: application
+spec:
+  schedule: "{{- .Values.cronjob.schedule -}}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: '{{- include "lifecycle" $ -}}'
+            namespace: {{ $.Release.Namespace }}
+            app: {{ $.Values.app_code }}
+            name: {{ $.Values.microservice_name }}
+            tier: application
+        spec:
+          serviceAccountName: '{{ include "ksa_name" $ }}'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+          {{- if .Values.external_secrets.enabled }}
+          {{- if $has_extra_secrets }}
+          - name: extra-app-secrets
+            secret:
+              secretName: extra-app-secrets
+          {{- end }}
+          {{- end }}
+
+          containers:
+          - name: job
+            image: '{{ include "cron_image" $ }}'
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
+                cpu: {{ required "REQUIRED: cpu.request" .Values.cpu.request }}
+              limits:
+                memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
+                cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+            {{- if .Values.external_secrets.enabled }}
+            {{- if $has_extra_secrets }}
+            - mountPath: /mnt/extra-secrets
+              name: extra-app-secrets
+            {{- end }}
+            {{- end }}
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            {{- if .Values.deployment.enabled }}
+            args:
+            - {{ include "service_name" $ -}}.{{- .Release.Namespace -}}.svc:443/{{- .Values.cronjob.endpoint }}
+            - x-access-token:$(SECRET_KEY)
+            - --ignore-stdin
+            {{- end }}
+
+            {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
+            envFrom:
+
+            {{- if .Values.cronjob.external_secrets.enabled }}
+            - secretRef:
+                name: cronjob-secrets
+            {{- end }}
+
+            {{- if $has_extra_secrets }}
+            - secretRef:
+                name: extra-app-secrets
+            {{- end }}
+
+            {{- end }}
+
+            env:
+            {{- if .Values.env }}
+            {{- toYaml .Values.env | nindent 12 }}
+            {{- end }}
+
+            {{- if .Values.google.kms.enabled }}
+            - name: GCP_KMS_KEY_REF
+              value: '{{ include "kms_key_ref" $ }}'
+            - name: GCP_KMS_KEYRING_NAME
+              value: '{{ include "kms_keyring_name" $ }}'
+            - name: GCP_KMS_KEY_NAME
+              value: '{{ include "kms_key_name" $ }}'
+            {{- end }}
+
+            {{- if .Values.external_secrets.enabled }}
+            {{- if $has_extra_secrets }}
+            - name: EXTRA_SECRETS_PATH
+              value: "/mnt/extra-secrets"
+            {{- end }}
+            {{- end }}
+
+            {{- range .Values.dynamicHosts }}
+
+            - name: {{ .key }}
+            {{- if eq .type "local" }}
+            {{- if .path }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
+            {{- else }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+            {{- end }}
+
+            {{- else if eq .type "remote" }}
+
+              {{ $url := include "lifecycle_domain" $ }}
+
+              {{- if .cluster }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- else }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- end }}
+
+            {{- end }}
+
+            {{- end }}
+
+            - name: LIFECYCLE
+              value: {{ upper .Values.lifecycle }}
+
+            {{- if .Values.aws.auth.enabled }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+            {{- end }}
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+
+            {{- if .Values.google.storage.enabled }}
+
+            {{- range .Values.google.storage.bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              value: {{ include "microservice_label" $ -}}-{{- .name }}
+            {{- end }}
+
+            {{- range .Values.google.storage.external_bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              {{- if .prefix }}
+              value: {{ .prefix -}}-{{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+              {{- else }}
+              value: {{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+              {{- end }}
+            {{- end }}
+
+            {{- end }}
+
+            {{- if .Values.email.enabled }}
+            - name: EMAILER_EMAIL
+              value: {{ .Values.email.sender }}
+            {{- if .Values.email.mfa }}
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+            {{- end }}
+            {{- end }}
+
+
+{{- end }}
+{{- end }}

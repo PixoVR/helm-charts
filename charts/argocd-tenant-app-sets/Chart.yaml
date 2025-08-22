@@ -1,0 +1,6 @@
+apiVersion: v2
+name: argocd-tenant-app-sets
+description: Deploys ArgoCD platform tenants
+type: application
+appVersion: 1.0.0
+version: 0.0.118

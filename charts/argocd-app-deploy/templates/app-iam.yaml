@@ -1,0 +1,71 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ include "fullname" $ -}}-services-iam
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    tier: app
+    purpose: iam
+    deployment: helm
+    lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+spec:
+  generators:
+  - git:
+      repoURL: git@github.com:{{- .Values.github_org -}}/{{- include "iam_repo_name" $ -}}.git
+      revision: {{ .Values.revision }}
+      files:
+      - path: {{ include "services_filepath" $ }}
+  template:
+    metadata:
+      name: '{{- .Values.lifecycle }}-{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}-iam'
+      labels:
+        deployment: helm
+        tier: app
+        purpose: iam
+        app: {{ .Values.app_name }}
+        service: '{{ "{{ path.basename }}" }}'
+        lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+      annotations:
+        argocd.argoproj.io/sync-wave: '-20'
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_project }}
+      source:
+        repoURL: {{ .Values.helm_charts_repo }}
+        chart: {{ .Values.iam_chart }}
+        targetRevision: {{ .Values.iam_chart_version }}
+        helm:
+          releaseName: '{{- "{{ app.lifecycle }}" -}}-{{- .Values.app_name -}}-{{- "{{ path.basename }}" -}}'
+          ignoreMissingValueFiles: true
+          values: |
+            sa_project_id: {{ .Values.sa_project_id }}
+            gke_project_id: {{ .Values.gke_project_id }}
+            app_project_id: {{ .Values.app_project_id }}
+            db_project_id: {{ .Values.db_project_id }}
+            sa_name: "{{- .Values.app_name -}}-{{ "{{ path.basename }}" }}"
+            target_namespace: '{{- include "iam_namespace" $ -}}'
+            add_bindings: {{ .Values.add_bindings }}
+            sa:
+              enabled: {{ .Values.sa.enabled }}
+            gke:
+              enabled: {{ .Values.gke.enabled }}
+            db:
+              enabled: {{ .Values.db.enabled }}
+            app:
+              enabled: {{ .Values.app.enabled }}
+              namespace: '{{- include "deploy_namespace" $ -}}'
+              ksa_name: "{{- .Values.app_name -}}-workload"
+            infra:
+              namespace: '{{- include "infra_namespace" $ -}}'
+            iam:
+              namespace: '{{- include "iam_namespace" $ -}}'
+      destination:
+        server: {{ .Values.infra.server }}
+        namespace: '{{ include "iam_namespace" $ }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+

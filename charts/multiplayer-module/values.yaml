@@ -1,0 +1,68 @@
+
+enabled: true
+local: false
+non_preemptible: false
+create_infra: true
+deploy_app: true
+
+use_app_code: false
+
+github_org: PixoVR
+lifecycle: dev
+app_code: sample
+microservice_name: game1
+default_branch: main
+
+repo_name: replaceme
+build_context: '.'
+
+primary_cluster_name: central-cluster
+primary_cluster: central-cluster-membership
+
+image:
+  name: ""
+  tag: latest
+
+containerPort: 7654
+port_policy: Static
+
+toleration: gameserver
+
+healthCheck:
+  initialDelaySeconds: 30
+  periodSeconds: 60
+
+logs_destination: /server/src/gameserver/Saved
+
+fleet:
+  labels:
+
+memory:
+  request: 64Mi
+  limit: 128Mi
+cpu:
+  request: 20m
+  limit: 40m
+
+replicas: 1
+buffer_size: 2
+min_replicas: 2
+max_replicas: 20
+
+google:
+  region: us-central1
+  zone: us-central1-a
+  config_connector_context: false
+  create_cloudbuild: true
+  create_registry: false
+  registry: gcr.io
+  storage:
+    enabled: false
+    create: false
+    bucket_list:
+      - name: builds
+        key: BUILDS
+
+autoscaler:
+  enabled: false
+

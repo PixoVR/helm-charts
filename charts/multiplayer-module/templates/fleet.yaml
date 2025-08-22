@@ -1,0 +1,65 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+---
+
+apiVersion: agones.dev/v1
+kind: Fleet
+metadata:
+  name: '{{ include "fleet_name" $ }}'
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    microservice_name: {{ .Values.microservice_name }}
+    tier: backend
+spec:
+  replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
+  template:
+    {{- if .Values.fleet.labels }}
+    metadata:
+      labels:
+      {{- toYaml .Values.fleet.labels | nindent 8 }}
+    {{- end }}
+    spec:
+      ports:
+        - name: default
+          containerPort: {{ .Values.containerPort }}
+          portPolicy: {{ .Values.port_policy }}
+      health:
+        initialDelaySeconds: {{ .Values.healthCheck.initialDelaySeconds }}
+        periodSeconds: {{ .Values.healthCheck.periodSeconds }}
+      template:
+        spec:
+          volumes:
+          - name: gameserver-logs
+            emptyDir: {}
+          tolerations:
+          - key: {{ .Values.toleration }}
+            operator: Equal
+            value: "true"
+            effect: NoExecute
+          containers:
+            - name: gameserver
+              image: '{{ include "image" . }}'
+              imagePullPolicy: Always
+              resources:
+                requests:
+                  memory: {{ required "REQUIRED: memory.request" .Values.memory.request }}
+                  cpu: {{ required "REQUIRED: cpu.request" .Values.cpu.request }}
+                limits:
+                  memory: {{ required "REQUIRED: memory.limit" .Values.memory.limit }}
+                  cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
+              securityContext:
+                allowPrivilegeEscalation: false
+                privileged: false
+                procMount: Default
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+              - mountPath: {{ .Values.logs_destination }}
+                name: gameserver-logs
+
+{{- end }}
+{{- end }}
+

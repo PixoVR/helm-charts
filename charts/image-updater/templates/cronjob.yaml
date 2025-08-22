@@ -1,0 +1,59 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gcr-credentials-sync
+  namespace: {{ .Release.Namespace }}
+spec:
+  suspend: false
+  schedule: "*/45 * * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.serviceAccount.name }}
+          restartPolicy: Never
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+          volumes:
+            - name: config-dir
+              emptyDir: {}
+          containers:
+            - image: google/cloud-sdk
+              name: create-secret
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /home/cloudsdk/.config/gcloud/
+                  name: config-dir
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                  - ALL
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1000
+              env:
+                - name: SECRET_NAME
+                  value: gcr-credentials
+                - name: GCR_REGISTRY
+                  value: {{ .Values.gcr.registry }}
+              command:
+                - /bin/bash
+                - -ce
+                - |-
+                  kubectl create secret docker-registry $SECRET_NAME \
+                    --dry-run=client \
+                    --docker-server="$GCR_REGISTRY" \
+                    --docker-username=oauth2accesstoken \
+                    --docker-password="$(gcloud auth print-access-token)" \
+                    -o yaml | kubectl apply -f -

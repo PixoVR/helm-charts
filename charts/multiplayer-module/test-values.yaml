@@ -1,0 +1,15 @@
+
+sa_project_id: sa-project
+app_project_id: app-project
+db_project_id: db-project
+gke_project_id: gke-project
+domain: example.com
+
+autoscaler:
+  enabled: true
+
+fleet:
+  labels:
+    OrgId: "1"
+    ModuleId: "1"
+    SessionId: "2341234123234324234"

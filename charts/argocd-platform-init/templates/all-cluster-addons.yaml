@@ -1,0 +1,174 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-cluster-addon-charts
+  labels:
+    deployment: helm
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.all_cluster_addon_charts_filepath }}
+        - clusters: {}
+  template:
+    metadata:
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      labels:
+        name: '{{ "{{ path.basename }}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{ path }}" }}/chart'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+        helm:
+          releaseName: '{{ "{{ path.basename }}" }}'
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - 'lifecycles/{{- .Values.lifecycle -}}.yaml'
+            - 'clusters/{{- "{{ nameNormalized }}"  -}}.yaml'
+          values: |
+            lifecycle: {{ .Values.lifecycle }}
+            domain: {{ "{{ path.basename }}" }}.{{ .Values.domain }}
+            parent_folder_id: {{ .Values.parent_folder_id }}
+            sa_project_id: {{ .Values.sa_project_id }}
+            gke_project_id: {{ .Values.gke_project_id }}
+            dns_project_id: {{ .Values.dns_project_id }}
+            pixo-platform-operator:
+              pixoPlatform:
+                lifecycle: {{ .Values.lifecycle }}
+              gcpsm:
+                enabled: true
+                projectId: {{ .Values.gke_project_id }}
+            argocd-image-updater:
+              argocd-image-updater:
+                serviceAccount:
+                  annotations:
+                    iam.gke.io/gcp-service-account: image-updater@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+              app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
+                parent_folder_id: {{ .Values.parent_folder_id }}
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.gke_project_id }}
+            backstage:
+              backstage:
+                domain: {{ .Values.domain }}
+              app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
+                parent_folder_id: {{ .Values.parent_folder_id }}
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.gke_project_id }}
+            crossplane:
+              crossplane:
+                serviceAccount:
+                  annotations:
+                    iam.gke.io/gcp-service-account: crossplane-gcp@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+              app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
+                parent_folder_id: {{ .Values.parent_folder_id }}
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.gke_project_id }}
+            external-secrets:
+              external-secrets:
+                serviceAccount:
+                  annotations:
+                    iam.gke.io/gcp-service-account: external-secrets@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+              app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
+                parent_folder_id: {{ .Values.parent_folder_id }}
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.gke_project_id }}
+            external-dns:
+              external-dns:
+                serviceAccount:
+                  annotations:
+                    iam.gke.io/gcp-service-account: external-dns@{{- .Values.sa_project_id -}}.iam.gserviceaccount.com
+                extraArgs:
+                  - --google-project={{- .Values.dns_project_id }}
+                  - --txt-owner-id={{ "{{ nameNormalized }}" }}
+              app_iam: 
+                app:
+                  enabled: {{ .Values.app.enabled }}
+                parent_folder_id: {{ .Values.parent_folder_id }}
+                sa_project_id: {{ .Values.sa_project_id }}
+                gke_project_id: {{ .Values.gke_project_id }}
+                app_project_id: {{ .Values.dns_project_id }}
+            infra-admin:
+              parent_folder_id: {{ .Values.parent_folder_id }}
+              gke_project_id: {{ .Values.gke_project_id }}
+      destination:
+        server: '{{ "{{ server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-cluster-addon-manifests
+  labels:
+    deployment: kustomize
+    tier: platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+spec:
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+            revision: {{ .Values.revision }}
+            files:
+            - path: {{ .Values.all_cluster_addon_manifests_filepath }}
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: '{{ "{{ nameNormalized }}" }}-{{ "{{ path.basename }}" }}'
+      labels:
+        name: '{{ "{{ path.basename }}" }}'
+        deployment: helm
+        tier: platform
+      annotations:
+        argocd.argoproj.io/sync-wave: "-50"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: {{ .Values.argocd_cpl_project }}
+      source:
+        path: '{{ "{{ path }}" }}/manifests'
+        repoURL: git@github.com:{{- .Values.github_org -}}/{{- .Values.repo_name -}}.git
+        targetRevision: {{ .Values.target_revision }}
+      destination:
+        server: '{{ "{{ server }}" }}'
+        namespace: '{{ "{{ app.namespace }}" }}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+

@@ -1,0 +1,8 @@
+apiVersion: config.gatekeeper.sh/v1alpha1
+kind: Config
+metadata:
+  name: config
+spec:
+  match:
+    - excludedNamespaces: {{ print "\n" }}{{ .Values.gatekeeper.controllerManager.exemptNamespaces | toYaml | indent 6 }}
+      processes: ["*"]

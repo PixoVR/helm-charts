@@ -1,35 +1,63 @@
 {{- if .Values.enabled }}
 {{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
 
+{{- $extra_secrets := .Values.external_secrets.extra_secrets }}
+{{- $has_extra_secrets := (and (kindIs "slice" $extra_secrets) (gt (len $extra_secrets) 0)) }}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: '{{ include "deployment_name" $ }}'
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.pixo_service_account.enabled }}
+    platform.pixovr.com/service-account-name: '{{- include "pixo_sa_name" $ -}}'
+    {{- end }}
   labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
     namespace: {{ .Release.Namespace }}
-    microservice_name: {{ .Values.microservice_name }}
-    tier: backend
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
+    tier: application
 spec:
   replicas: {{ required "REQUIRED: replicas" .Values.replicas }}
-  {{- if or (not .Values.use_pd) (not .Values.mount_pd) }}
   strategy:
     type: RollingUpdate
-  {{- end }}
   selector:
     matchLabels:
-      app: '{{ include "deployment_name" $ }}'
+      app: {{ .Values.app_code }}
+      name: {{ .Values.microservice_name }}
   template:
     metadata:
+      labels:
+        lifecycle: '{{- include "lifecycle" $ -}}'
+        namespace: {{ .Release.Namespace }}
+        app: {{ .Values.app_code }}
+        name: {{ .Values.microservice_name }}
+        tier: application
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        container.apparmor.security.beta.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
-        container.seccomp.security.alpha.kubernetes.io/{{- .Values.microservice_name -}}: runtime/default
-      labels:
-        app: '{{ include "deployment_name" $ }}'
-        namespace: {{ .Release.Namespace }}
-        microservice_name: {{ .Values.microservice_name }}
-        tier: backend
+        {{- if .Values.linkerd.enabled }}
+        linkerd.io/inject: enabled
+        {{- end }}
+
+        {{- if not .Values.debug.enabled }}
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
+
+        {{- if .Values.sql.proxy }}
+        container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
+        {{- end }}
+
+        {{- if .Values.clamav.enabled }}
+        container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/clamav: runtime/default
+        {{- end }}
+
+        {{- end }}
     spec:
       {{- if .Values.toleration }}
       tolerations:
@@ -44,23 +72,43 @@ spec:
       hostPID: false
       {{- if not .Values.demo.enabled }}
       securityContext:
-        runAsUser: 115
-        runAsGroup: 125
-        fsGroup: 190
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
         supplementalGroups:
           - 150
       {{- end }}
 
       volumes:
+        {{- if .Values.external_secrets.enabled }}
+        {{- if .Values.external_secrets.app_secrets.enabled }}
+        - name: app-secrets
+          secret:
+            secretName: app-secrets
+        {{- end }}
+        {{- if $has_extra_secrets }}
+        - name: extra-app-secrets
+          secret:
+            secretName: extra-app-secrets
+        {{- end }}
+        {{- end }}
+
         - name: tmp-dir
           emptyDir: {}
         - name: usr-tmp-dir
           emptyDir: {}
         - name: var-tmp-dir
           emptyDir: {}
-        - name: app-secrets
-          secret:
-            secretName: app-secrets
+
+        {{- if .Values.debug.enabled }}
+        - name: config-dir
+          emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.cache.enabled }}
+        - name: cache-dir
+          emptyDir: {}
+        {{- end }}
 
         {{- if eq .Values.microservice_name "api" }}
         - name: server-logs-dir
@@ -68,8 +116,9 @@ spec:
         {{- end }}
 
         {{- if .Values.node }}
-        - name: log-dir
+        - name: npm-dir
           emptyDir: {}
+
         {{- else if .Values.nginx }}
         - name: body-dir
           emptyDir: {}
@@ -90,22 +139,43 @@ spec:
         {{- end }}
 
         - name: db-volume
-        {{- if and (.Values.use_pd) (.Values.mount_pd) }}
+        {{- if and .Values.deployment.pvc.enabled .Values.deployment.pvc.mount }}
           persistentVolumeClaim:
-            claimName: gce-pvc
+            claimName: '{{- include "pvc_name" $ -}}'
         {{- else }}
           emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.clamav.enabled }}
+        - name: clamav-run
+          emptyDir: {}
+        - name: clamav-tmp
+          emptyDir: {}
+
+        - name: clamav-var-lib
+        {{- if .Values.clamav.pvc.enabled }}
+          persistentVolumeClaim:
+            claimName: '{{- include "pvc_name" $ -}}-clamav'
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+
         {{- end }}
 
       serviceAccountName: '{{ include "ksa_name" . }}'
       restartPolicy: Always
       containers:
-      - name: {{ .Values.microservice_name }}
+      - name: app
         image: '{{ include "image" . }}'
         imagePullPolicy: Always
 
         {{- if not .Values.demo.enabled }}
         securityContext:
+          {{- if .Values.debug.enabled }}
+          capabilities:
+            add:
+            - SYS_PTRACE
+          {{- else }}
           allowPrivilegeEscalation: false
           privileged: false
           procMount: Default
@@ -113,6 +183,7 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+          {{- end }}
         {{- end }}
 
         resources:
@@ -124,9 +195,20 @@ spec:
             cpu: {{ required "REQUIRED: cpu.limit" .Values.cpu.limit }}
 
         volumeMounts:
+          {{- if .Values.external_secrets.enabled }}
+          {{- if .Values.external_secrets.app_secrets.enabled }}
           - mountPath: /backend/secrets
             name: app-secrets
-          - mountPath: /backend/var
+          {{- end }}
+
+          {{- if $has_extra_secrets }}
+          - mountPath: /mnt/extra-secrets
+            name: extra-app-secrets
+          {{- end }}
+
+          {{- end }}
+
+          - mountPath: {{ .Values.deployment.pvc.path }}
             name: db-volume
           - mountPath: /tmp
             name: tmp-dir
@@ -135,14 +217,25 @@ spec:
           - mountPath: /var/tmp
             name: var-tmp-dir
 
+          {{- if .Values.debug.enabled }}
+          - mountPath: /server/.config
+            name: config-dir
+          {{- end }}
+
+          {{- if .Values.cache.enabled }}
+          - mountPath: /.cache
+            name: cache-dir
+          {{- end }}
+
           {{- if eq .Values.microservice_name "api" }}
           - name: server-logs-dir
             mountPath: /apex-api/server/logs
           {{- end }}
 
           {{- if .Values.node }}
-          - name: log-dir
+          - name: npm-dir
             mountPath: /.npm
+
           {{- else if .Values.nginx }}
           - name: body-dir
             mountPath: /var/lib/nginx/body
@@ -162,47 +255,239 @@ spec:
             mountPath: /var/run
           {{- end }}
 
+        {{- if .Values.healthCheck.enabled }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.healthCheckPath }}
+            path: {{ .Values.healthCheck.path }}
             port: {{ .Values.containerPort }}
           initialDelaySeconds: 30
           periodSeconds: 10
 
         readinessProbe:
           httpGet:
-            path: {{ .Values.healthCheckPath }}
+            path: {{ .Values.healthCheck.path }}
             port: {{ .Values.containerPort }}
           initialDelaySeconds: 30
           periodSeconds: 10
+        {{- end }}
+
+        {{- if or .Values.cronjob.external_secrets.enabled $has_extra_secrets  }}
+        envFrom:
+
+        {{- if .Values.cronjob.external_secrets.enabled }}
+        - secretRef:
+            name: cronjob-secrets
+        {{- end }}
+
+        {{- if $has_extra_secrets }}
+        - secretRef:
+            name: extra-app-secrets
+        {{- end }}
+
+        {{- end }}
 
         env:
         - name: USE_GCS
           value: "true"
+        - name: NAMESPACE
+          value: {{ .Release.Namespace }}
         - name: DOMAIN
           value: '{{ include "full_domain" $ }}'
         - name: PORT
           value: "{{ .Values.containerPort }}"
 
-        - name: GCP_PROJECT_ID
-          value: "{{- include "app_project" $ -}}"
-
-        {{- if eq .Values.microservice_name "graphql" }}
-        - name: APP_ENV
-        {{- else }}
-        - name: NODE_ENV
+        {{- if .Values.google.kms.enabled }}
+        - name: GCP_KMS_KEY_REF
+          value: '{{ include "kms_key_ref" $ }}'
+        - name: GCP_KMS_KEYRING_NAME
+          value: '{{ include "kms_keyring_name" $ }}'
+        - name: GCP_KMS_KEY_NAME
+          value: '{{ include "kms_key_name" $ }}'
         {{- end }}
+
+        {{- if .Values.external_secrets.enabled }}
+        {{- if $has_extra_secrets }}
+        - name: EXTRA_SECRETS_PATH
+          value: "/mnt/extra-secrets"
+        {{- end }}
+        {{- end }}
+
+        {{- if and .Values.redis.enabled .Values.redis.auth.enabled }}
+        - name: REDIS_USERNAME
+          value: {{ .Values.redis.auth.username }}
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: '{{- .Release.Name -}}-{{- .Values.redis.secret_suffix -}}'
+              key: redis-password
+        {{- end }}
+
+        {{- if .Values.crunchydb.enabled }}
+        - name: DB_VENDOR
+          value: "postgres"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: port
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: dbname
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: password
+        {{- end }}
+
+        {{- if .Values.google.pubsub.enabled }}
+        - name: PUBSUB_TOPIC
+          value: {{ include "pubsub_topic_name" $ }}
+        - name: PUBSUB_SUBSCRIPTION
+          value: {{ include "pubsub_subscription_name" $ }}
+        - name: USE_PUBSUB
+          value: "true"
+        {{- end }}
+
+        - name: TMP_PATH
+          value: "/var/tmp"
+
+        - name: GCP_PROJECT_ID
+          value: "{{- include "app_project_id" $ -}}"
+
+        - name: DB_PROJECT_ID
+          value: "{{- include "db_project_id" $ -}}"
+
+        - name: REGION
+          value: "{{- .Values.google.region }}"
+
+        {{- if .Values.sql.proxy }}
+        - name: INSTANCE_NAME
+          value: "{{- include "instance_name" $ -}}"
+        {{- end }}
+
+        {{- range .Values.dynamicHosts }}
+
+        - name: {{ .key }}
+        {{- if eq .type "local" }}
+        {{- if .path }}
+          value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
+        {{- else }}
+          value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+        {{- end }}
+
+        {{- else if eq .type "remote" }}
+
+          {{ $url := include "lifecycle_domain" $ }}
+
+          {{- if .cluster }}
+
+          {{- if .service }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
+
+          {{- else if .subdomain }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+          {{- else }}
+          value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- end }}
+
+          {{- else }}
+
+          {{- if .service }}
+          value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
+
+          {{- else if .subdomain }}
+          value: {{ .protocol }}://{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+          {{- else }}
+          value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+          {{- end }}
+
+          {{- end }}
+
+        {{- end }}
+
+        {{- end }}
+
+        - name: LIFECYCLE
           value: {{ upper .Values.lifecycle }}
-        - name: APP_URL
-          value: https://{{- include "app_domain" $ }}
-        - name: API_URL
-          value: https://{{- include "api_domain" $ }}
+
+        - name: APP_ENV
+          value: {{ upper .Values.lifecycle }}
+
+        - name: NODE_ENV
+          value: {{ upper .Values.lifecycle }}
+
+        {{- if .Values.ingress.enabled }}
+        - name: APP_HOST
+          value: https://{{- include "full_domain" $ }}
+        {{- end }}
+
+        {{- if .Values.sa_json_key.enabled }}
+        - name: {{ .Values.sa_json_key.envKey }}
+          value: /backend/secrets/svc-acct-json-key
+        {{- end }}
+
+        {{- if .Values.email.enabled }}
+        - name: SEND_EMAILS
+          value: "true"
+
+        - name: EMAILER_EMAIL
+          value: {{ .Values.email.sender }}
+
+        {{- if .Values.email.mfa }}
+        - name: EMAILER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: email-sender-password
+        {{- end }}
+
+        {{- if .Values.email.bcc }}
+        - name: EMAIL_BCC
+          value: '{{- .Values.email.bcc -}}'
+        {{- end }}
+
+        {{- end }}
 
         {{- if .Values.google.storage.enabled }}
+
         {{- range .Values.google.storage.bucket_list }}
         - name: GOOGLE_STORAGE_{{ .key }}
-          value: {{ include "sa_app_label" $ -}}-{{- .name }}
+          {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+          value: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+          {{- else }}
+          value: {{ include "microservice_label" $ -}}-{{- .name }}
+          {{- end }}
         {{- end }}
+
+        {{- range .Values.google.storage.external_bucket_list }}
+        - name: GOOGLE_STORAGE_{{ .key }}
+          {{- if .prefix }}
+          value: {{ .prefix -}}-{{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- else }}
+          value: {{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+          {{- end }}
+        {{- end }}
+
         {{- end }}
 
 
@@ -211,22 +496,25 @@ spec:
         {{- end }}
 
         {{- if .Values.aws.auth.enabled }}
-
-        {{- if eq .Values.microservice_name "web" }}
         - name: AWS_ID
-        {{- else }}
-        - name: AWS_ACCESS_KEY_ID
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: aws-id
 
-        {{- if eq .Values.microservice_name "web" }}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
         - name: AWS_SECRET
-        {{- else }}
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
+
         - name: AWS_SECRET_ACCESS_KEY
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
@@ -234,7 +522,6 @@ spec:
         {{- end }}
 
         {{- if .Values.aws.cloudfront.enabled }}
-
         - name: AWS_CLOUDFRONT_PUBLIC_KEY
           valueFrom:
             secretKeyRef:
@@ -251,17 +538,21 @@ spec:
               key: aws-cf-domain
         {{- end }}
 
-        {{- if eq .Values.microservice_name "web" }}
+        {{- if .Values.external_secrets.app_secrets.enabled }}
         - name: JWT_SECRET
-        {{- else }}
-        - name: SECRET_KEY
-        {{- end }}
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: auth-key
 
-        {{- if eq .Values.microservice_name "api" }}
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
+          {{- end }}
+
+        {{- if .Values.external_auth }}
         - name: EXTERNAL_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -297,70 +588,79 @@ spec:
               key: github-oauth-secret
         {{- end }}
 
-        {{- if .Values.oauth.facebook.enabled }}
-        - name: FACEBOOK_OAUTH_ID
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: facebook-oauth-id
-
-        - name: FACEBOOK_OAUTH_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: facebook-oauth-secret
+        {{- if or .Values.crunchydb.enabled .Values.sql.proxy }}
+        - name: DB_VENDOR
+          value: "postgres"
         {{- end }}
 
-        {{- if .Values.oauth.twitter.enabled }}
-        - name: TWITTER_OAUTH_ID
+        {{- if .Values.crunchydb.enabled }}
+        - name: {{ upper .Values.db.host_env_key }}
           valueFrom:
             secretKeyRef:
-              name: app-secrets
-              key: twitter-api-key
-
-        - name: TWITTER_OAUTH_SECRET
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: host
+        - name: {{ upper .Values.db.port_env_key }}
           valueFrom:
             secretKeyRef:
-              name: app-secrets
-              key: twitter-api-key-secret
-        {{- end }}
-
-        {{- if .Values.sendgrid.enabled }}
-        - name: SENDGRID_EMAIL
-          value: {{ .Values.sendgrid.email }}
-
-        - name: SENDGRID_KEY
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: port
+        - name: {{ upper .Values.db.name_env_key }}
           valueFrom:
             secretKeyRef:
-              name: app-secrets
-              key: sendgrid-key
-        {{- end }}
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: dbname
+        - name: {{ upper .Values.db.user_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: user
+        - name: {{ upper .Values.db.password_env_key }}
+          valueFrom:
+            secretKeyRef:
+              name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+              key: password
 
-        {{- if .Values.sql.proxy }}
-        - name: DB_HOST
-          value: "{{ .Values.db.host }}"
-        - name: DB_PORT
-          value: "{{ .Values.db.port }}"
+        {{- else if .Values.sql.proxy }}
+        - name: {{ upper .Values.db.host_env_key }}
+          value: "{{- .Values.db.host -}}"
 
-        {{- if eq .Values.microservice_name "api" }}
+        - name: {{ upper .Values.db.port_env_key }}
+          value: "{{- .Values.db.port -}}"
+
+        - name: {{ upper .Values.db.name_env_key }}
+          value: '{{- include "db_name" . -}}'
+
+        - name: {{ upper .Values.db.user_env_key }}
+          value: '{{- include "app_sa" . -}}'
+
         - name: DB_DATABASE
-        {{- else }}
-        - name: DB_NAME
-        {{- end }}
-          value: {{ include "db_name" . }}
-        - name: DB_USER
-          value: {{ include "app_sa" . }}
+          value: '{{- include "db_name" . -}}'
 
-        {{- if ne .Values.microservice_name "graphql" }}
-        - name: DB_PASSWORD
-          value: "{{ .Values.db.password }}"
+        {{- range .Values.google.sql.extra_databases }}
+
+        - name: 'DB_DATABASE_{{- upper .name -}}'
+          value: '{{- include "db_name" $ -}}-{{- .name -}}'
+
+        - name: 'DB_NAME_{{- upper .name -}}'
+          value: '{{- include "db_name" $ -}}-{{- .name -}}'
         {{- end }}
 
         {{- end }}
 
         ports:
         - containerPort: {{ .Values.containerPort }}
-          name: api-port
+          name: app-port
+
+        {{- range .Values.extraPorts }}
+        - containerPort: {{ .containerPort }}
+          name: {{ .name }}
+        {{- end }}
+
+        {{- if .Values.debug.enabled }}
+        - containerPort: {{ .Values.debug.containerPort }}
+          name: debug
+          protocol: TCP
+        {{- end }}
 
       {{- if .Values.sql.proxy }}
       - name: proxy
@@ -368,7 +668,7 @@ spec:
         imagePullPolicy: Always
         command:
         - /cloud_sql_proxy
-        - -instances={{- include "app_project" . -}}:{{- required "REQUIRED: google.region" .Values.google.region -}}:{{- include "instance_name" . }}=tcp:127.0.0.1:5432
+        - -instances={{- include "db_project_id" . -}}:{{- required "REQUIRED: google.region" .Values.google.region -}}:{{- include "instance_name" . }}=tcp:127.0.0.1:5432
         - -enable_iam_login
 
         securityContext:
@@ -381,6 +681,50 @@ spec:
             type: RuntimeDefault
       {{- end }}
 
+      {{- if .Values.clamav.enabled }}
+      - name: clamav
+        image: clamav/clamav:stable
+        ports:
+        - containerPort: 3310
+
+        volumeMounts:
+        - name: clamav-run
+          mountPath: /run
+        - name: clamav-tmp
+          mountPath: /tmp
+        - name: clamav-var-lib
+          mountPath: /var/lib/clamav
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+          seccompProfile:
+            type: RuntimeDefault
+
+      {{- if .Values.clamav.init }}
+      initContainers:
+      - name: init-chown
+        image: busybox:1.33
+        command: ["sh", "-c", "chown -R 101:101 /var/lib/clamav"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /var/lib/clamav
+          name: clamav-var-lib
+      {{- end }}
+
+      {{- end }}
+
+{{- end }}
 {{- end }}
 {{- end }}
 

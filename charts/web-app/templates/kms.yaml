@@ -1,0 +1,26 @@
+{{ if .Values.google.kms.enabled }}
+{{ if not .Values.google.kms.owner }}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: '{{- include "kms_keyring_name" $ -}}'
+  annotations:
+    cnrm.cloud.google.com/project-id: '{{- include "app_project_id" $ }}'
+spec:
+  location: '{{- .Values.google.kms.ring.location -}}'
+
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: '{{- include "kms_key_name" $ -}}'
+  annotations:
+    cnrm.cloud.google.com/project-id: '{{- include "app_project_id" $ -}}'
+spec:
+  keyRingRef:
+    name: '{{- include "kms_keyring_name" $ -}}'
+  purpose: '{{- .Values.google.kms.key.purpose -}}'
+
+{{- end }}
+{{- end }}

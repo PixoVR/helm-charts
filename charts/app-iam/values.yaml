@@ -1,17 +1,73 @@
 
+enabled: true
+add_bindings: false
 
-app:
+target_namespace: infra-admin
+
+sa_project_id: replaceme
+gke_project_id: replaceme
+app_project_id: replaceme
+db_project_id: replaceme
+
+
+infra:
   namespace: ''
-  ksa_name: ''
-  roles:
+  ksa_name: cnrm-controller-manager-infra-admin
+
+parent_folder_id: ''
+folder:
+  infra_roles: []
+  app_roles: []
+
+gke:
+  enabled: false
+  infra_roles: []
+    # - compute.publicIpAdmin
+  app_roles: []
+
+db:
+  enabled: false
+  infra_roles:
+    - cloudsql.admin
+  app_roles:
     - cloudsql.client
     - cloudsql.instanceUser
+
+sa:
+  enabled: false
+  infra_roles:
+    - iam.serviceAccountUser
+  app_roles: []
+  user_roles:
+    - iam.serviceAccountTokenCreator
+
+app:
+  enabled: true
+  namespace: replaceme
+  ksa_name: workload-sa
+  infra_roles:
+    - artifactregistry.admin
+    - cloudbuild.builds.editor
+    - cloudfunctions.admin
+    - cloudkms.admin
+    - compute.admin
+    - dns.admin
+    - iam.serviceAccountUser
+    - monitoring.alertPolicyEditor
+    - monitoring.notificationChannelEditor
+    - pubsub.admin
+    - secretmanager.admin
+    - storage.admin
+    - run.admin
+  app_roles:
+    - cloudkms.cryptoKeyEncrypter
+    - cloudkms.cryptoKeyDecrypter
     - errorreporting.writer
     - iam.serviceAccountTokenCreator
     - logging.logWriter
     - monitoring.metricWriter
+    - pubsub.publisher
+    - pubsub.subscriber
+    - secretmanager.secretAccessor
     - storage.admin
-
-infra:
-  namespace: ''
 

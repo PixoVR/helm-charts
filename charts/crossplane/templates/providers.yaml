@@ -1,0 +1,33 @@
+{{- with .Values.gcp }}
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: gcp-provider
+spec:
+  package: {{ printf "%s:%s" .image .tag }}
+  controllerConfigRef:
+    name: gcp-provider
+{{- end }}
+{{- with .Values.kubernetes }}
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: kubernetes-provider
+spec:
+  package: {{ printf "%s:%s" .image .tag }}
+  controllerConfigRef:
+    name: kubernetes-provider
+{{- end }}
+{{- with .Values.helm }}
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: helm-provider
+spec:
+  package: {{ printf "%s:%s" .image .tag }}
+  controllerConfigRef:
+    name: kubernetes-provider
+{{- end }}

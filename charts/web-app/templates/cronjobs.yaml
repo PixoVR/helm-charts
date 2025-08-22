@@ -1,0 +1,355 @@
+{{- if .Values.enabled }}
+
+{{- range .Values.cronjobs }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: '{{ include "cronjob_name" $ }}-{{- .name -}}-cj'
+  labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
+    namespace: {{ $.Release.Namespace }}
+    app: {{ $.Values.app_code }}
+    name: {{ $.Values.microservice_name }}
+    tier: application
+spec:
+  {{- if .schedule }}
+  schedule: '{{- .schedule -}}'
+  {{- else }}
+  schedule: '{{- $.Values.cronjob.schedule -}}'
+  {{- end }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: '{{- include "lifecycle" $ -}}'
+            namespace: {{ $.Release.Namespace }}
+            app: {{ $.Values.app_code }}
+            name: {{ $.Values.microservice_name }}
+            tier: application
+        spec:
+          serviceAccountName: '{{ include "ksa_name" $ }}'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+
+            {{- if .image.self }}
+            image: '{{ include "image" $ }}'
+
+            {{- if .image.command }}
+            command:
+            {{- toYaml .image.command | nindent 12 }}
+            {{- end }}
+
+            {{- if .image.args }}
+            args:
+            {{- toYaml .image.args | nindent 12 }}
+            {{- end }}
+
+            {{- else }}
+
+            image: '{{- .image.name -}}:{{- .image.tag -}}'
+
+            {{- if $.Values.deployment.enabled }}
+            args:
+            - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
+            - x-access-token:$(SECRET_KEY)
+            - --ignore-stdin
+            {{- end }}
+
+            {{- end }}
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                {{- if and .memory .memory.request }}
+                memory: {{ required "REQUIRED: .memory.request" .memory.request }}
+                {{- else }}
+                memory: {{ required "REQUIRED: memory.request" $.Values.memory.request }}
+                {{- end }}
+                {{- if and .cpu .cpu.request }}
+                cpu: {{ required "REQUIRED: .cpu.request" .cpu.request }}
+                {{- else }}
+                cpu: {{ required "REQUIRED: cpu.request" $.Values.cpu.request }}
+                {{- end }}
+              limits:
+                {{- if and .memory .memory.limit }}
+                memory: {{ required "REQUIRED: .memory.limit" .memory.limit }}
+                {{- else }}
+                memory: {{ required "REQUIRED: memory.limit" $.Values.memory.limit }}
+                {{- end }}
+                {{- if and .cpu .cpu.limit }}
+                cpu: {{ required "REQUIRED: .cpu.limit" .cpu.limit }}
+                {{- else }}
+                cpu: {{ required "REQUIRED: cpu.limit" $.Values.cpu.limit }}
+                {{- end }}
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+            {{- if .env }}
+            {{- toYaml .env | nindent 12 }}
+            {{- end }}
+
+            {{- range $.Values.dynamicHosts }}
+
+            - name: {{ .key }}
+            {{- if eq .type "local" }}
+            {{- if .path }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc/{{- .path }}
+            {{- else }}
+              value: http://{{ $.Release.Namespace -}}-{{- .service -}}.{{- $.Release.Namespace -}}.svc
+            {{- end }}
+
+            {{- else if eq .type "remote" }}
+
+              {{ $url := include "lifecycle_domain" $ }}
+
+              {{- if .cluster }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ -}}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .cluster -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- else }}
+
+              {{- if .service }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}/{{- .service }}
+
+              {{- else if .subdomain }}
+              value: {{ .protocol }}://{{- .subdomain -}}.{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+
+              {{- else }}
+              value: {{ .protocol }}://{{- .tenant -}}.{{- include "lifecycle_domain" $ }}
+              {{- end }}
+
+              {{- end }}
+
+            {{- end }}
+
+            {{- end }}
+
+            - name: LIFECYCLE
+              value: {{ upper $.Values.lifecycle }}
+
+            - name: NAMESPACE
+              value: {{ $.Release.Namespace }}
+
+            {{- range .secretMounts }}
+            - name: {{ .env }}
+              valueFrom:
+                secretKeyRef:
+                  {{- if .prefix }}
+                  name: '{{ include "microservice_label" $ -}}-{{- .name -}}'
+                  {{- else }}
+                  name: '{{- .name -}}'
+                  {{- end }}
+                  key: '{{- .key -}}'
+            {{- end }}
+
+            {{- if $.Values.google.kms.enabled }}
+            - name: GCP_KMS_KEY_REF
+              value: '{{ include "kms_key_ref" $ }}'
+            - name: GCP_KMS_KEYRING_NAME
+              value: '{{ include "kms_keyring_name" $ }}'
+            - name: GCP_KMS_KEY_NAME
+              value: '{{ include "kms_key_name" $ }}'
+            {{- end }}
+
+            {{- if and $.Values.redis.enabled $.Values.redis.auth.enabled }}
+            - name: REDIS_USERNAME
+              value: {{ $.Values.redis.auth.username }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: '{{- $.Release.Name -}}-{{- $.Values.redis.secret_suffix -}}'
+                  key: redis-password
+            {{- end }}
+
+            {{- if $.Values.crunchydb.enabled }}
+            - name: DB_VENDOR
+              value: "postgres"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: port
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: dbname
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: dbname
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name:  '{{- include "db_name" $ -}}-pguser-{{- include "db_name" $ -}}'
+                  key: password
+            {{- else if $.Values.sql.proxy }}
+            - name: DB_VENDOR
+              value: "postgres"
+
+            - name: {{ upper $.Values.db.host_env_key }}
+              value: "{{- $.Values.db.host -}}"
+
+            - name: {{ upper $.Values.db.port_env_key }}
+              value: "{{- $.Values.db.port -}}"
+
+            - name: {{ upper $.Values.db.name_env_key }}
+              value: '{{- include "db_name" $ -}}'
+
+            - name: {{ upper $.Values.db.user_env_key }}
+              value: '{{- include "app_sa" $ -}}'
+
+            {{- end }}
+
+            {{- if $.Values.aws.auth.enabled }}
+
+            {{- if $.Values.aws.auth.region }}
+            - name: AWS_REGION
+              value: {{ $.Values.aws.auth.region }}
+            {{- end }}
+
+            {{- if $.Values.aws.auth.endpoint }}
+            - name: AWS_ENDPOINT
+              value: {{ $.Values.aws.auth.endpoint }}
+            {{- end }}
+
+            {{- if $.Values.aws.bucket }}
+            - name: S3_BUCKET_NAME
+              value: {{ $.Values.aws.bucket }}
+            {{- end }}
+
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+            {{- end }}
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+
+            {{- if $.Values.google.storage.enabled }}
+
+            - name: GCP_PROJECT_ID
+              value: '{{- include "app_project_id" $ -}}'
+
+            {{- range $.Values.google.storage.bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              {{- if ne $.Values.cpl_cluster_name $.Values.cluster_name }}
+              value: {{ $.Values.cluster_name -}}-{{- include "microservice_label" $ -}}-{{- .name }}
+              {{- else }}
+              value: {{ include "microservice_label" $ -}}-{{- .name }}
+              {{- end }}
+            {{- end }}
+
+            {{- range $.Values.google.storage.external_bucket_list }}
+            - name: GOOGLE_STORAGE_{{ .key }}
+              {{- if .prefix }}
+              value: {{ .prefix -}}-{{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+              {{- else }}
+              value: {{ include "lifecycle" $ -}}-{{- .external_service -}}-{{- .name }}
+              {{- end }}
+            {{- end }}
+
+            {{- end }}
+
+            {{- if $.Values.email.enabled }}
+            - name: EMAILER_EMAIL
+              value: {{ $.Values.email.sender }}
+            {{- if $.Values.email.mfa }}
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+            {{- end }}
+            {{- end }}
+
+          {{- if and ($.Values.sql.proxy) (not $.Values.crunchydb.enabled) }}
+          - name: proxy
+            image: "{{ $.Values.db.proxy_version }}"
+            imagePullPolicy: Always
+            command:
+            - /cloud_sql_proxy
+            - -instances={{- include "db_project_id" $ -}}:{{- required "REQUIRED: google.region" $.Values.google.region -}}:{{- include "instance_name" $ }}=tcp:127.0.0.1:5432
+            - -enable_iam_login
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+          {{- end }}
+
+
+
+{{- end }}
+
+{{- end }}
+

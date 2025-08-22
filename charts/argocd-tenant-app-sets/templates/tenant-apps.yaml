@@ -1,0 +1,64 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ include "fullname" $ }}
+  namespace: {{ .Values.argocd_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    tier: platform
+    deployment: helm
+spec:
+  generators:
+    - git:
+        repoURL: git@github.com:{{- .Values.github_org }}/{{- .Values.repo_name -}}.git
+        revision: {{ .Values.revision }}
+        files:
+        - path: {{ .Values.file_path }}
+  template:
+    metadata:
+      name: '{{ "{{ path.basename }}" }}-apps'
+      annotations:
+        argocd.argoproj.io/sync-wave: "20"
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
+      labels:
+        tier: tenant
+        deployment: helm
+    spec:
+      project: {{ .Values.argocd_project_name }}
+      source:
+        repoURL: {{ .Values.apps.chart.repoURL }}
+        chart: {{ .Values.apps.chart.name }}
+        targetRevision: {{ .Values.apps.chart.version }}
+        helm:
+          values: |
+            {{- if .Values.multi_cluster }}
+            cpl_cluster_name: {{ .Values.cpl_cluster_name }}
+            {{- end }}
+            revision: {{ .Values.revision }}
+            target_revision: {{ .Values.target_revision }}
+            lifecycle: {{ required "REQUIRED: lifecycle" .Values.lifecycle }} 
+            github_org: {{ required "github_org" .Values.github_org }} 
+            repo_name: {{ required "repo_name" .Values.repo_name }}
+            app_domain: '{{ include "app_domain" $ }}'
+            app_name: '{{ "{{ path.basename }}" }}'
+            gke_project_id: '{{- required "REQUIRED: gke_project_id" .Values.gke_project_id -}}'
+            db_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-db-project'
+            app_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-app-project'
+            sa_project_id: '{{ "{{ path.basename }}" }}-{{- required "REQUIRED: lifecycle" .Values.lifecycle -}}-sa-project'
+            cluster_label: '{{ "{{ app.cluster_label }}" }}'
+            app:
+              ingress:
+                enabled: {{ .Values.apps.ingress.enabled }}
+                https: {{ .Values.apps.ingress.https }}
+            iam:
+              namespace: {{ .Values.iam_namespace }}
+            image_updater:
+              use_new_branch: {{ .Values.image_updater.use_new_branch }}
+      destination:
+        server: {{ .Values.destination_server }}
+        namespace: {{ .Values.argocd_namespace }}
+
+

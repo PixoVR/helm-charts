@@ -2,6 +2,8 @@
 {{- if .Values.ingress.enabled }}
 {{- if .Values.ingress.mci }}
 {{- if .Values.deploy_app }}
+{{- if not .Values.ingress.is_secondary }}
+{{- if or (not .Values.multi_cluster) (eq .Values.cpl_cluster_name .Values.cluster_name) }}
 
 apiVersion: networking.gke.io/v1
 kind: MultiClusterIngress
@@ -27,6 +29,8 @@ spec:
         serviceName: nginx-mcs
         servicePort: 443
 
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

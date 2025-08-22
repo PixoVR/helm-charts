@@ -1,0 +1,31 @@
+
+github_org: PixoVR
+repo_name: replaceme
+revision: HEAD
+
+domain: ''
+
+argocd_project_name: platform
+file_path: kubernetes/tenants/*/config.yaml
+destination_server: https://kubernetes.default.svc
+argocd_namespace: argocd
+target_revision: HEAD
+
+infra_namespace: infra-admin
+iam_namespace: infra-admin
+
+multi_cluster: true
+cpl_cluster_name: "us-central1"
+
+image_updater:
+  use_new_branch: false
+
+apps:
+  enabled: true
+  ingress:
+    enabled: true
+    https: true
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: argocd-app-deploy
+    version: 0.0.103

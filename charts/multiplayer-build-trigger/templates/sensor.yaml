@@ -1,0 +1,63 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: 'trigger-sensor-{{- include "label" $ -}}'
+spec:
+  dependencies:
+      - name: trigger-dep
+        eventSourceName: 'build-event-source-{{- include "label" $ -}}'
+        eventName: build
+  triggers:
+    - template:
+        name: build-trigger
+        http:
+          url: '{{- required "REQUIRED: trigger_url" .Values.trigger_url }}'
+          method: POST
+          payload:
+            - dest: body.event
+              src:
+                dependencyName: trigger-dep
+                dataKey: body
+
+            - dest: body.trigger.id
+              src:
+                dependencyName: trigger-dep
+                value: '{{ required "REQUIRED: trigger_id" .Values.trigger_id }}'
+
+            - dest: body.trigger.moduleId
+              src:
+                dependencyName: trigger-dep
+                value: '{{ required "REQUIRED: module_id" .Values.module_id }}'
+
+            - dest: body.trigger.gitOrgName
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: git_org_name" .Values.git_org_name -}}'
+
+            - dest: body.trigger.repoName
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: repo_name" .Values.repo_name -}}'
+
+
+            - dest: body.trigger.revision
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: revision" .Values.revision -}}'
+
+            - dest: body.trigger.dockerfile
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: dockerfile" .Values.dockerfile -}}'
+
+            - dest: body.trigger.context
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: context" .Values.context -}}'
+
+            - dest: body.trigger.config
+              src:
+                dependencyName: trigger-dep
+                value: '{{- required "REQUIRED: config" .Values.config -}}'
+

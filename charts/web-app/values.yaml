@@ -1,27 +1,77 @@
 
-project_id: pixo-gke
-github_org: PixoVR
-lifecycle: dev
-app_code: apex
-microservice_name: web
-
 enabled: true
 local: false
 non_preemptible: false
 create_infra: true
 deploy_app: true
+
 nginx: false
 node: false
+
+debug:
+  enabled: false
+  containerPort: 40000
+
+add_lifecycle_to_domain: false
+extra_domain: ''
+extra_subdomain: ''
+
+github_org: PixoVR
+lifecycle: dev
+app_code: sample
+microservice_name: web
+default_branch: main
+
+repo_name: replaceme
+build_context: '.'
+build_cache: 'true'
+dockerfile: Dockerfile
+
+app_iam:
+  add_bindings: true
+
+ksa_name: app-workload
+
+infra:
+  sa_name: app-infra
+
+external_auth: false
+
+linkerd:
+  enabled: false
+
+hpa:
+  enabled: false
+  min_replicas: 1
+  max_replicas: 10
+  target_mem: 80
+  average_utilization: 50
+  scale_down:
+    stabilization_window_sec: 60
+    type: Percent
+    value: 50
+    period_seconds: 15
+  scale_up:
+    stabilization_window_sec: 0
+    type: Pods
+    value: 2
+    period_seconds: 10
+
+crunchydb:
+  enabled: false
+  create: true
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.6-2
+  pgbackrest:
+    image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+  pg_version: 14
+  disk_size: 20Gi
 
 toleration: ''
 
 primary_cluster_name: central-cluster
 primary_cluster: central-cluster-membership
 
-create_sa: false
-ksa_name: apex-sa
-default_branch: dev
-sa_microservice_name: api
+create_sa: true
 
 demo:
   enabled: false
@@ -32,30 +82,43 @@ image:
   tag: latest
 
 containerPort: 80
-healthCheckPath: /
-memory:
-  request: 8Mi
-  limit: 16Mi
-cpu:
-  request: .001
-  limit: .025
+
+healthCheck:
+  enabled: true
+  path: /
+
+submodules:
+  enabled: false
+  secret_name: api-submodule-reader-private-key
+
 sql:
   proxy: false
-use_pd: false
-mount_pd: false
-disk_size: 10Gi
+
+cache:
+  enabled: false
 
 memory:
-  request: 64Mi
+  request: 128Mi
   limit: 256Mi
 cpu:
-  request: .005
-  limit: .5
+  request: .1
+  limit: .25
 
 replicas: 1
-max_replicas: 5
+
+max_replicas: 20
 target_cpu: 80
-target_mem: 128Mi
+target_mem: 256Mi
+
+workflows:
+  artifacts:
+    enabled: false
+
+email:
+  enabled: false
+  mfa: false
+  sender: ''
+  bcc: ''
 
 aws:
   auth:
@@ -71,18 +134,76 @@ google:
   config_connector_context: false
   create_ip: false
   create_cloudbuild: true
+  cloudbuild:
+    default: true
+    filename: cloudbuild.yaml
+    gke: false
   create_registry: false
   create_monitoring_suite: false
+  kms:
+    enabled: false
+    ring:
+      location: global
+    key:
+      purpose: ENCRYPT_DECRYPT
   notification_channel: ""
   registry: gcr.io
+  pubsub:
+    enabled: false
+    add_label: false
+    schemas: []
+    topics: []
+    subscription:
+      ackDeadlineSeconds: 15
+      enableMessageOrdering: true
+      messageRetentionDuration: 86400s
+      retainAckedMessages: false
+      subscriptions: []
   sql:
     enabled: false
+    use_iam: true
+    extra_databases: []
   storage:
     enabled: false
     create: false
-    bucket_list:
-      - name: modules
-        key: MODULES
+    notifications: false
+    cors:
+      allow_all: false
+      maxAgeSeconds: 3600
+      headers:
+        - "Accept"
+        - "Access-Control-Request-Headers"
+        - "Access-Control-Request-Method"
+        - "Access-Control-Allow-Origin"
+        - "Accept-Encoding"
+        - "Accept-Language"
+        - "Cache-Control"
+        - "Connection"
+        - "Content-Length"
+        - "Content-Range"
+        - "Content-Type"
+        - "Host"
+        - "Origin"
+        - "Pragma"
+        - "Referer"
+        - "Sec-Ch-Ua"
+        - "Sec-Ch-Ua-Mobile"
+        - "Sec-Ch-Ua-Platform"
+        - "Sec-Fetch-Dest"
+        - "Sec-Fetch-Mode"
+        - "Sec-Fetch-Site"
+        - "User-Agent"
+        - "X-Client-Data"
+        - "Date"
+        - "Server"
+        - "Vary"
+        - "X-Access-Token"
+        - 'X-Goog-Resumable'
+    retentionPolicy:
+      enabled: true
+      isLocked: false
+      retentionPeriod: 1
+    bucket_list: []
   iap:
     enabled: false
     test:
@@ -91,8 +212,18 @@ google:
     enabled: false
   wi_test: false
 
-security_policy: apex-policy
-ssl_policy: tls-policy
+security_policy: no-russia
+ssl_policy: tls-12
+
+github:
+  credentials:
+    enabled: false
+    ssh:
+      enabled: true
+    pat:
+      enabled: true
+    https:
+      enabled: false
 
 loadbalancer:
   timeoutSec: 60
@@ -125,6 +256,7 @@ external_secrets:
     name: pixo-secret-store
   app_secrets:
     enabled: false
+    create: false
   refresh_interval: 0
 
 secrets:
@@ -133,13 +265,31 @@ secrets:
 cert_manager:
   enabled: false
 
+deployment:
+  enabled: true
+  pvc:
+    enabled: false
+    mount: true
+    path: /var/sqlite
+    disk_size: 5Gi
+    access_mode: ReadWriteOnce
+
+service:
+  internal: true
+  type: ClusterIP
+  external_dns:
+    enabled: false
+  websocket: false
+
 ingress:
   enabled: true
+  override: false
   bring_ip: false
   https: true
   cert: false
   mci: false
   nginx: false
+  rewrite_target: /
 
 network_policy:
   enabled: false
@@ -147,20 +297,63 @@ network_policy:
 acm:
   enabled: false
 
-autoscaler:
-  enabled: false
-
 db:
   proxy: false
   host: "127.0.0.1"
   port: "5432"
   password: fakepassword
-  proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.32.0
+  proxy_version: gcr.io/cloudsql-docker/gce-proxy:1.37.0
+  host_env_key: DB_HOST
+  port_env_key: DB_PORT
+  name_env_key: DB_NAME
+  user_env_key: DB_USER
+  password_env_key: DB_PASSWORD
 
 sendgrid:
   enabled: false
 
 cilium:
   enabled: false
+
+cronjob:
+  enabled: false
+  image:
+    name: alpine/httpie
+    tag: latest
+  schedule: '0 8 * * *'
+  external_secrets:
+    enabled: false
+    secrets: []
+
+sa_name: workload
+
+kaniko_version_tag: v1.16.0
+ci_machine_type: E2_HIGHCPU_8
+
+clamav:
+  enabled: false
+  pvc:
+    enabled: true
+    disk_size: 3Gi
+
+sa_json_key:
+  enabled: false
+  envKey: GOOGLE_APPLICATION_CREDENTIALS
+
+redis:
+  enabled: false
+  auth:
+    enabled: true
+    username: default
+  secret_suffix: cache
+
+pixo_service_account:
+  enabled: false
+  name: ""
+  firstName: ""
+  lastName: ""
+  orgId: ""
+  role: "superadmin"
+
 
 

@@ -1,0 +1,1510 @@
+---
+# Source: web-app/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-workload
+  namespace: test
+  labels:
+    namespace: test
+  annotations:
+    iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
+---
+# Source: web-app/templates/clamav-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'dev-sample-web-pvc-clamav'
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+# Source: web-app/templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'dev-sample-web-pvc'
+  namespace: test
+  labels:
+    namespace: test
+spec:
+  storageClassName: 
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: web-app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-sample-web
+  namespace: test
+  labels:
+    namespace: test
+    tier: backend
+    backstage.io/kubernetes-id: sample
+  annotations:
+    cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    external-dns.alpha.kubernetes.io/hostname: 'subdomain.sample.dev.example.com.'
+spec:
+  type: LoadBalancer
+  selector:
+    app: sample
+    name: web
+
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 8001
+  - name: sftpgo
+    port: 22
+    protocol: TCP
+    targetPort: 2022
+---
+# Source: web-app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'dev-sample-web'
+  namespace: test
+  annotations:
+    platform.pixovr.com/service-account-name: 'dev-sample-web-service'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sample
+      name: web
+  template:
+    metadata:
+      labels:
+        lifecycle: 'dev'
+        namespace: test
+        app: sample
+        name: web
+        tier: application
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
+        container.apparmor.security.beta.kubernetes.io/proxy: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/proxy: runtime/default
+        container.apparmor.security.beta.kubernetes.io/clamav: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/clamav: runtime/default
+    spec:
+
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        supplementalGroups:
+          - 150
+
+      volumes:
+        - name: app-secrets
+          secret:
+            secretName: app-secrets
+        - name: extra-app-secrets
+          secret:
+            secretName: extra-app-secrets
+
+        - name: tmp-dir
+          emptyDir: {}
+        - name: usr-tmp-dir
+          emptyDir: {}
+        - name: var-tmp-dir
+          emptyDir: {}
+        - name: cache-dir
+          emptyDir: {}
+
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: 'dev-sample-web-pvc'
+        - name: clamav-run
+          emptyDir: {}
+        - name: clamav-tmp
+          emptyDir: {}
+
+        - name: clamav-var-lib
+          persistentVolumeClaim:
+            claimName: 'dev-sample-web-pvc-clamav'
+
+      serviceAccountName: 'app-workload'
+      restartPolicy: Always
+      containers:
+      - name: app
+        image: 'gcr.io/app-project/sample/dev/web:latest'
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 0.1
+          limits:
+            memory: 256Mi
+            cpu: 0.25
+
+        volumeMounts:
+          - mountPath: /backend/secrets
+            name: app-secrets
+          - mountPath: /mnt/extra-secrets
+            name: extra-app-secrets
+
+          - mountPath: /var/db
+            name: db-volume
+          - mountPath: /tmp
+            name: tmp-dir
+          - mountPath: /usr/tmp
+            name: usr-tmp-dir
+          - mountPath: /var/tmp
+            name: var-tmp-dir
+          - mountPath: /.cache
+            name: cache-dir
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        envFrom:
+        - secretRef:
+            name: cronjob-secrets
+        - secretRef:
+            name: extra-app-secrets
+
+        env:
+        - name: USE_GCS
+          value: "true"
+        - name: NAMESPACE
+          value: test
+        - name: DOMAIN
+          value: 'api.sample.dev.example.com'
+        - name: PORT
+          value: "8001"
+        - name: GCP_KMS_KEY_REF
+          value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+        - name: GCP_KMS_KEYRING_NAME
+          value: 'dev-sample-web-keyring'
+        - name: GCP_KMS_KEY_NAME
+          value: 'dev-sample-web-key'
+        - name: EXTRA_SECRETS_PATH
+          value: "/mnt/extra-secrets"
+        - name: REDIS_USERNAME
+          value: default
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: 'test-cache'
+              key: redis-password
+        - name: DB_VENDOR
+          value: "postgres"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: port
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: dbname
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: password
+        - name: PUBSUB_TOPIC
+          value: us-east-dev-sample-topic
+        - name: PUBSUB_SUBSCRIPTION
+          value: us-east-us-east-dev-sample-topic-sub
+        - name: USE_PUBSUB
+          value: "true"
+
+        - name: TMP_PATH
+          value: "/var/tmp"
+
+        - name: GCP_PROJECT_ID
+          value: "app-project"
+
+        - name: DB_PROJECT_ID
+          value: "db-project"
+
+        - name: REGION
+          value: "us-central1"
+        - name: INSTANCE_NAME
+          value: "us-east-apex-instance"
+
+        - name: EXTERNAL_APP_URL
+
+          
+          value: https://multiplayer.dev.example.com
+
+        - name: MATCHMAKER_URL
+
+          
+          value: wss://match.dev.example.com/matchmaking
+
+        - name: ALLOCATE_HOSTNAME
+
+          
+          value: https://multi-central1.multiplayer.dev.example.com/allocator
+
+        - name: MMF_API_HOST
+          value: http://test-matchmaking-matchfunction.test.svc/v1
+
+        - name: LIFECYCLE
+          value: DEV
+
+        - name: APP_ENV
+          value: DEV
+
+        - name: NODE_ENV
+          value: DEV
+        - name: APP_HOST
+          value: https://api.sample.dev.example.com
+        - name: GOOGLE_JSON_KEY
+          value: /backend/secrets/svc-acct-json-key
+        - name: SEND_EMAILS
+          value: "true"
+
+        - name: EMAILER_EMAIL
+          value: pixoplatform@pixovr.com
+        - name: EMAILER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: email-sender-password
+        - name: EMAIL_BCC
+          value: 'newuser@pixovr.com'
+        - name: GOOGLE_STORAGE_PUBLIC
+          value: us-east-dev-sample-web-public
+        - name: GOOGLE_STORAGE_BUILDS
+          value: us-east-dev-sample-web-builds
+        - name: GOOGLE_STORAGE_EXT
+          value: pre-dev-tenant-ext-api-ext
+        - name: EMAILER_TO
+          value: walker.obrien@pixovr.com
+        - name: AWS_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-id
+
+        - name: AWS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
+
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-secret
+        - name: AWS_CLOUDFRONT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-cf-public-key
+
+        - name: AWS_CLOUDFRONT_PRIVATE_KEY_PATH
+          value: /backend/secrets/aws-cf-private-key
+
+        - name: AWS_CLOUDFRONT_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: aws-cf-domain
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
+
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: auth-key
+        - name: EXTERNAL_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: external-auth-key
+
+        
+        - name: DB_VENDOR
+          value: "postgres"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: port
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  'dev-db-pguser-dev-db'
+              key: password
+
+        ports:
+        - containerPort: 8001
+          name: app-port
+        - containerPort: 2022
+          name: sftpgo
+      - name: proxy
+        image: "gcr.io/cloudsql-docker/gce-proxy:1.37.0"
+        imagePullPolicy: Always
+        command:
+        - /cloud_sql_proxy
+        - -instances=db-project:us-central1:us-east-apex-instance=tcp:127.0.0.1:5432
+        - -enable_iam_login
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      - name: clamav
+        image: clamav/clamav:stable
+        ports:
+        - containerPort: 3310
+
+        volumeMounts:
+        - name: clamav-run
+          mountPath: /run
+        - name: clamav-tmp
+          mountPath: /tmp
+        - name: clamav-var-lib
+          mountPath: /var/lib/clamav
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+          seccompProfile:
+            type: RuntimeDefault
+---
+# Source: web-app/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: 'dev-sample-web-hpa'
+  namespace: test
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: 'dev-sample-web'
+  minReplicas: 1
+  maxReplicas: 10
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 15
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 2
+        periodSeconds: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: 80
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+# Source: web-app/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'dev-sample-web-cronjob'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+        spec:
+          serviceAccountName: 'app-workload'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+          - name: extra-app-secrets
+            secret:
+              secretName: extra-app-secrets
+
+          containers:
+          - name: job
+            image: 'alpine/httpie:latest'
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+            - mountPath: /mnt/extra-secrets
+              name: extra-app-secrets
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+            args:
+            - dev-sample-web.test.svc:443/
+            - x-access-token:$(SECRET_KEY)
+            - --ignore-stdin
+            envFrom:
+            - secretRef:
+                name: cronjob-secrets
+            - secretRef:
+                name: extra-app-secrets
+
+            env:
+            - name: EMAILER_TO
+              value: walker.obrien@pixovr.com
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-web-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-web-key'
+            - name: EXTRA_SECRETS_PATH
+              value: "/mnt/extra-secrets"
+
+            - name: EXTERNAL_APP_URL
+
+              
+              value: https://multiplayer.dev.example.com
+
+            - name: MATCHMAKER_URL
+
+              
+              value: wss://match.dev.example.com/matchmaking
+
+            - name: ALLOCATE_HOSTNAME
+
+              
+              value: https://multi-central1.multiplayer.dev.example.com/allocator
+
+            - name: MMF_API_HOST
+              value: http://test-matchmaking-matchfunction.test.svc/v1
+
+            - name: LIFECYCLE
+              value: DEV
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: dev-sample-web-public
+            - name: GOOGLE_STORAGE_BUILDS
+              value: dev-sample-web-builds
+            - name: GOOGLE_STORAGE_EXT
+              value: pre-dev-tenant-ext-api-ext
+            - name: EMAILER_EMAIL
+              value: pixoplatform@pixovr.com
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+---
+# Source: web-app/templates/cronjobs.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'dev-sample-web-sample-cj'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  schedule: '0 14 * * *'
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+        spec:
+          serviceAccountName: 'app-workload'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+            image: 'gcr.io/app-project/sample/dev/web:latest'
+            command:
+            - /bin/sh
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+
+            - name: EXTERNAL_APP_URL
+
+              
+              value: https://multiplayer.dev.example.com
+
+            - name: MATCHMAKER_URL
+
+              
+              value: wss://match.dev.example.com/matchmaking
+
+            - name: ALLOCATE_HOSTNAME
+
+              
+              value: https://multi-central1.multiplayer.dev.example.com/allocator
+
+            - name: MMF_API_HOST
+              value: http://test-matchmaking-matchfunction.test.svc/v1
+
+            - name: LIFECYCLE
+              value: DEV
+
+            - name: NAMESPACE
+              value: test
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: 'dev-sample-web-service-auth'
+                  key: 'password'
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-web-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-web-key'
+            - name: REDIS_USERNAME
+              value: default
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: 'test-cache'
+                  key: redis-password
+            - name: DB_VENDOR
+              value: "postgres"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: port
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: dbname
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: dbname
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name:  'dev-db-pguser-dev-db'
+                  key: password
+            - name: AWS_REGION
+              value: us-east-1
+            - name: AWS_ENDPOINT
+              value: https://s3
+            - name: S3_BUCKET_NAME
+              value: test-bucket
+
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-id
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: aws-secret
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+
+            - name: GCP_PROJECT_ID
+              value: 'app-project'
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: us-east-dev-sample-web-public
+            - name: GOOGLE_STORAGE_BUILDS
+              value: us-east-dev-sample-web-builds
+            - name: GOOGLE_STORAGE_EXT
+              value: pre-dev-tenant-ext-api-ext
+            - name: EMAILER_EMAIL
+              value: pixoplatform@pixovr.com
+            - name: EMAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: email-sender-password
+---
+# Source: web-app/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+  annotations:
+    networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
+    cert-manager.io/cluster-issuer: "letsencrypt-nginx"
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: >
+        DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,xc-auth
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, PATCH, OPTIONS
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    # nginx.ingress.kubernetes.io/cors-allow-origin: 'api.sample.dev.example.com'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    external-dns.alpha.kubernetes.io/hostname: 'api.sample.dev.example.com.'
+
+spec:
+  tls:
+  - hosts:
+    - api.sample.dev.example.com
+    secretName: ingress-certs
+
+  rules:
+  - host: api.sample.dev.example.com
+    http:
+
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-web
+            port:
+              number: 443
+      - path: /server
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-web
+            port:
+              number: 22
+      - path: /api
+
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-api
+            port:
+              number: 443
+      - path: /modules
+
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-goapi
+            port:
+              number: 443
+---
+# Source: web-app/templates/backend-config.yaml
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: test-backendconfig
+  namespace: test
+spec:
+  healthCheck:
+    checkIntervalSec: 60
+    port: 8001
+    type: HTTP
+    requestPath: /health/
+
+  securityPolicy:
+    name: no-russia
+
+  cdn:
+    enabled: false
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+---
+# Source: web-app/templates/cloudbuild.yaml
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: dev-sample-web-ci
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+  labels:
+    namespace: test
+spec:
+  disabled: false
+  github:
+    owner: PixoVR
+    name: apex-api 
+    push:
+      branch: "^dev$"
+
+  substitutions:
+    "_LIFECYCLE": dev
+    "_APP_CODE": sample
+    "_SERVICE_NAME": web
+  build:
+    timeout: 1800s
+    options:
+      machineType: E2_HIGHCPU_8
+
+    step:
+      - id: Store-SSH-Key
+        name: 'gcr.io/cloud-builders/git'
+        secretEnv: ['SSH_KEY']
+        entrypoint: 'bash'
+        args:
+        - -c
+        - |
+          echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+          chmod 400 /root/.ssh/id_rsa
+          cp known_hosts.github /root/.ssh/known_hosts
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
+      - id: "Pull-Submodules"
+        name: gcr.io/cloud-builders/git
+        args: ['submodule', 'update', '--init', '--recursive']
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+      - id: GKE-Auth
+        name: "gcr.io/cloud-builders/gcloud-slim"
+        entrypoint: "bash"
+        args:
+          - "-c"
+          - |
+            gcloud components install kubectl &&
+            gcloud container clusters get-credentials us-east-cluster --region=us-central1 --project=gke-project
+        env:
+          - KUBECONFIG=/workspace/kube/.config
+
+
+      - id: "Build-Image"
+        name: "gcr.io/kaniko-project/executor:v1.16.0"
+        args:
+          - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
+          - --destination=gcr.io/app-project/sample/dev/web:latest
+          - --context=.
+          - --dockerfile=Dockerfile
+          - --cache=true
+          - --cache-ttl=240h
+        env:
+          - HOME=/workspace
+    availableSecrets:
+      secretManager:
+      - env: 'SSH_KEY'
+        versionRef:
+          external: projects/app-project/secrets/web-submodule-reader-key/versions/latest
+---
+# Source: web-app/templates/config-connector.yaml
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: 'app-infra@sa-project.iam.gserviceaccount.com'
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: cronjob-secrets
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: cronjob-secrets
+    creationPolicy: Owner
+  data:
+  - secretKey: SOME_SECRET
+    remoteRef:
+      key: some-secret
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: extra-app-secrets
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: extra-app-secrets
+    creationPolicy: Owner
+  data:
+  - secretKey: SOME_APP_SECRET
+    remoteRef:
+      key: some-app-secret
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: github-credentials
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: github-credentials
+    creationPolicy: Owner
+  data:
+  - secretKey: github-https-username
+    remoteRef:
+      key: github-https-username
+  - secretKey: github-https-password
+    remoteRef:
+      key: github-https-password
+  - secretKey: github-access-token
+    remoteRef:
+      key: github-access-token
+  - secretKey: github-ssh-private-key
+    remoteRef:
+      key: github-ssh-private-key
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: app-secrets
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: app-secrets
+    creationPolicy: Owner
+  data:
+
+    - secretKey: auth-key
+      remoteRef:
+        key: saudi-sample-auth-key
+    - secretKey: email-sender-password
+      remoteRef:
+        key: saudi-sample-email-sender-password
+    - secretKey: external-auth-key
+      remoteRef:
+        key: saudi-sample-external-auth-key
+    - secretKey: aws-id
+      remoteRef:
+        key: saudi-sample-aws-id
+
+    - secretKey: aws-secret
+      remoteRef:
+        key: saudi-sample-aws-secret
+    - secretKey: aws-cf-private-key
+      remoteRef:
+        key: saudi-sample-aws-cf-private-key
+
+    - secretKey: aws-cf-public-key
+      remoteRef:
+        key: saudi-sample-aws-cf-public-key
+
+    - secretKey: aws-cf-domain
+      remoteRef:
+        key: saudi-sample-aws-cf-domain
+    - secretKey: svc-acct-json-key
+      remoteRef:
+        key: saudi-sample-svc-acct-json-key
+---
+# Source: web-app/templates/frontend-config.yaml
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: test-gke-frontendconfig
+  namespace: test
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  sslPolicy: tls-12
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  labels:
+    namespace: test
+  name: us-east-dev-sample-web-public-bucket-access
+spec:
+  resourceRef:
+    kind: StorageBucket
+    name: us-east-dev-sample-web-public
+  bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - member: allUsers
+---
+# Source: web-app/charts/app-iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'workload-sa-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'workload-sa'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
+---
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'cnrm-controller-manager-infra-admin-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'cnrm-controller-manager-infra-admin'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
+---
+# Source: web-app/charts/app-iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'workload-sa'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test workload service account"
+---
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'cnrm-controller-manager-infra-admin'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test infra admin service account"
+---
+# Source: web-app/templates/kms.yaml
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: 'dev-sample-web-key'
+  annotations:
+    cnrm.cloud.google.com/project-id: 'app-project'
+spec:
+  keyRingRef:
+    name: 'dev-sample-web-keyring'
+  purpose: 'ENCRYPT_DECRYPT'
+---
+# Source: web-app/templates/kms.yaml
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: 'dev-sample-web-keyring'
+  annotations:
+    cnrm.cloud.google.com/project-id: 'app-project'
+spec:
+  location: 'global'
+---
+# Source: web-app/templates/pixo-service-account.yaml
+apiVersion: platform.pixovr.com/v1
+kind: PixoServiceAccount
+metadata:
+  name: 'dev-sample-web-service'
+spec:
+  firstName: Web
+  lastName: Service
+  orgId: 20
+  role: superadmin
+---
+# Source: web-app/templates/crunchydb.yaml
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: 'dev-db'
+spec:
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.6-2
+  postgresVersion: 14
+  instances:
+    - name: instance1
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 20Gi
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - host dev-db dev-db 0.0.0.0/0 password
+  backups:
+    pgbackrest:
+      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: 20Gi
+---
+# Source: web-app/templates/pubsub.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSchema
+metadata:
+  name: grpc-us-east-dev-sample-topic-schema
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  type: 'PROTOCOL_BUFFER'
+  projectRef:
+    external: app-project
+---
+# Source: web-app/templates/pubsub.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSchema
+metadata:
+  name: json-us-east-dev-sample-topic-schema
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  type: 'JSON'
+  projectRef:
+    external: app-project
+---
+# Source: web-app/templates/pubsub.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: create-foo-us-east-us-east-dev-sample-topic-sub
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  ackDeadlineSeconds: 15
+  enableMessageOrdering: true
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: create-foo-us-east-dev-sample-topic
+  pushConfig:
+    pushEndpoint: 'https://multi-central1.allocator.multiplayer.dev.example.com/triggers'
+---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: us-east-us-east-dev-sample-topic-sub-builds
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: us-east-dev-sample-topic-builds
+  pushConfig:
+    pushEndpoint: 'https://external.service.dev.example.com/'
+---
+# Source: web-app/templates/pubsub.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: create-foo-us-east-dev-sample-topic
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+spec:
+  schemaSettings:
+    schemaRef:
+      name: json-us-east-dev-sample-topic-schema
+    encoding: JSON
+---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: us-east-dev-sample-topic-builds
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+---
+# Source: web-app/templates/cloud-sql.yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: 'dev-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: db-project
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  instanceRef:
+    external: us-east-apex-instance
+---
+# Source: web-app/templates/cloud-sql.yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: 'dev-sample-web-extra-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: db-project
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  instanceRef:
+    external: us-east-apex-instance
+---
+# Source: web-app/templates/cloud-sql.yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: dev-sample-web-user
+  annotations:
+    cnrm.cloud.google.com/project-id: db-project
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  instanceRef:
+    external: us-east-apex-instance
+  resourceID: workload@sa-project.iam
+  type: CLOUD_IAM_SERVICE_ACCOUNT
+---
+# Source: web-app/templates/external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: pixo-secret-store
+  namespace: test
+spec:
+  provider:
+    gcpsm:
+      projectID: app-project
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: us-east-dev-sample-web-public
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+  retentionPolicy:
+    isLocked: true
+    retentionPeriod: 5
+
+  cors:
+    - origin: ["http://localhost", https://sample.dev.example.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: us-east-dev-sample-web-builds
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+  retentionPolicy:
+    isLocked: false
+    retentionPeriod: 10
+
+  cors:
+    - origin: ["http://localhost", https://sample.dev.example.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    namespace: test
+  name: us-east-dev-sample-web-public-bucket-access
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-public
+  entity: allUsers
+  role: READER
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  name: us-east-dev-sample-web-builds-tenant-bucket-access
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-builds
+  entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
+  role: READER
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageDefaultObjectAccessControl
+metadata:
+  name: us-east-dev-sample-web-builds-default-bucket-access
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-builds
+  entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
+  role: READER
+---
+# Source: web-app/templates/storage-notifications.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageNotification
+metadata:
+  name: us-east-dev-sample-web-builds-notification
+spec:
+  bucketRef:
+    name: us-east-dev-sample-web-builds
+  payloadFormat: JSON_API_V1
+  topicRef:
+    name: us-east-dev-sample-topic-builds
+  eventTypes:
+    - "OBJECT_FINALIZE"

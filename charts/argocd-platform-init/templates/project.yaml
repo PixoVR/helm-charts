@@ -1,0 +1,38 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.project_name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{- .Values.sync_wave -}}"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  clusterResourceWhitelist:
+  - group: "*"
+    kind: '*'
+  description: '{{ .Release.Name }} Platform Init Project'
+  sourceRepos:
+  - 'git@github.com:{{- required "REQUIRED: github_org" .Values.github_org -}}/{{- required "REQUIRED: repo_name" .Values.repo_name -}}.git'
+  - {{ .Values.helm_charts_repo }}
+  - {{ .Values.bitnami_charts_repo }}
+
+  destinations:
+  - namespace: '*'
+    server: '*'
+  roles:
+  - name: admin
+    policies:
+    - p, proj:platform:admin, applications, *, platform/*, allow
+    groups:
+    - '{{- .Values.github_org -}}:{{- required "REQUIRED: github_team" .Values.github_team -}}'
+  - name: read-only
+    description: Read-only privileges to {{ .Release.Name }} platform
+    policies:
+    - p, proj:platform:read-only, applications, get, platform/*, allow
+    groups: []
+  - name: ci-role
+    description: Sync privileges for {{ .Release.Name }} platform
+    policies:
+    - p, proj:platform:ci-role, applications, sync, platform/*, allow
+    groups: []

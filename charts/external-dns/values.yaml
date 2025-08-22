@@ -1,0 +1,33 @@
+---
+
+app_iam:
+  sa_project_id: 'replace-me'
+  gke_project_id: 'replace-me'
+  app_project_id: 'replace-me'
+  sa_name: external-dns
+  add_bindings: true
+  folder:
+    app_roles:
+      - dns.admin
+  app:
+    ksa_name: external-dns
+    namespace: external-dns
+
+external-dns:
+  provider: google
+  policy: sync
+  extraArgs:
+  - --google-project=replace-me
+  - --txt-owner-id=replace-me
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  resources:
+    requests:
+      cpu: ".01"
+      memory: 32Mi
+    limits:
+      cpu: ".05"
+      memory: 64Mi
+

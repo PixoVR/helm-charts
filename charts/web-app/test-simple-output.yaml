@@ -1,0 +1,516 @@
+---
+# Source: web-app/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-workload
+  namespace: test
+  labels:
+    namespace: test
+  annotations:
+    iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
+---
+# Source: web-app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-sample-web
+  namespace: test
+  labels:
+    namespace: test
+    tier: backend
+    backstage.io/kubernetes-id: sample
+  annotations:
+    cloud.google.com/backend-config: '{"default": "test-backendconfig"}'
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  type: ClusterIP
+  selector:
+    app: sample
+    name: web
+
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 80
+---
+# Source: web-app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'dev-sample-web'
+  namespace: test
+  annotations:
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sample
+      name: web
+  template:
+    metadata:
+      labels:
+        lifecycle: 'dev'
+        namespace: test
+        app: sample
+        name: web
+        tier: application
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        container.apparmor.security.beta.kubernetes.io/app: runtime/default
+        container.seccomp.security.alpha.kubernetes.io/app: runtime/default
+    spec:
+
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        supplementalGroups:
+          - 150
+
+      volumes:
+
+        - name: tmp-dir
+          emptyDir: {}
+        - name: usr-tmp-dir
+          emptyDir: {}
+        - name: var-tmp-dir
+          emptyDir: {}
+        - name: npm-dir
+          emptyDir: {}
+
+        - name: db-volume
+          emptyDir: {}
+
+      serviceAccountName: 'app-workload'
+      restartPolicy: Always
+      containers:
+      - name: app
+        image: 'gcr.io/app-project/sample/dev/web:latest'
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 0.1
+          limits:
+            memory: 256Mi
+            cpu: 0.25
+
+        volumeMounts:
+
+          - mountPath: /var/sqlite
+            name: db-volume
+          - mountPath: /tmp
+            name: tmp-dir
+          - mountPath: /usr/tmp
+            name: usr-tmp-dir
+          - mountPath: /var/tmp
+            name: var-tmp-dir
+          - name: npm-dir
+            mountPath: /.npm
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        env:
+        - name: USE_GCS
+          value: "true"
+        - name: NAMESPACE
+          value: test
+        - name: DOMAIN
+          value: 'api.sample.dev.simple.com'
+        - name: PORT
+          value: "80"
+        - name: GCP_KMS_KEY_REF
+          value: 'projects/app-project/locations/global/keyRings/dev-sample-other-keyring/cryptoKeys/dev-sample-other-key'
+        - name: GCP_KMS_KEYRING_NAME
+          value: 'dev-sample-other-keyring'
+        - name: GCP_KMS_KEY_NAME
+          value: 'dev-sample-other-key'
+
+        - name: TMP_PATH
+          value: "/var/tmp"
+
+        - name: GCP_PROJECT_ID
+          value: "app-project"
+
+        - name: DB_PROJECT_ID
+          value: "db-project"
+
+        - name: REGION
+          value: "us-central1"
+
+        - name: LIFECYCLE
+          value: DEV
+
+        - name: APP_ENV
+          value: DEV
+
+        - name: NODE_ENV
+          value: DEV
+        - name: APP_HOST
+          value: https://api.sample.dev.simple.com
+        - name: GOOGLE_STORAGE_PUBLIC
+          value: dev-sample-web-public
+
+        
+
+        ports:
+        - containerPort: 80
+          name: app-port
+---
+# Source: web-app/templates/cronjobs.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'dev-sample-web-simple-cj'
+  labels:
+    lifecycle: 'dev'
+    namespace: test
+    app: sample
+    name: web
+    tier: application
+spec:
+  schedule: '0 14 * * *'
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            lifecycle: 'dev'
+            namespace: test
+            app: sample
+            name: web
+            tier: application
+        spec:
+          serviceAccountName: 'app-workload'
+          restartPolicy: Never
+
+          hostIPC: false
+          hostNetwork: false
+          hostPID: false
+
+          securityContext:
+            runAsUser: 115
+            runAsGroup: 125
+            fsGroup: 190
+            supplementalGroups:
+              - 150
+
+          volumes:
+          - name: tmp-dir
+            emptyDir: {}
+
+          containers:
+          - name: job
+            image: 'gcr.io/app-project/sample/dev/web:latest'
+            command:
+            - /bin/sh
+
+            imagePullPolicy: IfNotPresent
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 0.1
+              limits:
+                memory: 256Mi
+                cpu: 0.25
+
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              procMount: Default
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+
+            env:
+
+            - name: LIFECYCLE
+              value: DEV
+
+            - name: NAMESPACE
+              value: test
+            - name: GCP_KMS_KEY_REF
+              value: 'projects/app-project/locations/global/keyRings/dev-sample-other-keyring/cryptoKeys/dev-sample-other-key'
+            - name: GCP_KMS_KEYRING_NAME
+              value: 'dev-sample-other-keyring'
+            - name: GCP_KMS_KEY_NAME
+              value: 'dev-sample-other-key'
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: auth-key
+
+            - name: TMP_PATH
+              value: "/tmp"
+
+            - name: GCP_PROJECT_ID
+              value: 'app-project'
+            - name: GOOGLE_STORAGE_PUBLIC
+              value: dev-sample-web-public
+---
+# Source: web-app/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+  annotations:
+    networking.gke.io/v1beta1.FrontendConfig: test-gke-frontendconfig
+    networking.gke.io/managed-certificates: test-google-cert
+    external-dns.alpha.kubernetes.io/hostname: 'api.sample.dev.simple.com.'
+
+spec:
+
+  rules:
+  - http:
+
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-sample-web
+            port:
+              number: 443
+---
+# Source: web-app/templates/backend-config.yaml
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: test-backendconfig
+  namespace: test
+spec:
+  healthCheck:
+    checkIntervalSec: 60
+    port: 80
+    type: HTTP
+    requestPath: /
+
+  securityPolicy:
+    name: no-russia
+
+  cdn:
+    enabled: false
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+---
+# Source: web-app/templates/cloudbuild.yaml
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: dev-sample-web-ci
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+  labels:
+    namespace: test
+spec:
+  disabled: false
+  github:
+    owner: PixoVR
+    name: replaceme 
+    push:
+      branch: "^dev$"
+
+  substitutions:
+    "_LIFECYCLE": dev
+    "_APP_CODE": sample
+    "_SERVICE_NAME": web
+  build:
+    timeout: 1800s
+    options:
+      machineType: E2_HIGHCPU_8
+
+    step:
+
+
+      - id: "Build-Image"
+        name: "gcr.io/kaniko-project/executor:v1.16.0"
+        args:
+          - --destination=gcr.io/app-project/sample/dev/web:$COMMIT_SHA
+          - --destination=gcr.io/app-project/sample/dev/web:latest
+          - --context=.
+          - --dockerfile=Dockerfile
+          - --cache=true
+          - --cache-ttl=240h
+---
+# Source: web-app/templates/frontend-config.yaml
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: test-gke-frontendconfig
+  namespace: test
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  sslPolicy: tls-12
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  labels:
+    namespace: test
+  name: dev-sample-web-public-bucket-access
+spec:
+  resourceRef:
+    kind: StorageBucket
+    name: dev-sample-web-public
+  bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - member: allUsers
+---
+# Source: web-app/charts/app-iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'workload-sa-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'workload-sa'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
+---
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: 'cnrm-controller-manager-infra-admin-wi'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: 'cnrm-controller-manager-infra-admin'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
+---
+# Source: web-app/charts/app-iam/templates/app-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'workload-sa'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test workload service account"
+---
+# Source: web-app/charts/app-iam/templates/infra-account.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: 'cnrm-controller-manager-infra-admin'
+  namespace: infra-admin
+  annotations:
+    cnrm.cloud.google.com/project-id: 'replaceme'
+spec:
+  displayName: "test infra admin service account"
+---
+# Source: web-app/templates/managed-cert.yaml
+apiVersion: networking.gke.io/v1 
+kind: ManagedCertificate
+metadata:
+  name: test-google-cert
+  namespace: test
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+  annotations:
+    configsync.gke.io/cluster-name-selector: central-cluster-membership
+spec:
+  domains:
+    - api.sample.dev.simple.com
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: dev-sample-web-public
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+
+  cors:
+    - origin: ["http://localhost", https://sample.dev.simple.com"]
+      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      responseHeader: [Accept Access-Control-Request-Headers Access-Control-Request-Method Access-Control-Allow-Origin Accept-Encoding Accept-Language Cache-Control Connection Content-Length Content-Range Content-Type Host Origin Pragma Referer Sec-Ch-Ua Sec-Ch-Ua-Mobile Sec-Ch-Ua-Platform Sec-Fetch-Dest Sec-Fetch-Mode Sec-Fetch-Site User-Agent X-Client-Data Date Server Vary X-Access-Token X-Goog-Resumable]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    namespace: test
+  name: dev-sample-web-public-bucket-access
+spec:
+  bucketRef:
+    name: dev-sample-web-public
+  entity: allUsers
+  role: READER

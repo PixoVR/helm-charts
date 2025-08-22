@@ -1,0 +1,63 @@
+
+github_org: PixoVR
+repo_name: replaceme
+revision: HEAD
+
+helm_charts_repo: https://pixovr.github.io/helm-charts
+deploy_chart_name: web-app
+helm_image_alias: web-app.image.tag
+
+iam_chart: app-iam
+iam_chart_version: 0.0.41
+
+add_bindings: true
+
+app_project_id: app-project
+sa_project_id: sa-project
+db_project_id: db-project
+gke_project_id: gke-project
+app_domain: example.com
+
+app_name: sample
+
+multi_cluster: true
+cpl_cluster_name: "us-central1"
+
+pre_tenant_services_filepath: kubernetes/tenants
+post_tenant_services_filepath: services/*
+post_tenant_services_filename: app-config.yaml
+
+services_filepath: ''
+
+destination_server: https://kubernetes.default.svc
+target_revision: HEAD
+
+argocd_namespace: argocd
+argocd_project: platform
+
+sa:
+  enabled: true
+
+gke:
+  enabled: true
+
+db:
+  enabled: true
+
+app:
+  enabled: true
+  ingress:
+    enabled: true
+    https: true
+  server: https://kubernetes.default.svc
+  namespace: ''
+
+infra:
+  server: https://kubernetes.default.svc
+  namespace: ''
+
+iam:
+  namespace: infra-admin
+
+image_updater:
+  use_new_branch: false

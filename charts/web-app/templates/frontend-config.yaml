@@ -1,4 +1,6 @@
 {{- if and (.Values.enabled) (not .Values.local) }}
+{{- if .Values.ingress.enabled }}
+{{- if not .Values.ingress.is_secondary }}
 {{- if .Values.ingress.https }}
 {{- if .Values.deploy_app }}
 
@@ -15,6 +17,8 @@ spec:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
 
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

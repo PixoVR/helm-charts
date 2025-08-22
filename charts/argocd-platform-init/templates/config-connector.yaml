@@ -1,0 +1,18 @@
+{{- if .Values.config_connector.enabled }}
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.config_connector.admin_namespace }}
+
+---
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+  namespace: {{ .Values.config_connector.admin_namespace }}
+spec:
+  googleServiceAccount: {{ include "sa_email" $ }}
+
+{{- end }}

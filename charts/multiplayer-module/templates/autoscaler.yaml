@@ -1,0 +1,34 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+{{- if .Values.autoscaler.enabled }}
+
+apiVersion: autoscaling.agones.dev/v1
+kind: FleetAutoscaler
+metadata:
+  name: '{{ include "fleet_name" $ }}-autoscaler'
+  namespace: {{ .Release.Namespace }}
+spec:
+  fleetName: '{{ include "fleet_name" $ }}'
+  policy:
+    type: Buffer
+    buffer:
+      # Size of a buffer of "ready" game server instances
+      # The FleetAutoscaler will scale the fleet up and down trying to maintain this buffer, 
+      # as instances are being allocated or terminated
+      # it can be specified either in absolute (i.e. 5) or percentage format (i.e. 5%)
+      bufferSize: {{ .Values.buffer_size }}
+      minReplicas: {{ .Values.min_replicas }}
+      maxReplicas: {{ .Values.max_replicas }}
+  # [Stage:Beta]
+  # [FeatureFlag:CustomFasSyncInterval]
+  # The autoscaling sync strategy
+  sync:
+    type: FixedInterval
+    fixedInterval:
+      # the time in seconds between each auto scaling
+      seconds: 30
+
+
+{{- end }}
+{{- end }}
+{{- end }}

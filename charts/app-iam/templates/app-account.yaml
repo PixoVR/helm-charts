@@ -1,0 +1,32 @@
+{{- if .Values.enabled }}
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: '{{ include "sa_name" $ }}'
+  namespace: {{ .Values.target_namespace }}
+  annotations:
+    cnrm.cloud.google.com/project-id: '{{ include "sa_project_id" $ }}'
+spec:
+  displayName: "{{ .Release.Name }} workload service account"
+
+---
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: '{{ include "sa_name" $ -}}-wi'
+  namespace: {{ .Values.target_namespace }}
+  annotations:
+    cnrm.cloud.google.com/project-id: '{{ include "sa_project_id" $ }}'
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: '{{ include "sa_name" $ }}'
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+      - serviceAccount:{{- include "gke_project_id" $ -}}.svc.id.goog[{{- required "REQUIRED: app.namespace" .Values.app.namespace -}}/{{- required "REQUIRED: app.ksa_name" .Values.app.ksa_name -}}]
+
+{{- end }}

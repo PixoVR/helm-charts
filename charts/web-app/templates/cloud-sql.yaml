@@ -4,9 +4,9 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
-  name: {{ include "lifecycle" $ -}}-db
+  name: '{{- include "db_name" . -}}'
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
   labels:
     namespace: {{ $.Release.Namespace }}
     backstage.io/kubernetes-id: {{ $.Values.app_code }}
@@ -16,12 +16,31 @@ spec:
 
 ---
 
+{{- range .Values.google.sql.extra_databases }}
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: '{{- include "microservice_label" $ -}}-{{- .name -}}-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
+  labels:
+    namespace: {{ $.Release.Namespace }}
+    backstage.io/kubernetes-id: {{ $.Values.app_code }}
+spec:
+  instanceRef:
+    external: {{ include "instance_name" $ }}
+
+---
+
+{{- end }}
+
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLUser
 metadata:
-  name: {{ include "app_label" $ }}-user
+  name: {{ include "microservice_label" $ }}-user
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" $ }}
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
   labels:
     namespace: {{ $.Release.Namespace }}
     backstage.io/kubernetes-id: {{ $.Values.app_code }}
@@ -30,6 +49,29 @@ spec:
     external: {{ include "instance_name" $ }}
   resourceID: {{ include "app_sa" $ }}
   type: CLOUD_IAM_SERVICE_ACCOUNT
+
+---
+{{- if .Values.google.sql.use_password }}
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: {{ include "microservice_label" $ }}-basic
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ include "db_project_id" $ }}
+  labels:
+    namespace: {{ $.Release.Namespace }}
+    backstage.io/kubernetes-id: {{ $.Values.app_code }}
+spec:
+  instanceRef:
+    external: {{ include "instance_name" $ }}
+  type: BUILT_IN
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: app-secrets
+        key: db-password
+  {{- end }}
 
 {{- end }}
 {{- end }}

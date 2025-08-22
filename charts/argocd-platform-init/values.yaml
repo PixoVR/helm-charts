@@ -1,0 +1,62 @@
+
+github_org: PixoVR
+repo_name: replace-me
+github_team: platforms
+argocd_namespace: argocd
+
+domain: ''
+
+config_connector:
+  enabled: false
+  admin_namespace: infra-admin
+  sa_name: infra-admin
+  sa_project_id: replace-me
+
+helm_charts_repo: https://pixovr.github.io/helm-charts
+bitnami_charts_repo: registry-1.docker.io/bitnamicharts
+
+revision: HEAD
+target_revision: HEAD
+
+project_name: platform
+argocd_cpl_project: cluster-addons
+sync_wave: '-100'
+
+cpl_cluster_name: us-central1
+cpl_server: https://kubernetes.default.svc
+destination_server: https://kubernetes.default.svc
+
+cpl_cluster_addon_charts_filepath: kubernetes/addons/charts/*/cpl-config.yaml
+cpl_cluster_addon_manifests_filepath: kubernetes/addons/manifests/*/cpl-config.yaml
+
+app:
+  enabled: false
+
+app_cluster_addon_charts_filepath: kubernetes/addons/charts/*/app-config.yaml
+app_cluster_addon_manifests_filepath: kubernetes/addons/manifests/*/app-config.yaml
+
+multiplayer_cluster_addon_charts_filepath: kubernetes/addons/charts/*/multiplayer-config.yaml
+multiplayer_cluster_addon_manifests_filepath: kubernetes/addons/manifests/*/multiplayer-config.yaml
+
+all_cluster_addon_charts_filepath: kubernetes/addons/charts/*/all-config.yaml
+all_cluster_addon_manifests_filepath: kubernetes/addons/manifests/*/all-config.yaml
+
+dns_project_id: replace-me-123
+
+backstage:
+  enabled: false
+  chart_path: kubernetes/addons/charts/backstage/chart
+  image_list: backend=PUT_BACKSTAGE_IMAGE_HERE
+
+image_updater:
+  use_new_branch: false
+
+tenants:
+  enabled: true
+  ingress:
+    enabled: true
+    https: true
+  chart:
+    repoURL: https://pixovr.github.io/helm-charts
+    name: argocd-tenant-app-sets
+    version: 0.0.118

@@ -1,0 +1,31 @@
+
+installCRDs: true
+
+defaultLabels:
+  app.kubernetes.io/managed-by: Helm
+  app.kubernetes.io/instance: platform-operator
+  app.kubernetes.io/created-by: pixo-platform-operator
+  app.kubernetes.io/part-of: pixo-platform
+  app.kubernetes.io/component: platform-operator
+  app.kubernetes.io/name: platform-operator
+  helm.sh/chart: platform-operator-0.1.0
+
+pixoPlatform:
+  lifecycle: prod
+  region: na
+
+manager:
+  replicas: 1
+  image:
+    repository: gcr.io/pixo-bootstrap/pixo-platform-operator
+    tag: ''
+    pullPolicy: IfNotPresent
+
+gcpsm:
+  enabled: false
+  regionPrefix: true
+  projectId: ''
+  refreshInterval: 1h
+  apiKey:
+    remoteKey: pixo-platform-operator-api-key
+

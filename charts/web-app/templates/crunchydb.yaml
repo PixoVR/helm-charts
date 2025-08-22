@@ -1,0 +1,48 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+{{- if .Values.crunchydb.enabled }}
+{{- if .Values.crunchydb.create }}
+
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: '{{ include "db_name" $ }}'
+spec:
+  image: {{ .Values.crunchydb.image }}
+  postgresVersion: {{ .Values.crunchydb.pg_version }}
+  instances:
+    - name: instance1
+      {{- if .Values.linkerd.enabled }}
+      metadata:
+        annotations:
+          linkerd.io/inject: enabled
+      {{- end }}
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.crunchydb.disk_size }}
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - host {{ include "db_name" $ }} {{ include "db_name" $ }} 0.0.0.0/0 password
+  backups:
+    pgbackrest:
+      image: {{ .Values.crunchydb.pgbackrest.image }}
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: {{ .Values.crunchydb.disk_size }}
+
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+

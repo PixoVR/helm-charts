@@ -1,0 +1,31 @@
+---
+argocd-image-updater:
+  serviceAccount:
+    name: image-updater
+  extraArgs:
+    - --interval
+    - 1m
+    
+app_iam:
+  sa_project_id: ''
+  gke_project_id: ''
+  app_project_id: ''
+  sa_name: image-updater
+  add_bindings: true
+  app:
+    ksa_name: image-updater
+    namespace: argocd
+  folder:
+    app_roles:
+      - storage.objectViewer
+      - iam.serviceAccountTokenCreator
+
+  dns:
+    enabled: true
+
+serviceAccount:
+  create: false
+  name: image-updater
+
+gcr:
+  registry: gcr.io

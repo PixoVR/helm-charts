@@ -7,7 +7,7 @@ kind: CloudBuildTrigger
 metadata:
   name: {{ include "deployment_name" $ -}}-ci
   annotations:
-    cnrm.cloud.google.com/project-id: {{ include "app_project" . }}
+    cnrm.cloud.google.com/project-id: {{ include "app_project_id" . }}
   labels:
     namespace: {{ .Release.Namespace }}
 spec:
@@ -17,20 +17,88 @@ spec:
     name: {{ required "REQUIRED: repo_name" .Values.repo_name }} 
     push:
       branch: "^{{- include "branch" . -}}$"
+
+  {{- if ne .Values.build_context "." }}
+  includedFiles:
+    - "{{ .Values.build_context -}}/**"
+  {{- end }}
+
+  substitutions:
+    "_LIFECYCLE": {{ .Values.lifecycle }}
+    "_APP_CODE": {{ .Values.app_code }}
+    "_SERVICE_NAME": {{ .Values.microservice_name }}
+
+  {{- if .Values.google.cloudbuild.default }}
   build:
     timeout: 1800s
     options:
-      machineType: E2_HIGHCPU_8
+      machineType: {{ .Values.ci_machine_type }}
 
     step:
+      {{- if .Values.submodules.enabled }}
+      - id: Store-SSH-Key
+        name: 'gcr.io/cloud-builders/git'
+        secretEnv: ['SSH_KEY']
+        entrypoint: 'bash'
+        args:
+        - -c
+        - |
+          echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+          chmod 400 /root/.ssh/id_rsa
+          cp known_hosts.github /root/.ssh/known_hosts
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+
+      - id: "Pull-Submodules"
+        name: gcr.io/cloud-builders/git
+        args: ['submodule', 'update', '--init', '--recursive']
+        volumes:
+        - name: 'ssh'
+          path: /root/.ssh
+      {{- end }}
+
+      {{- if .Values.google.cloudbuild.gke }}
+      - id: GKE-Auth
+        name: "gcr.io/cloud-builders/gcloud-slim"
+        entrypoint: "bash"
+        args:
+          - "-c"
+          - |
+            gcloud components install kubectl &&
+            gcloud container clusters get-credentials {{ required "REQUIRED: cluster_name" .Values.cluster_name }}-cluster --region={{- required "REQUIRED: google.region" $.Values.google.region }} --project={{- include "gke_project_id" $ }}
+        env:
+          - KUBECONFIG=/workspace/kube/.config
+      {{- end }}
+
+
       - id: "Build-Image"
-        name: "gcr.io/kaniko-project/executor:latest"
+        name: "gcr.io/kaniko-project/executor:{{- .Values.kaniko_version_tag -}}"
         args:
           - --destination={{- include "registry" . }}:$COMMIT_SHA
           - --destination={{- include "registry" . }}:latest
-          - --context=.
-          - --cache=true
+          - --context={{- required "REQUIRED: build_context" .Values.build_context }}
+          - --dockerfile={{- include "dockerfile" $ }}
+          - --cache={{- .Values.build_cache }}
           - --cache-ttl=240h
+        {{- if .Values.google.cloudbuild.gke }}
+        env:
+          - HOME=/workspace
+        {{- end }}
+
+    {{- if .Values.submodules.enabled }}
+    availableSecrets:
+      secretManager:
+      - env: 'SSH_KEY'
+        versionRef:
+          external: projects/{{- include "app_project_id" $ -}}/secrets/{{- include "external_submodule_secret_name" $ -}}/versions/latest
+    {{- end }}
+
+  {{- else }}
+  filename: {{ .Values.google.cloudbuild.filename }}
+  {{- end }}
+
+---
 
 {{- end }}
 {{- end }}
