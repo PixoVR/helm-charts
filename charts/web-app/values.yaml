@@ -225,6 +225,11 @@ github:
     https:
       enabled: false
 
+loadbalancer:
+  timeoutSec: 60
+  connectionDraining:
+    drainingTimeoutSec: 300
+
 oauth:
   google:
     enabled: false
