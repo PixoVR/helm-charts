@@ -24,26 +24,13 @@ spec:
 
     step:
       - id: "Build-Image"
-        name: "gcr.io/cloud-builders/docker"
+        name: "gcr.io/kaniko-project/executor:latest"
         args:
-          - build
-          - -t
-          - {{- include "registry" . }}:$COMMIT_SHA
-          - -t
-          - {{- include "registry" . }}:latest
-          - --cache-from
-          - {{- include "registry" . }}:latest
-          - .
-      - id: "Push-Image-Commit"
-        name: "gcr.io/cloud-builders/docker"
-        args:
-          - push
-          - {{- include "registry" . }}:$COMMIT_SHA
-      - id: "Push-Image-Latest"
-        name: "gcr.io/cloud-builders/docker"
-        args:
-          - push
-          - {{- include "registry" . }}:latest
+          - --destination={{- include "registry" . }}:$COMMIT_SHA
+          - --destination={{- include "registry" . }}:latest
+          - --context=.
+          - --cache=true
+          - --cache-ttl=240h
 
 {{- end }}
 {{- end }}
