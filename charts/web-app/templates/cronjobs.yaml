@@ -63,7 +63,7 @@ spec:
             {{- toYaml .image.args | nindent 12 }}
             {{- end }}
 
-            {{- else }}
+            {{- else if .image }}
 
             image: '{{- .image.name -}}:{{- .image.tag -}}'
 
@@ -74,6 +74,17 @@ spec:
             {{- else }}
             - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
             {{- end }}
+            - x-access-token:$(SECRET_KEY)
+            - --ignore-stdin
+            {{- end }}
+
+            {{- else }}
+
+            image: '{{ include "image" $ }}'
+
+            {{- if $.Values.deployment.enabled }}
+            args:
+            - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
             - x-access-token:$(SECRET_KEY)
             - --ignore-stdin
             {{- end }}
