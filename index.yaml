@@ -6269,6 +6269,21 @@ entries:
     version: 0.0.1
   web-app:
   - apiVersion: v2
+    created: "2025-10-21T16:36:20.105637957Z"
+    dependencies:
+    - alias: app_iam
+      name: app-iam
+      repository: https://pixovr.github.io/helm-charts
+      version: 0.0.40
+    description: A Helm chart for deploying web applications or web application micro
+      services
+    digest: ab59e98d0d87388bee15014a3294f8cc075dffd5412569145191bbed70d569b3
+    name: web-app
+    type: application
+    urls:
+    - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.2.58/web-app-0.2.58.tgz
+    version: 0.2.58
+  - apiVersion: v2
     created: "2025-04-18T18:53:32.142965225Z"
     dependencies:
     - alias: app_iam
@@ -11367,4 +11382,4 @@ entries:
     urls:
     - https://github.com/PixoVR/helm-charts/releases/download/web-app-0.0.1/web-app-0.0.1.tgz
     version: 0.0.1
-generated: "2025-04-18T18:53:32.146108782Z"
+generated: "2025-10-21T16:36:20.107079307Z"
