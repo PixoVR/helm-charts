@@ -50,7 +50,7 @@ spec:
           containers:
           - name: job
 
-            {{- if .image.self }}
+            {{- if and .image .image.self }}
             image: '{{ include "image" $ }}'
 
             {{- if .image.command }}
