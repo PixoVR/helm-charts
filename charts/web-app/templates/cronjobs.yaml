@@ -67,6 +67,11 @@ spec:
 
             image: '{{- .image.name -}}:{{- .image.tag -}}'
 
+            {{- if .command }}
+            command:
+            {{- toYaml .command | nindent 12 }}
+            {{- end }}
+
             {{- if $.Values.deployment.enabled }}
             args:
             - -H
