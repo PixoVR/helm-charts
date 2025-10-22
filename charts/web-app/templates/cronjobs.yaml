@@ -72,9 +72,9 @@ spec:
             - -H
             - x-access-token:$(SECRET_KEY)
             {{- if .endpoint }}
-            - https://{{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- .endpoint }}
+            - http://{{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:{{- $.Values.containerPort -}}/{{- .endpoint }}
             {{- else }}
-            - https://{{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
+            - http://{{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:{{- $.Values.containerPort -}}/{{- $.Values.cronjob.endpoint }}
             {{- end }}
             {{- end }}
 
