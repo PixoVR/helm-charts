@@ -84,7 +84,11 @@ spec:
 
             {{- if $.Values.deployment.enabled }}
             args:
+            {{- if .endpoint }}
+            - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- .endpoint }}
+            {{- else }}
             - {{ include "service_name" $ -}}.{{- $.Release.Namespace -}}.svc:443/{{- $.Values.cronjob.endpoint }}
+            {{- end }}
             - x-access-token:$(SECRET_KEY)
             - --ignore-stdin
             {{- end }}
