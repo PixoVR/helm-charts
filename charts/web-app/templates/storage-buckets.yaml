@@ -123,6 +123,9 @@ spec:
     {{- range .iamBindings }}
     - role: {{ .role }}
       members:
+        {{- if .appServiceAccount }}
+        - member: serviceAccount:{{ include "app_sa" $ }}.gserviceaccount.com
+        {{- end }}
         {{- range .members }}
         - member: {{ . }}
         {{- end }}
