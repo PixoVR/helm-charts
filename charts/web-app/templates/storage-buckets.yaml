@@ -21,6 +21,9 @@ spec:
   #     method: ["*"]
   #     maxAgeSeconds: 3600
   uniformBucketLevelAccess: true
+  {{- if .publicAccessPrevention }}
+  publicAccessPrevention: {{ .publicAccessPrevention }}
+  {{- end }}
 
 ---
 
