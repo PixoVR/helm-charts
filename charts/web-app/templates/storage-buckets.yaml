@@ -45,7 +45,7 @@ spec:
       responseHeader: {{ $.Values.google.storage.cors.headers }}
       maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
 
-  uniformBucketLevelAccess: false
+  uniformBucketLevelAccess: {{ if .uniformBucketLevelAccess | default false }}true{{ else }}false{{ end }}
   {{- if .publicAccessPrevention }}
   publicAccessPrevention: {{ .publicAccessPrevention }}
   {{- end }}
