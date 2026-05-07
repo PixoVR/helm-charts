@@ -46,6 +46,9 @@ spec:
       maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
 
   uniformBucketLevelAccess: false
+  {{- if .publicAccessPrevention }}
+  publicAccessPrevention: {{ .publicAccessPrevention }}
+  {{- end }}
 
 ---
 
