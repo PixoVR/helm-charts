@@ -40,10 +40,19 @@ external_auth: false
 linkerd:
   enabled: false
 
+pdb:
+  enabled: false
+  min_available: 1
+  max_unavailable: ''
+
+pod_anti_affinity:
+  enabled: false
+
 hpa:
   enabled: false
   min_replicas: 1
   max_replicas: 10
+  # percentage of the memory request, not an absolute quantity
   target_mem: 80
   average_utilization: 50
   scale_down:

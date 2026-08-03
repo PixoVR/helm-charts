@@ -67,6 +67,19 @@ spec:
         effect: PreferNoSchedule
       {{- end }}
 
+      {{- if .Values.pod_anti_affinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: {{ .Values.app_code }}
+                  name: {{ .Values.microservice_name }}
+      {{- end }}
+
       hostIPC: false
       hostNetwork: false
       hostPID: false

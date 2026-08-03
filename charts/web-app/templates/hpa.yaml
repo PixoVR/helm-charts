@@ -34,7 +34,7 @@ spec:
       name: memory
       target:
         type: Utilization
-        averageValue: {{ .Values.hpa.target_mem }}
+        averageUtilization: {{ .Values.hpa.target_mem }}
   - type: Resource
     resource:
       name: cpu

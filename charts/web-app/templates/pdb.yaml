@@ -1,0 +1,32 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+{{- if .Values.deployment.enabled }}
+{{- if .Values.pdb.enabled }}
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: '{{- include "deployment_name" $ -}}-pdb'
+  namespace: {{ .Release.Namespace }}
+  labels:
+    lifecycle: '{{- include "lifecycle" $ -}}'
+    namespace: {{ .Release.Namespace }}
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
+    tier: application
+spec:
+  {{- if .Values.pdb.max_unavailable }}
+  maxUnavailable: {{ .Values.pdb.max_unavailable }}
+  {{- else }}
+  minAvailable: {{ .Values.pdb.min_available }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app_code }}
+      name: {{ .Values.microservice_name }}
+
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
