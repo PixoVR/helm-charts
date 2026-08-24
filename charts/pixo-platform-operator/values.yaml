@@ -21,6 +21,11 @@ manager:
     tag: ''
     pullPolicy: IfNotPresent
 
+kubeRbacProxy:
+  image:
+    repository: registry.k8s.io/kubebuilder/kube-rbac-proxy
+    tag: v0.15.0
+
 gcpsm:
   enabled: false
   regionPrefix: true
