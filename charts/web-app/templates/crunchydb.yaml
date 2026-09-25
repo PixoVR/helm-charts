@@ -31,8 +31,15 @@ spec:
   backups:
     pgbackrest:
       image: {{ .Values.crunchydb.pgbackrest.image }}
+      global:
+        repo1-retention-full: {{ .Values.crunchydb.pgbackrest.retention_full | quote }}
+        repo1-retention-full-type: count
       repos:
       - name: repo1
+        {{- with .Values.crunchydb.pgbackrest.schedules }}
+        schedules:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         volume:
           volumeClaimSpec:
             accessModes:
