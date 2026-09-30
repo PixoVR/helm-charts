@@ -1,0 +1,89 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+{{- if .Values.sftpgo.enabled }}
+{{- $accounts := (include "sftpgo.accounts" $ | fromJson).accounts }}
+{{- $hasPasswords := false }}
+{{- range $accounts }}
+  {{- if .password }}{{- $hasPasswords = true }}{{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sftpgo-provisioning
+  namespace: {{ .Release.Namespace }}
+data:
+  accounts.json: {{ $accounts | toJson | quote }}
+  provision.py: |
+{{ .Files.Get "files/sftpgo/provision.py" | indent 4 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sftpgo-provision
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app_code }}
+        name: {{ .Values.microservice_name }}-provision
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+      containers:
+      - name: provision
+        image: {{ required "REQUIRED: sftpgo.provisioner.image" .Values.sftpgo.provisioner.image }}
+        command: ["python", "/provisioning/provision.py"]
+        env:
+        - name: SFTPGO_API_URL
+          value: http://{{ include "sftpgo.admin_service" $ }}.{{ .Release.Namespace }}.svc:8080
+        - name: SFTPGO_ADMIN_USERNAME
+          value: {{ include "sftpgo.admin_username" $ | quote }}
+        - name: SFTPGO_BUCKET
+          value: {{ include "sftpgo.bucket" $ | quote }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: provisioning
+          mountPath: /provisioning
+          readOnly: true
+        - name: admin
+          mountPath: /secrets/admin
+          readOnly: true
+        {{- if $hasPasswords }}
+        - name: passwords
+          mountPath: /secrets/passwords
+          readOnly: true
+        {{- end }}
+      volumes:
+      - name: provisioning
+        configMap:
+          name: sftpgo-provisioning
+      - name: admin
+        secret:
+          secretName: sftpgo-admin
+      {{- if $hasPasswords }}
+      - name: passwords
+        secret:
+          secretName: sftpgo-account-passwords
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

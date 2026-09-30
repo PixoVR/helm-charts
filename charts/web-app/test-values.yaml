@@ -106,6 +106,8 @@ cronjob:
 env:
   - name: EMAILER_TO
     value: walker.obrien@pixovr.com
+  - name: SFTPGO_DEFAULT_ADMIN_USERNAME
+    value: provisioner
 
 email:
   enabled: true
@@ -139,6 +141,8 @@ google:
       - name: public
         key: PUBLIC
         public: true
+      - name: sftp
+        key: SFTP
       - name: builds
         key: BUILDS
         retentionPolicy:
@@ -159,6 +163,8 @@ google:
     enabled: true
     extra_databases:
       - name: extra
+    retained_databases:
+      - previous
 
   pubsub:
     enabled: true
@@ -239,3 +245,18 @@ hpa:
 pixo_service_account:
   enabled: true
   org_id: 20
+
+sftpgo:
+  enabled: true
+  accounts:
+    us-east:
+      dev:
+        - username: acme
+          org_id: 13
+          password: true
+          public_keys:
+            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleExampleExampleExampleExampleExampleEx acme
+        - username: keyco
+          org_id: 27
+          public_keys:
+            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleExampleExampleExampleExampleExampleEx keyco

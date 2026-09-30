@@ -1,0 +1,26 @@
+{{- if .Values.enabled }}
+{{- if .Values.deploy_app }}
+{{- if .Values.sftpgo.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sftpgo.admin_service" $ }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    namespace: {{ .Release.Namespace }}
+    tier: backend
+    backstage.io/kubernetes-id: {{ .Values.app_code }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.app_code }}
+    name: {{ .Values.microservice_name }}
+  ports:
+  - name: admin
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+{{- end }}
+{{- end }}
+{{- end }}
