@@ -35,11 +35,14 @@ spec:
     - origin: ["*"]
       method: ["*"]
     {{- else }}
+    {{- $origins := $.Values.google.storage.cors.origins }}
+    {{- if not $origins }}
+    {{- $origins = list (printf "https://%s" (include "cluster_app_domain" $)) }}
     {{- if eq $.Values.lifecycle "dev" }}
-    - origin: ["http://localhost", "https://{{- include "cluster_app_domain" $ }}"]
-    {{- else }}
-    - origin: ["https://{{- include "cluster_app_domain" $ }}"]
+    {{- $origins = prepend $origins "http://localhost" }}
     {{- end }}
+    {{- end }}
+    - origin: {{ toJson $origins }}
       method: ["OPTIONS", "PUT", "POST", "GET", "HEAD"]
     {{- end }}
       responseHeader: {{ toJson $.Values.google.storage.cors.headers }}
