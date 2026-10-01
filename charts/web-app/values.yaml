@@ -175,7 +175,11 @@ google:
     enabled: false
     use_iam: true
     extra_databases: []
-    # databases this service no longer uses but must keep; never deleted when removed here
+    # databases this service no longer uses but must keep; never deleted when removed here.
+    # Each entry is the existing SQLDatabase name without its `<lifecycle>-` prefix and `-db` suffix:
+    # the former db_name, or `<app_code>-<microservice_name>-<name>` for a former extra database.
+    # Add the entry in the same change that stops using the database, so the resource keeps its
+    # name and gains the abandon policy instead of being pruned.
     retained_databases: []
   storage:
     enabled: false
