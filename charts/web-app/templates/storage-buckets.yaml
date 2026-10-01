@@ -36,13 +36,13 @@ spec:
       method: ["*"]
     {{- else }}
     {{- if eq $.Values.lifecycle "dev" }}
-    - origin: ["http://localhost", https://{{- include "app_domain" $ }}"]
+    - origin: ["http://localhost", "https://{{- include "cluster_app_domain" $ }}"]
     {{- else }}
-    - origin: ["https://{{- include "app_domain" $ }}"]
+    - origin: ["https://{{- include "cluster_app_domain" $ }}"]
     {{- end }}
-      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
+      method: ["OPTIONS", "PUT", "POST", "GET", "HEAD"]
     {{- end }}
-      responseHeader: {{ $.Values.google.storage.cors.headers }}
+      responseHeader: {{ toJson $.Values.google.storage.cors.headers }}
       maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
 
   uniformBucketLevelAccess: {{ if .uniformBucketLevelAccess | default false }}true{{ else }}false{{ end }}
