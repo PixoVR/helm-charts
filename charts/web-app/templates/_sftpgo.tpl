@@ -67,3 +67,18 @@
   {{- end }}
   {{- dict "accounts" $accounts | toJson }}
 {{- end }}
+
+
+{{- define "sftpgo.host_keys_enabled" -}}
+  {{- if and .Values.sftpgo.enabled .Values.sftpgo.host_keys.enabled (not .Values.local) }}true{{- end }}
+{{- end }}
+
+
+{{- define "sftpgo.host_keys_dir" -}}
+/etc/sftpgo/host-keys
+{{- end }}
+
+
+{{- define "sftpgo.host_key_types" -}}
+ed25519 rsa
+{{- end }}
