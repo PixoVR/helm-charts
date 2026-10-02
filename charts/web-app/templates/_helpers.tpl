@@ -41,6 +41,15 @@
 {{- end }}
 
 
+{{- define "cluster_app_domain" -}}
+  {{- if ne .Values.cpl_cluster_name .Values.cluster_name }}
+    {{- .Values.cluster_name -}}.{{- include "app_domain" . }}
+  {{- else }}
+    {{- include "app_domain" . }}
+  {{- end }}
+{{- end }}
+
+
 {{- define "sub_domain" -}}
   {{- if .Values.subdomain }}
     {{- .Values.subdomain -}}.{{- include "app_domain" . }}
@@ -415,6 +424,5 @@
 {{- define "submodule_secret_version_name" -}}
   {{- include "microservice_label" $ -}}-git-pk-v
 {{- end }}
-
 
 

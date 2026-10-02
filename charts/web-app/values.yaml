@@ -181,6 +181,8 @@ google:
     notifications: false
     cors:
       allow_all: false
+      # Overrides the generated origin list when set
+      origins: []
       maxAgeSeconds: 3600
       headers:
         - "Accept"
@@ -366,6 +368,5 @@ pixo_service_account:
   lastName: ""
   orgId: ""
   role: "superadmin"
-
 
 

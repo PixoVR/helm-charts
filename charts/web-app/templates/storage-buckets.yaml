@@ -35,14 +35,17 @@ spec:
     - origin: ["*"]
       method: ["*"]
     {{- else }}
+    {{- $origins := $.Values.google.storage.cors.origins }}
+    {{- if not $origins }}
+    {{- $origins = list (printf "https://%s" (include "cluster_app_domain" $)) }}
     {{- if eq $.Values.lifecycle "dev" }}
-    - origin: ["http://localhost", https://{{- include "app_domain" $ }}"]
-    {{- else }}
-    - origin: ["https://{{- include "app_domain" $ }}"]
+    {{- $origins = prepend $origins "http://localhost" }}
     {{- end }}
-      method: ["OPTIONS", PUT", "POST", "GET", "HEAD"]
     {{- end }}
-      responseHeader: {{ $.Values.google.storage.cors.headers }}
+    - origin: {{ toJson $origins }}
+      method: ["OPTIONS", "PUT", "POST", "GET", "HEAD"]
+    {{- end }}
+      responseHeader: {{ toJson $.Values.google.storage.cors.headers }}
       maxAgeSeconds: {{ $.Values.google.storage.cors.maxAgeSeconds }}
 
   uniformBucketLevelAccess: {{ if .uniformBucketLevelAccess | default false }}true{{ else }}false{{ end }}
