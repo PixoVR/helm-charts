@@ -9,6 +9,7 @@ metadata:
     namespace: test
   annotations:
     iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
+
 ---
 # Source: web-app/templates/service.yaml
 apiVersion: v1
@@ -34,6 +35,7 @@ spec:
     port: 443
     protocol: TCP
     targetPort: 80
+
 ---
 # Source: web-app/templates/deployment.yaml
 apiVersion: apps/v1
@@ -189,6 +191,8 @@ spec:
         ports:
         - containerPort: 80
           name: app-port
+
+
 ---
 # Source: web-app/templates/cronjobs.yaml
 apiVersion: batch/v1
@@ -288,6 +292,8 @@ spec:
               value: 'app-project'
             - name: GOOGLE_STORAGE_PUBLIC
               value: dev-sample-web-public
+
+
 ---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
@@ -316,6 +322,7 @@ spec:
             name: dev-sample-web
             port:
               number: 443
+
 ---
 # Source: web-app/templates/backend-config.yaml
 apiVersion: cloud.google.com/v1
@@ -324,6 +331,9 @@ metadata:
   name: test-backendconfig
   namespace: test
 spec:
+  timeoutSec: 60
+  connectionDraining:
+    drainingTimeoutSec: 300
   healthCheck:
     checkIntervalSec: 60
     port: 80
@@ -338,6 +348,7 @@ spec:
     cachePolicy:
       includeHost: true
       includeProtocol: true
+
 ---
 # Source: web-app/templates/cloudbuild.yaml
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
@@ -377,6 +388,8 @@ spec:
           - --dockerfile=Dockerfile
           - --cache=true
           - --cache-ttl=240h
+
+
 ---
 # Source: web-app/templates/frontend-config.yaml
 apiVersion: networking.gke.io/v1beta1
@@ -391,6 +404,153 @@ spec:
   redirectToHttps:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
+
+---
+# Source: web-app/charts/app_iam/templates/app-project-iam.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: test-app-policy
+  namespace: infra-admin
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: 'replaceme'
+  bindings:
+    - role: roles/artifactregistry.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudbuild.builds.editor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudfunctions.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudkms.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/compute.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/dns.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/iam.serviceAccountUser
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/secretmanager.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/run.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/pubsub.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudsql.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudkms.cryptoKeyEncrypter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/cloudkms.cryptoKeyDecrypter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/errorreporting.writer
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/iam.serviceAccountTokenCreator
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/logging.logWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/monitoring.metricWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.publisher
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.subscriber
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/secretmanager.secretAccessor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
@@ -407,8 +567,10 @@ spec:
     - role: roles/storage.objectViewer
       members:
         - member: allUsers
+
+
 ---
-# Source: web-app/charts/app-iam/templates/app-account.yaml
+# Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -425,8 +587,9 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
       - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
+
 ---
-# Source: web-app/charts/app-iam/templates/infra-account.yaml
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -443,8 +606,9 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
       - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
+
 ---
-# Source: web-app/charts/app-iam/templates/app-account.yaml
+# Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -454,8 +618,10 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test workload service account"
+
+
 ---
-# Source: web-app/charts/app-iam/templates/infra-account.yaml
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -465,6 +631,8 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test infra admin service account"
+
+
 ---
 # Source: web-app/templates/managed-cert.yaml
 apiVersion: networking.gke.io/v1 
@@ -480,6 +648,7 @@ metadata:
 spec:
   domains:
     - api.sample.dev.simple.com
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -501,6 +670,8 @@ spec:
       maxAgeSeconds: 3600
 
   uniformBucketLevelAccess: false
+
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1

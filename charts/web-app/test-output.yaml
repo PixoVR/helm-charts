@@ -9,6 +9,239 @@ metadata:
     namespace: test
   annotations:
     iam.gke.io/gcp-service-account: workload@sa-project.iam.gserviceaccount.com
+
+---
+# Source: web-app/templates/sftpgo-provisioning.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sftpgo-provisioning
+  namespace: test
+data:
+  accounts.json: "[{\"key_prefix\":\"13/\",\"password\":true,\"public_keys\":[\"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleExampleExampleExampleExampleExampleEx acme\"],\"username\":\"acme\"},{\"key_prefix\":\"27/\",\"password\":false,\"public_keys\":[\"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleExampleExampleExampleExampleExampleEx keyco\"],\"username\":\"keyco\"}]"
+  provision.py: |
+    import base64
+    import hashlib
+    import hmac
+    import json
+    import os
+    import sys
+    import time
+    import urllib.error
+    import urllib.request
+    
+    API_URL = os.environ["SFTPGO_API_URL"].rstrip("/")
+    ADMIN_USERNAME = os.environ["SFTPGO_ADMIN_USERNAME"]
+    BUCKET = os.environ["SFTPGO_BUCKET"]
+    WAIT_SECONDS = int(os.environ.get("SFTPGO_WAIT_SECONDS", "300"))
+    
+    ACCOUNTS_FILE = "/provisioning/accounts.json"
+    ADMIN_PASSWORD_FILE = "/secrets/admin/password"
+    PASSWORDS_DIR = "/secrets/passwords"
+    
+    GCS_PROVIDER = 2
+    PERMISSIONS = ["list", "download"]
+    # SFTPGo keeps a stored password when an update omits it, so an account without one
+    # has every password-based sign-in method denied instead.
+    PASSWORD_LOGIN_METHODS = [
+        "password",
+        "password-over-SSH",
+        "keyboard-interactive",
+        "publickey+password",
+        "publickey+keyboard-interactive",
+    ]
+    # Transfers need local scratch space that exists after every restart; nothing is stored there.
+    SCRATCH_DIR = "/tmp"
+    FINGERPRINT_PREFIX = "fingerprint="
+    PAGE_SIZE = 500
+    
+    
+    class ProvisioningError(Exception):
+        pass
+    
+    
+    def read_secret(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                return f.read().strip()
+        except FileNotFoundError:
+            return ""
+    
+    
+    def call(method, path, token=None, basic=None, body=None):
+        request = urllib.request.Request(API_URL + path, method=method)
+        if token:
+            request.add_header("Authorization", "Bearer " + token)
+        if basic:
+            encoded = base64.b64encode(":".join(basic).encode()).decode()
+            request.add_header("Authorization", "Basic " + encoded)
+        data = None
+        if body is not None:
+            data = json.dumps(body).encode()
+            request.add_header("Content-Type", "application/json")
+        try:
+            with urllib.request.urlopen(request, data=data, timeout=30) as response:
+                payload = response.read()
+                return response.status, json.loads(payload) if payload else None
+        except urllib.error.HTTPError as e:
+            return e.code, error_reason(e.read())
+        except OSError as e:
+            return None, str(e)
+    
+    
+    def error_reason(payload):
+        try:
+            body = json.loads(payload)
+        except ValueError:
+            return payload.decode(errors="replace").strip()
+        return ": ".join(part for part in (body.get("message"), body.get("error")) if part)
+    
+    
+    def failure(action, status, reason):
+        detail = f"status {status}"
+        if reason:
+            detail += f", {reason}"
+        return ProvisioningError(f"{action} failed ({detail})")
+    
+    
+    def wait_for_server():
+        deadline = time.monotonic() + WAIT_SECONDS
+        while True:
+            status, reason = call("GET", "/api/v2/version")
+            if status is not None:
+                return
+            if time.monotonic() >= deadline:
+                raise ProvisioningError(
+                    f"server was not ready after {WAIT_SECONDS} seconds ({reason})"
+                )
+            time.sleep(2)
+    
+    
+    def read_passwords(accounts):
+        passwords = {}
+        missing = []
+        for account in accounts:
+            if not account["password"]:
+                continue
+            username = account["username"]
+            passwords[username] = read_secret(os.path.join(PASSWORDS_DIR, username))
+            if not passwords[username]:
+                missing.append(username)
+        if missing:
+            raise ProvisioningError(
+                "; ".join(f"account {u}: password is missing from the secret store" for u in missing)
+            )
+        return passwords
+    
+    
+    def fingerprint(user, key):
+        canonical = json.dumps(user, sort_keys=True).encode()
+        return FINGERPRINT_PREFIX + hmac.new(key.encode(), canonical, hashlib.sha256).hexdigest()
+    
+    
+    def matches(existing, user):
+        gcs = existing.get("filesystem", {}).get("gcsconfig", {})
+        wanted = user["filesystem"]["gcsconfig"]
+        return (
+            existing.get("additional_info") == user["additional_info"]
+            and existing.get("status") == user["status"]
+            and existing.get("home_dir") == user["home_dir"]
+            and existing.get("permissions") == user["permissions"]
+            and existing.get("public_keys", []) == user["public_keys"]
+            and existing.get("filters", {}).get("denied_login_methods", [])
+            == user["filters"]["denied_login_methods"]
+            and existing.get("filesystem", {}).get("provider") == GCS_PROVIDER
+            and gcs.get("bucket") == wanted["bucket"]
+            and gcs.get("key_prefix") == wanted["key_prefix"]
+            and gcs.get("automatic_credentials") == wanted["automatic_credentials"]
+        )
+    
+    
+    def desired_user(account, password, key):
+        user = {
+            "username": account["username"],
+            "status": 1,
+            "home_dir": SCRATCH_DIR,
+            "permissions": {"/": PERMISSIONS},
+            "public_keys": account["public_keys"],
+            "filesystem": {
+                "provider": GCS_PROVIDER,
+                "gcsconfig": {
+                    "bucket": BUCKET,
+                    "key_prefix": account["key_prefix"],
+                    "automatic_credentials": 1,
+                },
+            },
+        }
+        if password:
+            user["password"] = password
+        user["filters"] = {"denied_login_methods": [] if password else PASSWORD_LOGIN_METHODS}
+        user["additional_info"] = fingerprint(user, key)
+        return user
+    
+    
+    def main():
+        with open(ACCOUNTS_FILE, encoding="utf-8") as f:
+            accounts = json.load(f)
+    
+        passwords = read_passwords(accounts)
+        admin_password = read_secret(ADMIN_PASSWORD_FILE)
+        wait_for_server()
+        status, response = call("GET", "/api/v2/token", basic=(ADMIN_USERNAME, admin_password))
+        if status != 200:
+            raise failure("administrator sign-in", status, response)
+        token = response["access_token"]
+    
+        for account in accounts:
+            username = account["username"]
+            user = desired_user(account, passwords.get(username, ""), admin_password)
+            status, existing = call("GET", f"/api/v2/users/{username}", token=token)
+            if status == 200 and matches(existing, user):
+                print(f"account {username}: unchanged")
+            elif status == 404:
+                status, reason = call("POST", "/api/v2/users", token=token, body=user)
+                if status != 201:
+                    raise failure(f"account {username}: create", status, reason)
+                print(f"account {username}: created")
+            elif status == 200:
+                status, reason = call(
+                    "PUT", f"/api/v2/users/{username}?disconnect=1", token=token, body=user
+                )
+                if status != 200:
+                    raise failure(f"account {username}: update", status, reason)
+                print(f"account {username}: updated")
+            else:
+                raise failure(f"account {username}: lookup", status, existing)
+    
+        declared = {account["username"] for account in accounts}
+        for username in sorted(existing_usernames(token) - declared):
+            status, reason = call("DELETE", f"/api/v2/users/{username}", token=token)
+            if status != 200:
+                raise failure(f"account {username}: remove", status, reason)
+            print(f"account {username}: removed")
+    
+    
+    def existing_usernames(token):
+        usernames = set()
+        offset = 0
+        while True:
+            status, page = call("GET", f"/api/v2/users?limit={PAGE_SIZE}&offset={offset}", token=token)
+            if status != 200:
+                raise failure("listing accounts", status, page)
+            usernames.update(user["username"] for user in page)
+            if len(page) < PAGE_SIZE:
+                return usernames
+            offset += PAGE_SIZE
+    
+    
+    if __name__ == "__main__":
+        try:
+            main()
+        except ProvisioningError as e:
+            print(f"provisioning failed: {e}", file=sys.stderr)
+            sys.exit(1)
+    
+
 ---
 # Source: web-app/templates/clamav-pvc.yaml
 apiVersion: v1
@@ -25,6 +258,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
+
 ---
 # Source: web-app/templates/pvc.yaml
 apiVersion: v1
@@ -41,6 +275,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
+
 ---
 # Source: web-app/templates/service.yaml
 apiVersion: v1
@@ -72,6 +307,29 @@ spec:
     port: 22
     protocol: TCP
     targetPort: 2022
+
+---
+# Source: web-app/templates/sftpgo-admin-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-sample-web-admin
+  namespace: test
+  labels:
+    namespace: test
+    tier: backend
+    backstage.io/kubernetes-id: sample
+spec:
+  type: ClusterIP
+  selector:
+    app: sample
+    name: web
+  ports:
+  - name: admin
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+
 ---
 # Source: web-app/templates/deployment.yaml
 apiVersion: apps/v1
@@ -331,12 +589,16 @@ spec:
           value: 'newuser@pixovr.com'
         - name: GOOGLE_STORAGE_PUBLIC
           value: us-east-dev-sample-web-public
+        - name: GOOGLE_STORAGE_SFTP
+          value: us-east-dev-sample-web-sftp
         - name: GOOGLE_STORAGE_BUILDS
           value: us-east-dev-sample-web-builds
         - name: GOOGLE_STORAGE_EXT
           value: pre-dev-tenant-ext-api-ext
         - name: EMAILER_TO
           value: walker.obrien@pixovr.com
+        - name: SFTPGO_DEFAULT_ADMIN_USERNAME
+          value: provisioner
         - name: AWS_ID
           valueFrom:
             secretKeyRef:
@@ -463,6 +725,8 @@ spec:
           runAsUser: 0
           seccompProfile:
             type: RuntimeDefault
+
+
 ---
 # Source: web-app/templates/hpa.yaml
 apiVersion: autoscaling/v2
@@ -496,13 +760,81 @@ spec:
       name: memory
       target:
         type: Utilization
-        averageValue: 80
+        averageUtilization: 80
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
         averageUtilization: 50
+
+
+---
+# Source: web-app/templates/sftpgo-provisioning.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sftpgo-provision
+  namespace: test
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app: sample
+        name: web-provision
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+      containers:
+      - name: provision
+        image: python:3.13-alpine@sha256:79e7a9b9ff1cbceff819f856fb374477792a5967759d94df266de7b7b4120e6f
+        command: ["python", "/provisioning/provision.py"]
+        env:
+        - name: SFTPGO_API_URL
+          value: http://dev-sample-web-admin.test.svc:8080
+        - name: SFTPGO_ADMIN_USERNAME
+          value: "provisioner"
+        - name: SFTPGO_BUCKET
+          value: "us-east-dev-sample-web-sftp"
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: provisioning
+          mountPath: /provisioning
+          readOnly: true
+        - name: admin
+          mountPath: /secrets/admin
+          readOnly: true
+        - name: passwords
+          mountPath: /secrets/passwords
+          readOnly: true
+      volumes:
+      - name: provisioning
+        configMap:
+          name: sftpgo-provisioning
+      - name: admin
+        secret:
+          secretName: sftpgo-admin
+      - name: passwords
+        secret:
+          secretName: sftpgo-account-passwords
+
 ---
 # Source: web-app/templates/cronjob.yaml
 apiVersion: batch/v1
@@ -589,6 +921,8 @@ spec:
             env:
             - name: EMAILER_TO
               value: walker.obrien@pixovr.com
+            - name: SFTPGO_DEFAULT_ADMIN_USERNAME
+              value: provisioner
             - name: GCP_KMS_KEY_REF
               value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
             - name: GCP_KMS_KEYRING_NAME
@@ -640,6 +974,8 @@ spec:
               value: "/tmp"
             - name: GOOGLE_STORAGE_PUBLIC
               value: dev-sample-web-public
+            - name: GOOGLE_STORAGE_SFTP
+              value: dev-sample-web-sftp
             - name: GOOGLE_STORAGE_BUILDS
               value: dev-sample-web-builds
             - name: GOOGLE_STORAGE_EXT
@@ -651,6 +987,7 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: email-sender-password
+
 ---
 # Source: web-app/templates/cronjobs.yaml
 apiVersion: batch/v1
@@ -830,6 +1167,8 @@ spec:
               value: 'app-project'
             - name: GOOGLE_STORAGE_PUBLIC
               value: us-east-dev-sample-web-public
+            - name: GOOGLE_STORAGE_SFTP
+              value: us-east-dev-sample-web-sftp
             - name: GOOGLE_STORAGE_BUILDS
               value: us-east-dev-sample-web-builds
             - name: GOOGLE_STORAGE_EXT
@@ -841,6 +1180,8 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: email-sender-password
+
+
 ---
 # Source: web-app/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
@@ -908,6 +1249,7 @@ spec:
             name: dev-sample-goapi
             port:
               number: 443
+
 ---
 # Source: web-app/templates/backend-config.yaml
 apiVersion: cloud.google.com/v1
@@ -916,6 +1258,9 @@ metadata:
   name: test-backendconfig
   namespace: test
 spec:
+  timeoutSec: 60
+  connectionDraining:
+    drainingTimeoutSec: 300
   healthCheck:
     checkIntervalSec: 60
     port: 8001
@@ -930,6 +1275,7 @@ spec:
     cachePolicy:
       includeHost: true
       includeProtocol: true
+
 ---
 # Source: web-app/templates/cloudbuild.yaml
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
@@ -1006,6 +1352,8 @@ spec:
       - env: 'SSH_KEY'
         versionRef:
           external: projects/app-project/secrets/web-submodule-reader-key/versions/latest
+
+
 ---
 # Source: web-app/templates/config-connector.yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
@@ -1014,6 +1362,7 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
 spec:
   googleServiceAccount: 'app-infra@sa-project.iam.gserviceaccount.com'
+
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1
@@ -1032,6 +1381,7 @@ spec:
   - secretKey: SOME_SECRET
     remoteRef:
       key: some-secret
+
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1
@@ -1050,6 +1400,7 @@ spec:
   - secretKey: SOME_APP_SECRET
     remoteRef:
       key: some-app-secret
+
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1
@@ -1077,6 +1428,7 @@ spec:
   - secretKey: github-ssh-private-key
     remoteRef:
       key: github-ssh-private-key
+
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1
@@ -1123,6 +1475,45 @@ spec:
     - secretKey: svc-acct-json-key
       remoteRef:
         key: saudi-sample-svc-acct-json-key
+
+---
+# Source: web-app/templates/sftpgo-external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: sftpgo-admin
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: sftpgo-admin
+    creationPolicy: Owner
+  data:
+  - secretKey: password
+    remoteRef:
+      key: us-east-sftpgo-admin-password
+
+---
+# Source: web-app/templates/sftpgo-external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: sftpgo-account-passwords
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: sftpgo-account-passwords
+    creationPolicy: Owner
+  data:
+  - secretKey: "acme"
+    remoteRef:
+      key: us-east-sftpgo-user-acme-password
+
 ---
 # Source: web-app/templates/frontend-config.yaml
 apiVersion: networking.gke.io/v1beta1
@@ -1137,6 +1528,153 @@ spec:
   redirectToHttps:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
+
+---
+# Source: web-app/charts/app_iam/templates/app-project-iam.yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: test-app-policy
+  namespace: infra-admin
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: 'replaceme'
+  bindings:
+    - role: roles/artifactregistry.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudbuild.builds.editor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudfunctions.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudkms.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/compute.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/dns.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/iam.serviceAccountUser
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/secretmanager.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/run.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/pubsub.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudsql.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'cnrm-controller-manager-infra-admin'
+            namespace: infra-admin
+    - role: roles/cloudkms.cryptoKeyEncrypter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/cloudkms.cryptoKeyDecrypter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/errorreporting.writer
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/iam.serviceAccountTokenCreator
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/logging.logWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/monitoring.metricWriter
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.publisher
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/pubsub.subscriber
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/secretmanager.secretAccessor
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+    - role: roles/storage.admin
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: 'workload-sa'
+            namespace: infra-admin
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
@@ -1153,8 +1691,10 @@ spec:
     - role: roles/storage.objectViewer
       members:
         - member: allUsers
+
+
 ---
-# Source: web-app/charts/app-iam/templates/app-account.yaml
+# Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -1171,8 +1711,9 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
       - serviceAccount:replaceme.svc.id.goog[replaceme/workload-sa]
+
 ---
-# Source: web-app/charts/app-iam/templates/infra-account.yaml
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -1189,8 +1730,9 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
       - serviceAccount:replaceme.svc.id.goog[cnrm-system/cnrm-controller-manager-replaceme]
+
 ---
-# Source: web-app/charts/app-iam/templates/app-account.yaml
+# Source: web-app/charts/app_iam/templates/app-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -1200,8 +1742,10 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test workload service account"
+
+
 ---
-# Source: web-app/charts/app-iam/templates/infra-account.yaml
+# Source: web-app/charts/app_iam/templates/infra-account.yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
@@ -1211,6 +1755,8 @@ metadata:
     cnrm.cloud.google.com/project-id: 'replaceme'
 spec:
   displayName: "test infra admin service account"
+
+
 ---
 # Source: web-app/templates/kms.yaml
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
@@ -1223,6 +1769,7 @@ spec:
   keyRingRef:
     name: 'dev-sample-web-keyring'
   purpose: 'ENCRYPT_DECRYPT'
+
 ---
 # Source: web-app/templates/kms.yaml
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
@@ -1233,6 +1780,8 @@ metadata:
     cnrm.cloud.google.com/project-id: 'app-project'
 spec:
   location: 'global'
+
+
 ---
 # Source: web-app/templates/pixo-service-account.yaml
 apiVersion: platform.pixovr.com/v1
@@ -1244,6 +1793,7 @@ spec:
   lastName: Service
   orgId: 20
   role: superadmin
+
 ---
 # Source: web-app/templates/crunchydb.yaml
 apiVersion: postgres-operator.crunchydata.com/v1beta1
@@ -1269,8 +1819,13 @@ spec:
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+      global:
+        repo1-retention-full: "2"
+        repo1-retention-full-type: count
       repos:
       - name: repo1
+        schedules:
+          full: 0 3 * * *
         volume:
           volumeClaimSpec:
             accessModes:
@@ -1278,6 +1833,8 @@ spec:
             resources:
               requests:
                 storage: 20Gi
+
+
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1290,6 +1847,7 @@ spec:
   type: 'PROTOCOL_BUFFER'
   projectRef:
     external: app-project
+
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1302,6 +1860,7 @@ spec:
   type: 'JSON'
   projectRef:
     external: app-project
+
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1319,6 +1878,7 @@ spec:
     name: create-foo-us-east-dev-sample-topic
   pushConfig:
     pushEndpoint: 'https://multi-central1.allocator.multiplayer.dev.example.com/triggers'
+
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1335,6 +1895,8 @@ spec:
     name: us-east-dev-sample-topic-builds
   pushConfig:
     pushEndpoint: 'https://external.service.dev.example.com/'
+
+
 ---
 # Source: web-app/templates/pubsub.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1348,6 +1910,9 @@ spec:
     schemaRef:
       name: json-us-east-dev-sample-topic-schema
     encoding: JSON
+
+
+
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
@@ -1356,6 +1921,8 @@ metadata:
   name: us-east-dev-sample-topic-builds
   annotations:
     cnrm.cloud.google.com/project-id: app-project
+
+
 ---
 # Source: web-app/templates/cloud-sql.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
@@ -1370,6 +1937,8 @@ metadata:
 spec:
   instanceRef:
     external: us-east-apex-instance
+
+
 ---
 # Source: web-app/templates/cloud-sql.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
@@ -1384,6 +1953,25 @@ metadata:
 spec:
   instanceRef:
     external: us-east-apex-instance
+
+
+---
+# Source: web-app/templates/cloud-sql.yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: 'dev-previous-db'
+  annotations:
+    cnrm.cloud.google.com/project-id: db-project
+    cnrm.cloud.google.com/deletion-policy: abandon
+  labels:
+    namespace: test
+    backstage.io/kubernetes-id: sample
+spec:
+  instanceRef:
+    external: us-east-apex-instance
+
+
 ---
 # Source: web-app/templates/cloud-sql.yaml
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
@@ -1400,6 +1988,8 @@ spec:
     external: us-east-apex-instance
   resourceID: workload@sa-project.iam
   type: CLOUD_IAM_SERVICE_ACCOUNT
+
+
 ---
 # Source: web-app/templates/external-secrets.yaml
 apiVersion: external-secrets.io/v1beta1
@@ -1411,6 +2001,7 @@ spec:
   provider:
     gcpsm:
       projectID: app-project
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -1435,6 +2026,34 @@ spec:
       maxAgeSeconds: 3600
 
   uniformBucketLevelAccess: false
+
+
+---
+# Source: web-app/templates/storage-buckets.yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: us-east-dev-sample-web-sftp
+  annotations:
+    cnrm.cloud.google.com/project-id: app-project
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    namespace: test
+spec:
+  location: us-central1
+  retentionPolicy:
+    isLocked: true
+    retentionPeriod: 5
+
+  cors:
+    - origin: ["http://localhost","https://us-east.sample.dev.example.com"]
+      method: ["OPTIONS", "PUT", "POST", "GET", "HEAD"]
+      responseHeader: ["Accept","Access-Control-Request-Headers","Access-Control-Request-Method","Access-Control-Allow-Origin","Accept-Encoding","Accept-Language","Cache-Control","Connection","Content-Length","Content-Range","Content-Type","Host","Origin","Pragma","Referer","Sec-Ch-Ua","Sec-Ch-Ua-Mobile","Sec-Ch-Ua-Platform","Sec-Fetch-Dest","Sec-Fetch-Mode","Sec-Fetch-Site","User-Agent","X-Client-Data","Date","Server","Vary","X-Access-Token","X-Goog-Resumable"]
+      maxAgeSeconds: 3600
+
+  uniformBucketLevelAccess: false
+
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -1459,6 +2078,8 @@ spec:
       maxAgeSeconds: 3600
 
   uniformBucketLevelAccess: false
+
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -1472,6 +2093,8 @@ spec:
     name: us-east-dev-sample-web-public
   entity: allUsers
   role: READER
+
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -1483,6 +2106,8 @@ spec:
     name: us-east-dev-sample-web-builds
   entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
   role: READER
+
+
 ---
 # Source: web-app/templates/storage-buckets.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -1494,6 +2119,8 @@ spec:
     name: us-east-dev-sample-web-builds
   entity: user-externaltenant-externalsvc@externaltenant-dev-sa-project.iam.gserviceaccount.com
   role: READER
+
+
 ---
 # Source: web-app/templates/storage-notifications.yaml
 apiVersion: storage.cnrm.cloud.google.com/v1beta1

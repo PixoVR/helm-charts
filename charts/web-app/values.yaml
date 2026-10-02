@@ -175,6 +175,12 @@ google:
     enabled: false
     use_iam: true
     extra_databases: []
+    # databases this service no longer uses but must keep; never deleted when removed here.
+    # Each entry is the existing SQLDatabase name without its `<lifecycle>-` prefix and `-db` suffix:
+    # the former db_name, or `<app_code>-<microservice_name>-<name>` for a former extra database.
+    # Add the entry in the same change that stops using the database, so the resource keeps its
+    # name and gains the abandon policy instead of being pruned.
+    retained_databases: []
   storage:
     enabled: false
     create: false
@@ -349,6 +355,13 @@ clamav:
   pvc:
     enabled: true
     disk_size: 3Gi
+
+sftpgo:
+  enabled: false
+  provisioner:
+    image: python:3.13-alpine@sha256:79e7a9b9ff1cbceff819f856fb374477792a5967759d94df266de7b7b4120e6f
+  # per cluster and lifecycle; every combination the service deploys to needs an entry, [] for none
+  accounts: {}
 
 sa_json_key:
   enabled: false
