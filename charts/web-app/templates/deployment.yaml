@@ -159,6 +159,13 @@ spec:
           emptyDir: {}
         {{- end }}
 
+        {{- if include "sftpgo.host_keys_enabled" $ }}
+        - name: sftpgo-host-keys
+          secret:
+            secretName: sftpgo-host-keys
+            defaultMode: 0440
+        {{- end }}
+
         {{- if .Values.clamav.enabled }}
         - name: clamav-run
           emptyDir: {}
@@ -223,6 +230,11 @@ spec:
 
           - mountPath: {{ .Values.deployment.pvc.path }}
             name: db-volume
+          {{- if include "sftpgo.host_keys_enabled" $ }}
+          - mountPath: {{ include "sftpgo.host_keys_dir" $ }}
+            name: sftpgo-host-keys
+            readOnly: true
+          {{- end }}
           - mountPath: /tmp
             name: tmp-dir
           - mountPath: /usr/tmp
@@ -308,6 +320,12 @@ spec:
           value: '{{ include "full_domain" $ }}'
         - name: PORT
           value: "{{ .Values.containerPort }}"
+
+        {{- if include "sftpgo.host_keys_enabled" $ }}
+        {{- $dir := include "sftpgo.host_keys_dir" $ }}
+        - name: SFTPGO_SFTPD__HOST_KEYS
+          value: '{{ range $i, $t := splitList " " (include "sftpgo.host_key_types" $) }}{{ if $i }},{{ end }}{{ $dir }}/ssh_host_{{ $t }}_key{{ end }}'
+        {{- end }}
 
         {{- if .Values.google.kms.enabled }}
         - name: GCP_KMS_KEY_REF

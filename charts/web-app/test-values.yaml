@@ -248,6 +248,8 @@ pixo_service_account:
 
 sftpgo:
   enabled: true
+  host_keys:
+    enabled: true
   accounts:
     us-east:
       dev:

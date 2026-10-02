@@ -401,6 +401,10 @@ spec:
         - name: db-volume
           persistentVolumeClaim:
             claimName: 'dev-sample-web-pvc'
+        - name: sftpgo-host-keys
+          secret:
+            secretName: sftpgo-host-keys
+            defaultMode: 0440
         - name: clamav-run
           emptyDir: {}
         - name: clamav-tmp
@@ -441,6 +445,9 @@ spec:
 
           - mountPath: /var/db
             name: db-volume
+          - mountPath: /etc/sftpgo/host-keys
+            name: sftpgo-host-keys
+            readOnly: true
           - mountPath: /tmp
             name: tmp-dir
           - mountPath: /usr/tmp
@@ -477,6 +484,8 @@ spec:
           value: 'api.sample.dev.example.com'
         - name: PORT
           value: "8001"
+        - name: SFTPGO_SFTPD__HOST_KEYS
+          value: '/etc/sftpgo/host-keys/ssh_host_ed25519_key,/etc/sftpgo/host-keys/ssh_host_rsa_key'
         - name: GCP_KMS_KEY_REF
           value: 'projects/app-project/locations/global/keyRings/dev-sample-web-keyring/cryptoKeys/dev-sample-web-key'
         - name: GCP_KMS_KEYRING_NAME
@@ -1494,6 +1503,28 @@ spec:
   - secretKey: password
     remoteRef:
       key: us-east-sftpgo-admin-password
+
+---
+# Source: web-app/templates/sftpgo-external-secrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: sftpgo-host-keys
+  namespace: test
+spec:
+  secretStoreRef:
+    kind: SecretStore
+    name: pixo-secret-store
+  target:
+    name: sftpgo-host-keys
+    creationPolicy: Owner
+  data:
+  - secretKey: ssh_host_ed25519_key
+    remoteRef:
+      key: us-east-sftpgo-host-key-ed25519
+  - secretKey: ssh_host_rsa_key
+    remoteRef:
+      key: us-east-sftpgo-host-key-rsa
 
 ---
 # Source: web-app/templates/sftpgo-external-secrets.yaml
