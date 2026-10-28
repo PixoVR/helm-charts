@@ -154,6 +154,17 @@ google:
         custom_endpoint:
           enabled: true
           prefix: external.service
+      - name: modules
+        key: MODULES
+        versioning:
+          enabled: true
+        softDeletePolicy:
+          retentionDurationSeconds: 2592000
+        lifecycleRule:
+          - action:
+              type: Delete
+            condition:
+              daysSinceNoncurrentTime: 30
     external_bucket_list:
       - name: ext
         key: EXT

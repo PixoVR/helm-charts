@@ -20,14 +20,33 @@ metadata:
 spec:
   location: {{ required "REQUIRED: google.region" $.Values.google.region }}
 
+  {{- $versioned := and .versioning .versioning.enabled }}
+  {{- if and $versioned .retentionPolicy }}
+  {{- fail (printf "bucket %s sets both versioning and a retentionPolicy, which GCS does not allow" .name) }}
+  {{- end }}
   {{- if .retentionPolicy }}
   retentionPolicy:
     isLocked: {{ .retentionPolicy.isLocked }}
     retentionPeriod: {{ .retentionPolicy.retentionPeriod }}
-  {{- else if $.Values.google.storage.retentionPolicy.enabled }}
+  {{- else if and $.Values.google.storage.retentionPolicy.enabled (not $versioned) }}
   retentionPolicy:
     isLocked: {{ $.Values.google.storage.retentionPolicy.isLocked }}
     retentionPeriod: {{ $.Values.google.storage.retentionPolicy.retentionPeriod }}
+  {{- end }}
+
+  {{- if .versioning }}
+  versioning:
+    enabled: {{ .versioning.enabled | default false }}
+  {{- end }}
+
+  {{- if .softDeletePolicy }}
+  softDeletePolicy:
+    retentionDurationSeconds: {{ .softDeletePolicy.retentionDurationSeconds | int64 }}
+  {{- end }}
+
+  {{- with .lifecycleRule }}
+  lifecycleRule:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 
   cors:
