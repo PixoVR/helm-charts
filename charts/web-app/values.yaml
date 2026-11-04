@@ -77,6 +77,10 @@ crunchydb:
       full: "0 3 * * *"
   pg_version: 14
   disk_size: 20Gi
+  shutdown: false
+  upgrade:
+    enabled: false
+    to: ""
 
 toleration: ''
 
