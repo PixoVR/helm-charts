@@ -7,7 +7,14 @@ apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
   name: '{{ include "db_name" $ }}'
+  {{- if .Values.crunchydb.upgrade.enabled }}
+  annotations:
+    postgres-operator.crunchydata.com/allow-upgrade: '{{ include "db_name" $ }}-upgrade'
+  {{- end }}
 spec:
+  {{- if or .Values.crunchydb.shutdown .Values.crunchydb.upgrade.enabled }}
+  shutdown: true
+  {{- end }}
   image: {{ .Values.crunchydb.image }}
   postgresVersion: {{ .Values.crunchydb.pg_version }}
   instances:
@@ -47,6 +54,27 @@ spec:
             resources:
               requests:
                 storage: {{ .Values.crunchydb.disk_size }}
+
+{{- if .Values.crunchydb.upgrade.enabled }}
+{{- $toValue := toString (required "REQUIRED: crunchydb.upgrade.to when crunchydb.upgrade.enabled is true" .Values.crunchydb.upgrade.to) }}
+{{- if not (regexMatch "^[0-9]+$" $toValue) }}
+{{- fail (printf "crunchydb.upgrade.to (%s) must be a whole Postgres major version, such as 16" $toValue) }}
+{{- end }}
+{{- $from := int .Values.crunchydb.pg_version }}
+{{- $to := int $toValue }}
+{{- if le $to $from }}
+{{- fail (printf "crunchydb.upgrade.to (%d) must be greater than crunchydb.pg_version (%d)" $to $from) }}
+{{- end }}
+---
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PGUpgrade
+metadata:
+  name: '{{ include "db_name" $ }}-upgrade'
+spec:
+  postgresClusterName: '{{ include "db_name" $ }}'
+  fromPostgresVersion: {{ $from }}
+  toPostgresVersion: {{ $to }}
+{{- end }}
 
 {{- end }}
 {{- end }}
