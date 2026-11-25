@@ -98,6 +98,18 @@ containerPort: 80
 healthCheck:
   enabled: true
   path: /
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  # Unset uses the Kubernetes defaults (timeoutSeconds 1, failureThreshold 3).
+  timeoutSeconds:
+  failureThreshold:
+  # Holds off liveness/readiness until the app first answers, so a slow start isn't killed.
+  # Allows up to periodSeconds * failureThreshold to start.
+  startupProbe:
+    enabled: false
+    periodSeconds: 10
+    timeoutSeconds:
+    failureThreshold: 30
 
 submodules:
   enabled: false
